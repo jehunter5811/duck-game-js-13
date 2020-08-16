@@ -1,17 +1,34 @@
-const SCALE = 2;
+const SCALE = 4;
 const WIDTH = 16;
 const HEIGHT = 18;
 const SCALED_WIDTH = SCALE * WIDTH;
 const SCALED_HEIGHT = SCALE * HEIGHT;
+const WORLD = {
+  minX: 0,
+  maxX: window.innerWidth,
+  minY: 0,
+  maxY: 3000,
+};
+
+let viewport = {
+  x: window.innerWidth,
+  y: window.innerHeight,
+};
+
+const JUMP_POWER = 4.5;
 
 const cycleLoop = [0, 1, 0, 2];
 let currentLoopIndex = 0;
+let facingRight = true;
 
 let img = new Image();
 img.src = "sprite.png";
 img.onload = () => {
   requestAnimationFrame(update);
 };
+
+//  Camera Clamp
+const clamp = (n, lo, hi) => (n < lo ? lo : n > hi ? hi : n);
 
 const drawFrame = (frameX, frameY, canvasX, canvasY) => {
   ctx.drawImage(
@@ -38,8 +55,8 @@ const drawFrame = (frameX, frameY, canvasX, canvasY) => {
 
 let canvas = document.getElementById("canvas"),
   ctx = canvas.getContext("2d"),
-  width = 1000,
-  height = 400,
+  width = WORLD.maxX,
+  height = WORLD.maxY,
   player = {
     x: width / 2,
     y: 200,
@@ -54,7 +71,81 @@ let canvas = document.getElementById("canvas"),
   keys = [],
   friction = 0.8,
   gravity = 0.4,
-  boxes = [],
+  platforms = [
+    {
+      //  Ground platform
+      x: 0,
+      y: WORLD.maxY - 20,
+      width: WORLD.maxX,
+      height: 50,
+    },
+    {
+      x: 20,
+      y: WORLD.maxY - 200,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 90,
+      y: WORLD.maxY - 400,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 200,
+      y: WORLD.maxY - 600,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 320,
+      y: WORLD.maxY - 800,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 500,
+      y: WORLD.maxY - 1000,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 700,
+      y: WORLD.maxY - 1200,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 500,
+      y: WORLD.maxY - 1400,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 300,
+      y: WORLD.maxY - 1600,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 500,
+      y: WORLD.maxY - 1800,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 700,
+      y: WORLD.maxY - 2000,
+      width: 100,
+      height: 20,
+    },
+    {
+      x: 900,
+      y: WORLD.maxY - 2200,
+      width: 100,
+      height: 20,
+    },
+  ],
   powerup = [];
 
 powerup.push({
@@ -95,96 +186,6 @@ powerup.push({
   stay: true,
 });
 
-// dimensions
-boxes.push({
-  //box on left
-  x: 0,
-  y: height / 4 + 10,
-  width: 10,
-  height: height,
-  color: "green",
-});
-boxes.push({
-  //box on left
-  x: 0,
-  y: 0,
-  width: 10,
-  height: height / 4 - 15,
-  color: "green",
-});
-boxes.push({
-  //box for the ground
-  x: 0,
-  y: height - 10,
-  width: width,
-  height: 50,
-  color: "orange",
-});
-boxes.push({
-  //box on right
-  x: width - 10,
-  y: 0,
-  width: 50,
-  height: height,
-  color: "yellow",
-});
-boxes.push({
-  x: 290,
-  y: 200,
-  width: 260,
-  height: 10,
-  color: "blue",
-});
-boxes.push({
-  x: 590,
-  y: 200,
-  width: 80,
-  height: 10,
-  color: "blue",
-});
-boxes.push({
-  x: 120,
-  y: 250,
-  width: 150,
-  height: 10,
-  color: "red",
-});
-boxes.push({
-  x: 220,
-  y: 300,
-  width: 80,
-  height: 10,
-  color: "black",
-});
-boxes.push({
-  x: 340,
-  y: 350,
-  width: 90,
-  height: 10,
-  color: "#655643",
-});
-boxes.push({
-  x: 740,
-  y: 300,
-  width: 160,
-  height: 10,
-  color: "#655643",
-});
-boxes.push({
-  x: 0,
-  y: 350,
-  width: 90,
-  height: 10,
-  color: "#655643",
-});
-boxes.push({
-  x: 90,
-  y: 350,
-  width: 10,
-  height: 50,
-  color: "#655643",
-});
-
 canvas.width = width;
 canvas.height = height;
 
@@ -194,20 +195,20 @@ function update() {
   const rightKey = keys[39] || keys[68];
   const leftKey = keys[37] || keys[65];
 
-  if(jumpKey && rightKey) {
+  if (jumpKey && rightKey) {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * 2.5; //how high to jump
+      player.velY = -player.speed * JUMP_POWER; //how high to jump
     }
     if (player.velX < player.speed) {
       player.velX++;
     }
-  } else if(jumpKey && leftKey) {
+  } else if (jumpKey && leftKey) {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * 2.5; //how high to jump
+      player.velY = -player.speed * JUMP_POWER; //how high to jump
     }
     if (player.velX > -player.speed) {
       player.velX--;
@@ -217,7 +218,7 @@ function update() {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * 2.5; //how high to jump
+      player.velY = -player.speed * JUMP_POWER;
     }
   } else if (rightKey) {
     // right arrow
@@ -237,15 +238,20 @@ function update() {
   player.velY += gravity;
 
   ctx.clearRect(0, 0, width, height);
+
+  // // Keep viewport in map bounds
+  viewport.x = clamp(WORLD.maxX, canvas.width - canvas.width, 0);
+  viewport.y = clamp(WORLD.maxY, canvas.height - canvas.height, 0);
+
   ctx.beginPath();
 
   player.grounded = false;
 
   // check keys
-  if(jumpKey && rightKey) {
+  if (jumpKey && rightKey) {
     const standingYFrame = facingRight ? 3 : 2;
     drawFrame(0, standingYFrame, player.x, player.y);
-  } else if(jumpKey && leftKey) {
+  } else if (jumpKey && leftKey) {
     const standingYFrame = facingRight ? 3 : 2;
     drawFrame(0, standingYFrame, player.x, player.y);
   } else if (jumpKey) {
@@ -254,7 +260,7 @@ function update() {
   } else if (rightKey) {
     // right arrow
     facingRight = true;
-    drawFrame(cycleLoop[currentLoopIndex], 3, player.x, player.y); 
+    drawFrame(cycleLoop[currentLoopIndex], 3, player.x, player.y);
   } else if (leftKey) {
     // left arrow
     facingRight = false;
@@ -269,12 +275,17 @@ function update() {
     currentLoopIndex = 0;
   }
 
-  for (let i = 0; i < boxes.length; i++) {
-    //print boxes
-    ctx.fillStyle = boxes[i].color;
-    ctx.rect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height);
+  for (let i = 0; i < platforms.length; i++) {
+    //print platforms
+    ctx.fillStyle = platforms[i].color;
+    ctx.rect(
+      platforms[i].x,
+      platforms[i].y,
+      platforms[i].width,
+      platforms[i].height
+    );
 
-    let dir = colCheck(player, boxes[i]);
+    let dir = colCheck(player, platforms[i]);
     if (dir === "l" || dir === "r") {
       player.velX = 0;
       player.jumping = false;
@@ -282,7 +293,8 @@ function update() {
       player.grounded = true;
       player.jumping = false;
     } else if (dir === "t") {
-      player.velY *= -1;
+      player.velY = player.velY;
+      console.log("Go through it");
     }
   }
 
@@ -344,7 +356,6 @@ function update() {
       // if (powerup[j].stay !== true) powerup[j].width = 0; //make power up go away
     }
   }
-
   requestAnimationFrame(update);
 }
 
@@ -365,7 +376,7 @@ function colCheck(shapeA, shapeB) {
     if (oX >= oY) {
       if (vY > 0) {
         colDir = "t";
-        shapeA.y += oY;
+        // shapeA.y += oY;
       } else {
         colDir = "b";
         shapeA.y -= oY;
@@ -389,6 +400,14 @@ document.body.addEventListener("keydown", function (e) {
 
 document.body.addEventListener("keyup", function (e) {
   keys[e.keyCode] = false;
+});
+
+window.addEventListener("touchstart", () => {
+  keys[38] = true;
+});
+
+window.addEventListener("touchend", () => {
+  keys[38] = false;
 });
 
 window.addEventListener("load", function () {
