@@ -402,12 +402,78 @@ document.body.addEventListener("keyup", function (e) {
   keys[e.keyCode] = false;
 });
 
-window.addEventListener("touchstart", () => {
-  keys[38] = true;
+document.body.addEventListener('pointerdown', (e) => {
+  console.log(e.clientX, e.clientY)
+  if(e.clientX > canvas.width/2) {
+    keys[39] = true;
+  } else if(e.clientX < canvas.width/2) {
+    keys[37] = true;
+  } else if(e.clientY < canvas.height/2) {
+    keys[38] = true;
+  } 
 });
+
+document.body.addEventListener("touchstart", startTouch, false);
+document.body.addEventListener("touchmove", moveTouch, false);
+ 
+// Swipe Up / Down / Left / Right
+var initialX = null;
+var initialY = null;
+ 
+function startTouch(e) {
+  initialX = e.touches[0].clientX;
+  initialY = e.touches[0].clientY;
+};
+ 
+function moveTouch(e) {
+  if (initialX === null) {
+    return;
+  }
+ 
+  if (initialY === null) {
+    return;
+  }
+ 
+  var currentX = e.touches[0].clientX;
+  var currentY = e.touches[0].clientY;
+ 
+  var diffX = initialX - currentX;
+  var diffY = initialY - currentY;
+ 
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    // sliding horizontally
+    if (diffX > 0) {
+      // swiped left
+      keys[37] = true;
+    } else {
+      // swiped right
+      keys[39] = true;
+    }  
+  } else {
+    // sliding vertically
+    if (diffY > 0) {
+      // swiped up
+      keys[38] = true;
+    } else {
+      // swiped down
+      console.log("swiped down");
+    }  
+  }
+ 
+  initialX = null;
+  initialY = null;
+   
+  e.preventDefault();
+};
+
+// window.addEventListener("touchstart", () => {
+//   keys[38] = true;
+// });
 
 window.addEventListener("touchend", () => {
   keys[38] = false;
+  keys[37] = false;
+  keys[39] = false;
 });
 
 window.addEventListener("load", function () {
