@@ -1,20 +1,17 @@
-body { /* this applies to the entire document */
+html, body { /* this applies to the entire document */
 	font-family:'Roboto', sans-serif; /* Select font without serifs */
+	margin: 0;
+	overflow: hidden;
 }
 
-h1 { /* this applies to big header text */
-	text-align:center; /* align title centered */
-	font-size:400%; /* make the font really big */
-	text-shadow:#ccc 1px 1px 0px; /* add a fancy shadow effect */
-	padding:0px; /* disable padding (inner margins)  */
-	margin:0px; /* disable margins */
-	font-weight:normal; /* nullifies font boldness */
+#world {
+	position: fixed;
+	border: 1px solid #888;
+	margin: 0;
 }
 
 canvas { /* this applies to our game area */
-	border:1px solid #888; /* set subtle gray border */
-	box-shadow:#888 0px 0px 32px; /* add a fancy shadow effect */
-	margin: 10px auto; /* center horizontally and add a bit of margin vertically */
+	margin: 0;
 	display:block; /* display as a non-inline block */
 	border-radius:12px; /* makes the border round and sound */
 }

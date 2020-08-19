@@ -1,19 +1,17 @@
 const SCALE = 4;
 const WIDTH = 16;
+let GAME_WIDTH = 600;
 const HEIGHT = 18;
 const SCALED_WIDTH = SCALE * WIDTH;
 const SCALED_HEIGHT = SCALE * HEIGHT;
-const WORLD = {
+let WORLD = {
   minX: 0,
   maxX: window.innerWidth,
   minY: 0,
-  maxY: 3000,
+  maxY: window.innerHeight,
 };
 
-let viewport = {
-  x: window.innerWidth,
-  y: window.innerHeight,
-};
+const GROUND_HEIGHT = 50;
 
 const JUMP_POWER = 4.5;
 
@@ -24,11 +22,24 @@ let facingRight = true;
 let img = new Image();
 img.src = "sprite.png";
 img.onload = () => {
+  GAME_WIDTH = isMobile() ? window.innerWidth : 600;
+  WORLD = {
+    minX: 0,
+    maxX: GAME_WIDTH,
+    minY: 0,
+    maxY: 3000,
+  };
   requestAnimationFrame(update);
 };
 
-//  Camera Clamp
-const clamp = (n, lo, hi) => (n < lo ? lo : n > hi ? hi : n);
+const isMobile = () => {
+  if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/iPhone|iPod/i) || navigator.userAgent.match(/Opera Mini/i) || navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 
 const drawFrame = (frameX, frameY, canvasX, canvasY) => {
   ctx.drawImage(
@@ -59,7 +70,7 @@ let canvas = document.getElementById("canvas"),
   height = WORLD.maxY,
   player = {
     x: width / 2,
-    y: 200,
+    y: window.innerHeight - GROUND_HEIGHT - SCALED_HEIGHT,
     width: SCALED_WIDTH,
     height: SCALED_HEIGHT,
     speed: 3,
@@ -78,72 +89,84 @@ let canvas = document.getElementById("canvas"),
       y: WORLD.maxY - 20,
       width: WORLD.maxX,
       height: 50,
+      velY: 0
     },
     {
       x: 20,
       y: WORLD.maxY - 200,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 90,
       y: WORLD.maxY - 400,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 200,
       y: WORLD.maxY - 600,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 320,
       y: WORLD.maxY - 800,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 500,
       y: WORLD.maxY - 1000,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 700,
       y: WORLD.maxY - 1200,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 500,
       y: WORLD.maxY - 1400,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 300,
       y: WORLD.maxY - 1600,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 500,
       y: WORLD.maxY - 1800,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 700,
       y: WORLD.maxY - 2000,
       width: 100,
       height: 20,
+      velY: 0
     },
     {
       x: 900,
       y: WORLD.maxY - 2200,
       width: 100,
       height: 20,
+      velY: 0
     },
   ],
   powerup = [];
@@ -186,11 +209,24 @@ powerup.push({
   stay: true,
 });
 
-canvas.width = width;
-canvas.height = height;
+const handleJump = () => {
+  //  Check player position against the world height
+  if(player.y < window.innerHeight/2) {
+    platforms.forEach((platform) => {
+      platform.oldY = platform.y;
+      platform.velY = -player.speed * JUMP_POWER;
+    });
+  } else {
+    player.velY = -player.speed * JUMP_POWER;
+  }
+}
 
 function update() {
+  console.log(player.grounded)
   // check keys
+  canvas.width = GAME_WIDTH;
+  canvas.height = height;
+
   const jumpKey = keys[38] || keys[32] || keys[87];
   const rightKey = keys[39] || keys[68];
   const leftKey = keys[37] || keys[65];
@@ -199,7 +235,7 @@ function update() {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * JUMP_POWER; //how high to jump
+      handleJump()
     }
     if (player.velX < player.speed) {
       player.velX++;
@@ -208,7 +244,7 @@ function update() {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * JUMP_POWER; //how high to jump
+      handleJump();
     }
     if (player.velX > -player.speed) {
       player.velX--;
@@ -218,7 +254,7 @@ function update() {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      player.velY = -player.speed * JUMP_POWER;
+      handleJump()
     }
   } else if (rightKey) {
     // right arrow
@@ -235,17 +271,27 @@ function update() {
   }
 
   player.velX *= friction;
-  player.velY += gravity;
+
+  if(player.y < window.innerHeight/2 - 100) {
+    platforms.forEach(platform => {
+      if(platform.y < platform.oldY) {
+        platform.velY += gravity;
+      }
+    })
+
+  } else {
+    player.velY += gravity;
+  }  
 
   ctx.clearRect(0, 0, width, height);
 
-  // // Keep viewport in map bounds
-  viewport.x = clamp(WORLD.maxX, canvas.width - canvas.width, 0);
-  viewport.y = clamp(WORLD.maxY, canvas.height - canvas.height, 0);
+  ctx.save();
+
+  ctx.translate(-(player.w/2), -(player.h/2))
+
+  // player.grounded = false;
 
   ctx.beginPath();
-
-  player.grounded = false;
 
   // check keys
   if (jumpKey && rightKey) {
@@ -294,16 +340,21 @@ function update() {
       player.jumping = false;
     } else if (dir === "t") {
       player.velY = player.velY;
-      console.log("Go through it");
     }
   }
 
   if (player.grounded) {
     player.velY = 0;
-  }
+    platforms.forEach(platform => {
+      platform.velY = 0
+    })
+  } 
 
   player.x += player.velX;
   player.y += player.velY;
+  platforms.forEach(platform => {
+    platform.y -= platform.velY;
+  })
 
   ctx.fill(); //  Draw charater
   ctx.fillStyle = player.color;
@@ -356,6 +407,8 @@ function update() {
       // if (powerup[j].stay !== true) powerup[j].width = 0; //make power up go away
     }
   }
+
+  ctx.restore();
   requestAnimationFrame(update);
 }
 
@@ -477,5 +530,6 @@ window.addEventListener("touchend", () => {
 });
 
 window.addEventListener("load", function () {
-  update();
+  
+  // update();
 });
