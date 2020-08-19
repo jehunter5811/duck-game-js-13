@@ -18,6 +18,7 @@ const JUMP_POWER = 4.5;
 const cycleLoop = [0, 1, 0, 2];
 let currentLoopIndex = 0;
 let facingRight = true;
+let anyCollisions = false;
 
 let img = new Image();
 img.src = "sprite.png";
@@ -69,7 +70,7 @@ let canvas = document.getElementById("canvas"),
   width = WORLD.maxX,
   height = WORLD.maxY,
   player = {
-    x: width / 2,
+    x: canvas.width / 2,
     y: window.innerHeight - GROUND_HEIGHT - SCALED_HEIGHT,
     width: SCALED_WIDTH,
     height: SCALED_HEIGHT,
@@ -211,18 +212,15 @@ powerup.push({
 
 const handleJump = () => {
   //  Check player position against the world height
-  if(player.y < window.innerHeight/2) {
-    platforms.forEach((platform) => {
+  platforms.forEach((platform) => {
+    if(!platform.oldY) {
       platform.oldY = platform.y;
-      platform.velY = -player.speed * JUMP_POWER;
-    });
-  } else {
-    player.velY = -player.speed * JUMP_POWER;
-  }
+    }    
+    platform.velY = -player.speed * JUMP_POWER;
+  });
 }
 
 function update() {
-  console.log(player.grounded)
   // check keys
   canvas.width = GAME_WIDTH;
   canvas.height = height;
@@ -272,16 +270,13 @@ function update() {
 
   player.velX *= friction;
 
-  if(player.y < window.innerHeight/2 - 100) {
-    platforms.forEach(platform => {
-      if(platform.y < platform.oldY) {
-        platform.velY += gravity;
-      }
-    })
-
-  } else {
-    player.velY += gravity;
-  }  
+  platforms.forEach(platform => {
+    if(!player.grounded) {
+      platform.velY += gravity;
+    } else {
+      platform.velY = 0;
+    }
+  })
 
   ctx.clearRect(0, 0, width, height);
 
@@ -322,7 +317,7 @@ function update() {
   }
 
   for (let i = 0; i < platforms.length; i++) {
-    //print platforms
+    
     ctx.fillStyle = platforms[i].color;
     ctx.rect(
       platforms[i].x,
@@ -331,17 +326,20 @@ function update() {
       platforms[i].height
     );
 
-    let dir = colCheck(player, platforms[i]);
+    let dir = colCheck(player, platforms[i]); 
+    
     if (dir === "l" || dir === "r") {
       player.velX = 0;
       player.jumping = false;
     } else if (dir === "b") {
       player.grounded = true;
       player.jumping = false;
-    } else if (dir === "t") {
+    } else if (dir === "t") {      
       player.velY = player.velY;
-    }
+    } 
   }
+
+  console.log(anyCollisions)
 
   if (player.grounded) {
     player.velY = 0;
@@ -351,7 +349,9 @@ function update() {
   } 
 
   player.x += player.velX;
-  player.y += player.velY;
+  
+
+  //  Gravity
   platforms.forEach(platform => {
     platform.y -= platform.velY;
   })
@@ -433,6 +433,7 @@ function colCheck(shapeA, shapeB) {
       } else {
         colDir = "b";
         shapeA.y -= oY;
+        console.log("bang")
       }
     } else {
       if (vX > 0) {
@@ -443,7 +444,7 @@ function colCheck(shapeA, shapeB) {
         shapeA.x -= oX;
       }
     }
-  }
+  } 
   return colDir;
 }
 
@@ -456,7 +457,6 @@ document.body.addEventListener("keyup", function (e) {
 });
 
 document.body.addEventListener('pointerdown', (e) => {
-  console.log(e.clientX, e.clientY)
   if(e.clientX > canvas.width/2) {
     keys[39] = true;
   } else if(e.clientX < canvas.width/2) {
