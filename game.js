@@ -471,28 +471,29 @@ document.body.addEventListener("keyup", function (e) {
 
 window.addEventListener("load", function () {
   if(isMobile()) {
-
+    const up = document.getElementById('up');
+    const down = document.getElementById('down');
+    const left = document.getElementById('left');
+    const right = document.getElementById('right');
+    up.addEventListener('pointerdown', () => {
+      keys[38] = true;
+    });
+    down.addEventListener('pointerdown', () => {
+      console.log("down")
+    });
+    right.addEventListener('pointerdown', () => {
+      keys[39] = true;
+    });
+    left.addEventListener('pointerdown', () => {
+      keys[37] = true;
+    });
+  
+    document.addEventListener('pointerup', () => {
+      keys[39] = false;
+      keys[38] = false;
+      keys[37] = false;
+    })
+  } else {
+    document.getElementById('controls').style.display = 'none';
   }
-  const up = document.getElementById('up');
-  const down = document.getElementById('down');
-  const left = document.getElementById('left');
-  const right = document.getElementById('right');
-  up.addEventListener('pointerdown', () => {
-    keys[38] = true;
-  });
-  down.addEventListener('pointerdown', () => {
-    console.log("down")
-  });
-  right.addEventListener('pointerdown', () => {
-    keys[39] = true;
-  });
-  left.addEventListener('pointerdown', () => {
-    keys[37] = true;
-  });
-
-  document.addEventListener('pointerup', () => {
-    keys[39] = false;
-    keys[38] = false;
-    keys[37] = false;
-  })
 });
