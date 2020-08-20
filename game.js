@@ -30,17 +30,31 @@ img.onload = () => {
     minY: 0,
     maxY: 3000,
   };
+
+  if(!isMobile()) {
+    const width = window.innerWidth;
+    const worldDiv = document.getElementById('world');
+    worldDiv.style.width = "600px";
+    worldDiv.style.marginLeft = `${(width - 600)/2}px`;
+  }
+
   requestAnimationFrame(update);
 };
 
 const isMobile = () => {
-  if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/iPhone|iPod/i) || navigator.userAgent.match(/Opera Mini/i) || navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i)) {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/BlackBerry/i) ||
+    navigator.userAgent.match(/iPhone|iPod/i) ||
+    navigator.userAgent.match(/Opera Mini/i) ||
+    navigator.userAgent.match(/IEMobile/i) ||
+    navigator.userAgent.match(/WPDesktop/i)
+  ) {
     return true;
   } else {
     return false;
   }
 };
-
 
 const drawFrame = (frameX, frameY, canvasX, canvasY) => {
   ctx.drawImage(
@@ -90,84 +104,84 @@ let canvas = document.getElementById("canvas"),
       y: WORLD.maxY - 20,
       width: WORLD.maxX,
       height: 50,
-      velY: 0
+      velY: 0,
     },
     {
       x: 20,
       y: WORLD.maxY - 200,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 90,
       y: WORLD.maxY - 400,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 200,
       y: WORLD.maxY - 600,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 320,
       y: WORLD.maxY - 800,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 500,
       y: WORLD.maxY - 1000,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 700,
       y: WORLD.maxY - 1200,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 500,
       y: WORLD.maxY - 1400,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 300,
       y: WORLD.maxY - 1600,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 500,
       y: WORLD.maxY - 1800,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 700,
       y: WORLD.maxY - 2000,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
     {
       x: 900,
       y: WORLD.maxY - 2200,
       width: 100,
       height: 20,
-      velY: 0
+      velY: 0,
     },
   ],
   powerup = [];
@@ -213,12 +227,12 @@ powerup.push({
 const handleJump = () => {
   //  Check player position against the world height
   platforms.forEach((platform) => {
-    if(!platform.oldY) {
+    if (!platform.oldY) {
       platform.oldY = platform.y;
-    }    
+    }
     platform.velY = -player.speed * JUMP_POWER;
   });
-}
+};
 
 function update() {
   // check keys
@@ -233,7 +247,7 @@ function update() {
     if (!player.jumping && player.grounded) {
       player.jumping = true;
       player.grounded = false;
-      handleJump()
+      handleJump();
     }
     if (player.velX < player.speed) {
       player.velX++;
@@ -250,9 +264,10 @@ function update() {
   } else if (jumpKey) {
     // up arrow or space
     if (!player.jumping && player.grounded) {
+      console.log(player.jumping)
       player.jumping = true;
       player.grounded = false;
-      handleJump()
+      handleJump();
     }
   } else if (rightKey) {
     // right arrow
@@ -269,20 +284,20 @@ function update() {
   }
 
   player.velX *= friction;
-
-  platforms.forEach(platform => {
-    if(!player.grounded) {
+  
+  platforms.forEach((platform) => {
+    if (!player.grounded) {
       platform.velY += gravity;
     } else {
       platform.velY = 0;
     }
-  })
+  });
 
   ctx.clearRect(0, 0, width, height);
 
   ctx.save();
 
-  ctx.translate(-(player.w/2), -(player.h/2))
+  ctx.translate(-(player.w / 2), -(player.h / 2));
 
   // player.grounded = false;
 
@@ -317,7 +332,6 @@ function update() {
   }
 
   for (let i = 0; i < platforms.length; i++) {
-    
     ctx.fillStyle = platforms[i].color;
     ctx.rect(
       platforms[i].x,
@@ -326,7 +340,7 @@ function update() {
       platforms[i].height
     );
 
-    let dir = colCheck(player, platforms[i]); 
+    let dir = colCheck(player, platforms[i]);
     
     if (dir === "l" || dir === "r") {
       player.velX = 0;
@@ -334,27 +348,25 @@ function update() {
     } else if (dir === "b") {
       player.grounded = true;
       player.jumping = false;
-    } else if (dir === "t") {      
+    } else if (dir === "t") {
       player.velY = player.velY;
     } 
   }
 
-  console.log(anyCollisions)
 
   if (player.grounded) {
     player.velY = 0;
-    platforms.forEach(platform => {
-      platform.velY = 0
-    })
-  } 
+    platforms.forEach((platform) => {
+      platform.velY = 0;
+    });
+  }
 
   player.x += player.velX;
   
-
   //  Gravity
-  platforms.forEach(platform => {
+  platforms.forEach((platform) => {
     platform.y -= platform.velY;
-  })
+  });
 
   ctx.fill(); //  Draw charater
   ctx.fillStyle = player.color;
@@ -421,11 +433,13 @@ function colCheck(shapeA, shapeB) {
     hHeights = shapeA.height / 2 + shapeB.height / 2,
     colDir = null;
 
+  let oX = hWidths - Math.abs(vX),
+    oY = hHeights - Math.abs(vY);
+  
   // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+  
   if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
     // figures out on which side we are colliding (top, bottom, left, or right)
-    let oX = hWidths - Math.abs(vX),
-      oY = hHeights - Math.abs(vY);
     if (oX >= oY) {
       if (vY > 0) {
         colDir = "t";
@@ -433,7 +447,6 @@ function colCheck(shapeA, shapeB) {
       } else {
         colDir = "b";
         shapeA.y -= oY;
-        console.log("bang")
       }
     } else {
       if (vX > 0) {
@@ -444,7 +457,7 @@ function colCheck(shapeA, shapeB) {
         shapeA.x -= oX;
       }
     }
-  } 
+  }
   return colDir;
 }
 
@@ -456,80 +469,30 @@ document.body.addEventListener("keyup", function (e) {
   keys[e.keyCode] = false;
 });
 
-document.body.addEventListener('pointerdown', (e) => {
-  if(e.clientX > canvas.width/2) {
-    keys[39] = true;
-  } else if(e.clientX < canvas.width/2) {
-    keys[37] = true;
-  } else if(e.clientY < canvas.height/2) {
-    keys[38] = true;
-  } 
-});
-
-document.body.addEventListener("touchstart", startTouch, false);
-document.body.addEventListener("touchmove", moveTouch, false);
- 
-// Swipe Up / Down / Left / Right
-var initialX = null;
-var initialY = null;
- 
-function startTouch(e) {
-  initialX = e.touches[0].clientX;
-  initialY = e.touches[0].clientY;
-};
- 
-function moveTouch(e) {
-  if (initialX === null) {
-    return;
-  }
- 
-  if (initialY === null) {
-    return;
-  }
- 
-  var currentX = e.touches[0].clientX;
-  var currentY = e.touches[0].clientY;
- 
-  var diffX = initialX - currentX;
-  var diffY = initialY - currentY;
- 
-  if (Math.abs(diffX) > Math.abs(diffY)) {
-    // sliding horizontally
-    if (diffX > 0) {
-      // swiped left
-      keys[37] = true;
-    } else {
-      // swiped right
-      keys[39] = true;
-    }  
-  } else {
-    // sliding vertically
-    if (diffY > 0) {
-      // swiped up
-      keys[38] = true;
-    } else {
-      // swiped down
-      console.log("swiped down");
-    }  
-  }
- 
-  initialX = null;
-  initialY = null;
-   
-  e.preventDefault();
-};
-
-// window.addEventListener("touchstart", () => {
-//   keys[38] = true;
-// });
-
-window.addEventListener("touchend", () => {
-  keys[38] = false;
-  keys[37] = false;
-  keys[39] = false;
-});
-
 window.addEventListener("load", function () {
-  
-  // update();
+  if(isMobile()) {
+
+  }
+  const up = document.getElementById('up');
+  const down = document.getElementById('down');
+  const left = document.getElementById('left');
+  const right = document.getElementById('right');
+  up.addEventListener('pointerdown', () => {
+    keys[38] = true;
+  });
+  down.addEventListener('pointerdown', () => {
+    console.log("down")
+  });
+  right.addEventListener('pointerdown', () => {
+    keys[39] = true;
+  });
+  left.addEventListener('pointerdown', () => {
+    keys[37] = true;
+  });
+
+  document.addEventListener('pointerup', () => {
+    keys[39] = false;
+    keys[38] = false;
+    keys[37] = false;
+  })
 });

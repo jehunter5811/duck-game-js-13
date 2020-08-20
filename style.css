@@ -8,9 +8,60 @@ html, body { /* this applies to the entire document */
 	position: fixed;
 	border: 1px solid #888;
 	margin: 0;
+	margin: auto;
 }
 
-canvas { /* this applies to our game area */
+#controls {
+	position: absolute;
+	right: 70px;
+	bottom: 20px;
+	z-index: 1024;
+	width: 200px;
+	height: 200px;
+	margin: auto;
+}
+
+#up {
+	position: absolute;
+	z-index: 1024;
+	left: 50px;
+	width: 75px;
+	height: 75px;
+	background: blue;
+	opacity: 0.5;
+}
+
+#left {
+	position: absolute;
+	left: -10px;
+	top: 50px;
+	width: 75px;
+	height: 75px;
+	background: blue;
+	opacity: 0.5;
+}
+
+#right {
+	position: absolute;
+	left: 105px;
+	top: 50px;
+	width: 75px;
+	height: 75px;
+	background: blue;
+	opacity: 0.5;
+}
+
+#down {
+	position: absolute;
+	left: 50px;
+	top: 100px;
+	width: 75px;
+	height: 75px;
+	background: blue;
+	opacity: 0.5;
+}
+
+canvas { 
 	margin: 0;
 	display:block; /* display as a non-inline block */
 	border-radius:12px; /* makes the border round and sound */
