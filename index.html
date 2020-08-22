@@ -91,105 +91,8 @@
     let keys = [];
     let playerVelX = 0;
     let playerVelY = 0;
-    let platforms = [
-      {
-        //  Ground platform
-        x: 0,
-        y: MAX_HEIGHT - 20,
-        width: MAX_WIDTH,
-        height: 50,
-        velY: 0,
-        id: "1",
-      },
-      {
-        x: 20,
-        y: MAX_HEIGHT - 200,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "2",
-      },
-      {
-        x: 90,
-        y: MAX_HEIGHT - 400,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "3",
-      },
-      {
-        x: 200,
-        y: MAX_HEIGHT - 600,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "4",
-      },
-      {
-        x: 320,
-        y: MAX_HEIGHT - 800,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "5",
-      },
-      {
-        x: MAX_WIDTH - 40,
-        y: MAX_HEIGHT - 1000,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "6",
-      },
-      {
-        x: MAX_WIDTH - 200,
-        y: MAX_HEIGHT - 1200,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "7",
-      },
-      {
-        x: 500,
-        y: MAX_HEIGHT - 1400,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "8",
-      },
-      {
-        x: 300,
-        y: MAX_HEIGHT - 1600,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "9",
-      },
-      {
-        x: 500,
-        y: MAX_HEIGHT - 1800,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "9",
-      },
-      {
-        x: 700,
-        y: MAX_HEIGHT - 2000,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "10",
-      },
-      {
-        x: 900,
-        y: MAX_HEIGHT - 2200,
-        width: 100,
-        height: 20,
-        velY: 0,
-        id: "11",
-      },
-    ];
+    let platforms = [];
+    let counter = 0;
 
     window.addEventListener("load", function () {
       const isMobile = () => {
@@ -207,14 +110,32 @@
         }
       };
       if (isMobile()) {
-        let MAX_WIDTH = window.innerWidth;
+        MAX_WIDTH = window.innerWidth;
         document.getElementById("world").style.width = `${window.innerWidth}px`;
-        document.getElementById("controls").style.display = "block";
+        const controls = document.getElementById("controls");
+        controls.style.display = "block";
+
         const up = document.getElementById("up");
         const down = document.getElementById("down");
         const left = document.getElementById("left");
         const right = document.getElementById("right");
-        up.addEventListener("pointerdown", () => {
+        
+        controls.addEventListener(
+          "touchstart",
+          (e) => {
+            setTimeout(() => {
+              counter++;
+            }, 500);
+            if (counter < 1) {
+              console.log("Can't do that");
+              e.preventDefault();
+            } else {
+              counter = 0;
+            }
+          }, false
+        );
+      
+        up.addEventListener("pointerdown", (e) => {
           keys[38] = true;
         });
         down.addEventListener("pointerdown", () => {
@@ -233,9 +154,108 @@
           keys[37] = false;
         });
       }
+
+      platforms = [
+        {
+          //  Ground platform
+          x: 0,
+          y: MAX_HEIGHT - 20,
+          width: MAX_WIDTH,
+          height: 50,
+          velY: 0,
+          id: "1",
+        },
+        {
+          x: 20,
+          y: MAX_HEIGHT - 200,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "2",
+        },
+        {
+          x: 90,
+          y: MAX_HEIGHT - 400,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "3",
+        },
+        {
+          x: 200,
+          y: MAX_HEIGHT - 600,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "4",
+        },
+        {
+          x: 320,
+          y: MAX_HEIGHT - 800,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "5",
+        },
+        {
+          x: MAX_WIDTH - 140,
+          y: MAX_HEIGHT - 1000,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "6",
+        },
+        {
+          x: MAX_WIDTH - 250,
+          y: MAX_HEIGHT - 1200,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "7",
+        },
+        {
+          x: 500,
+          y: MAX_HEIGHT - 1400,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "8",
+        },
+        {
+          x: 300,
+          y: MAX_HEIGHT - 1600,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "9",
+        },
+        {
+          x: 500,
+          y: MAX_HEIGHT - 1800,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "9",
+        },
+        {
+          x: 700,
+          y: MAX_HEIGHT - 2000,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "10",
+        },
+        {
+          x: 900,
+          y: MAX_HEIGHT - 2200,
+          width: 100,
+          height: 20,
+          velY: 0,
+          id: "11",
+        },
+      ];
     });
     window.onload = () => {
-      // window.scrollTo(0, document.body.scrollHeight);
       //  Generate Player
       player = document.createElement("div");
       player.style.width = "50px";
@@ -366,12 +386,19 @@
         // player.scrollIntoView();
         window.scrollTo(0, player.offsetTop - 200);
       }
+      console.log(parseInt(player.style.left.split("px")[0], 10))
+      if(parseInt(player.style.left.split("px")[0], 10) > MAX_WIDTH) {
+        player.style.left = '0px';
+      }
+
+      if(parseInt(player.style.left.split("px")[0], 10) < -10) {
+        player.style.left = `${MAX_WIDTH}px`;
+      }
       requestAnimationFrame(gameLoop);
     };
 
     document.body.addEventListener("keydown", function (e) {
-      e.preventDefault()
-      e.target.click()
+      e.target.click();
       keys[e.keyCode] = true;
     });
 
