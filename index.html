@@ -91,7 +91,9 @@
     let keys = [];
     let playerVelX = 0;
     let playerVelY = 0;
+    let eggVelY = 0;
     let platforms = [];
+    let eggs = [];
     let counter = 0;
 
     window.addEventListener("load", function () {
@@ -119,7 +121,7 @@
         const down = document.getElementById("down");
         const left = document.getElementById("left");
         const right = document.getElementById("right");
-        
+
         controls.addEventListener(
           "touchstart",
           (e) => {
@@ -127,19 +129,19 @@
               counter++;
             }, 500);
             if (counter < 1) {
-              console.log("Can't do that");
               e.preventDefault();
             } else {
               counter = 0;
             }
-          }, false
+          },
+          false
         );
-      
+
         up.addEventListener("pointerdown", (e) => {
           keys[38] = true;
         });
         down.addEventListener("pointerdown", () => {
-          // console.log("down");
+          keys[40] = true;
         });
         right.addEventListener("pointerdown", () => {
           keys[39] = true;
@@ -152,6 +154,7 @@
           keys[39] = false;
           keys[38] = false;
           keys[37] = false;
+          keys[40] = false;
         });
       }
 
@@ -274,6 +277,21 @@
       requestAnimationFrame(gameLoop);
     };
 
+    const layEgg = () => {
+      const egg = document.createElement("div");
+      egg.style.height = "80px";
+      egg.style.width = "60px";
+      egg.style.background = "yellow";
+      egg.style.borderRadius = "50px 50px 100px 100px";
+      egg.style.position = "absolute";
+      egg.style.left = player.style.left;
+      egg.style.bottom = player.style.bottom;
+      egg.setAttribute("id", "egg-1");
+      eggs.push(egg);
+      game.appendChild(egg);
+      playerVelY = -PLAYER_SPEED * JUMP_POWER;
+    };
+
     const drawPlatforms = () => {
       platforms.forEach((platform) => {
         const newPlatform = document.createElement("div");
@@ -334,12 +352,32 @@
         }
       });
 
+      eggs.forEach((egg) => {
+        egg.style.bottom = `${
+          parseInt(egg.style.bottom.split("px")[0], 10) - eggVelY
+        }px`;
+        if (
+          parseInt(egg.style.bottom.split("px")[0], 10) < -window.innerHeight
+        ) {
+          eggs = [];
+          eggVelY = 0;
+          egg.remove();
+        }
+        eggVelY += GRAVITY;
+      });
+
       if (touching.length) {
         GROUNDED = true;
       }
 
       if (GROUNDED) {
         playerVelY = 0;
+      }
+
+      if (layEggKey) {
+        if (eggs.length === 0) {
+          layEgg();
+        }
       }
 
       if (jumpKey && rightKey) {
@@ -386,12 +424,12 @@
         // player.scrollIntoView();
         window.scrollTo(0, player.offsetTop - 200);
       }
-      console.log(parseInt(player.style.left.split("px")[0], 10))
-      if(parseInt(player.style.left.split("px")[0], 10) > MAX_WIDTH) {
-        player.style.left = '0px';
+
+      if (parseInt(player.style.left.split("px")[0], 10) > MAX_WIDTH) {
+        player.style.left = "0px";
       }
 
-      if(parseInt(player.style.left.split("px")[0], 10) < -10) {
+      if (parseInt(player.style.left.split("px")[0], 10) < -10) {
         player.style.left = `${MAX_WIDTH}px`;
       }
       requestAnimationFrame(gameLoop);
