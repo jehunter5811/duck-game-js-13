@@ -1,22 +1,400 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<title>Duck Game</title>
-
-<link
-  href="https://fonts.googleapis.com/css?family=Roboto:100"
-  rel="stylesheet"
-  type="text/css"
-/>
-<link rel="stylesheet" type="text/css" href="style.css">
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>Duck Game</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      overflow-x: hidden;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+      touch-action: manipulation;
+    }
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    #world {
+      width: 600px;
+      height: 3000px;
+      background: lightblue;
+      margin: auto;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
+    #controls {
+      position: fixed;
+      z-index: 1024;
+      bottom: 70px;
+      opacity: 0.3;
+      right: 20px;
+    }
+    #up {
+      position: absolute;
+      bottom: 100px;
+      height: 60px;
+      width: 60px;
+      right: 100px;
+      background: blue;
+    }
+    #right {
+      position: absolute;
+      bottom: 50px;
+      height: 60px;
+      width: 60px;
+      right: 25px;
+      background: blue;
+    }
+    #left {
+      position: absolute;
+      bottom: 50px;
+      height: 60px;
+      width: 60px;
+      right: 175px;
+      background: blue;
+    }
+    #down {
+      position: absolute;
+      bottom: 0px;
+      height: 60px;
+      width: 60px;
+      right: 100px;
+      background: blue;
+    }
+  </style>
+</head>
 <body>
   <div id="world">
-    <div id="controls">
+    <div style="display: none;" id="controls">
       <div id="up"></div>
       <div id="down"></div>
       <div id="left"></div>
       <div id="right"></div>
     </div>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <div id="game"></div>
   </div>
-  <script src="game.js"></script>
+  <script>
+    let game;
+    let MAX_WIDTH = 600;
+    const MAX_HEIGHT = 3000;
+    const PLAYER_SPEED = 3;
+    const FRICTION = 0.8;
+    const GRAVITY = 0.4;
+    const JUMP_POWER = 4.5;
+    let GROUNDED = true;
+    let JUMPING = false;
+    let player;
+    let keys = [];
+    let playerVelX = 0;
+    let playerVelY = 0;
+    let platforms = [
+      {
+        //  Ground platform
+        x: 0,
+        y: MAX_HEIGHT - 20,
+        width: MAX_WIDTH,
+        height: 50,
+        velY: 0,
+        id: "1",
+      },
+      {
+        x: 20,
+        y: MAX_HEIGHT - 200,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "2",
+      },
+      {
+        x: 90,
+        y: MAX_HEIGHT - 400,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "3",
+      },
+      {
+        x: 200,
+        y: MAX_HEIGHT - 600,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "4",
+      },
+      {
+        x: 320,
+        y: MAX_HEIGHT - 800,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "5",
+      },
+      {
+        x: MAX_WIDTH - 40,
+        y: MAX_HEIGHT - 1000,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "6",
+      },
+      {
+        x: MAX_WIDTH - 200,
+        y: MAX_HEIGHT - 1200,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "7",
+      },
+      {
+        x: 500,
+        y: MAX_HEIGHT - 1400,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "8",
+      },
+      {
+        x: 300,
+        y: MAX_HEIGHT - 1600,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "9",
+      },
+      {
+        x: 500,
+        y: MAX_HEIGHT - 1800,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "9",
+      },
+      {
+        x: 700,
+        y: MAX_HEIGHT - 2000,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "10",
+      },
+      {
+        x: 900,
+        y: MAX_HEIGHT - 2200,
+        width: 100,
+        height: 20,
+        velY: 0,
+        id: "11",
+      },
+    ];
+
+    window.addEventListener("load", function () {
+      const isMobile = () => {
+        if (
+          navigator.userAgent.match(/Android/i) ||
+          navigator.userAgent.match(/BlackBerry/i) ||
+          navigator.userAgent.match(/iPhone|iPod/i) ||
+          navigator.userAgent.match(/Opera Mini/i) ||
+          navigator.userAgent.match(/IEMobile/i) ||
+          navigator.userAgent.match(/WPDesktop/i)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+      if (isMobile()) {
+        let MAX_WIDTH = window.innerWidth;
+        document.getElementById("world").style.width = `${window.innerWidth}px`;
+        document.getElementById("controls").style.display = "block";
+        const up = document.getElementById("up");
+        const down = document.getElementById("down");
+        const left = document.getElementById("left");
+        const right = document.getElementById("right");
+        up.addEventListener("pointerdown", () => {
+          keys[38] = true;
+        });
+        down.addEventListener("pointerdown", () => {
+          // console.log("down");
+        });
+        right.addEventListener("pointerdown", () => {
+          keys[39] = true;
+        });
+        left.addEventListener("pointerdown", () => {
+          keys[37] = true;
+        });
+
+        document.addEventListener("pointerup", () => {
+          keys[39] = false;
+          keys[38] = false;
+          keys[37] = false;
+        });
+      }
+    });
+    window.onload = () => {
+      // window.scrollTo(0, document.body.scrollHeight);
+      //  Generate Player
+      player = document.createElement("div");
+      player.style.width = "50px";
+      player.style.height = "50px";
+      player.style.background = "green";
+      //  Attach player to game view
+      game = document.getElementById("world");
+      game.style.position = "relative";
+      game.appendChild(player);
+
+      player.style.position = "absolute";
+      player.style.bottom = "50px";
+      player.style.left = "100px";
+
+      drawPlatforms();
+      requestAnimationFrame(gameLoop);
+    };
+
+    const drawPlatforms = () => {
+      platforms.forEach((platform) => {
+        const newPlatform = document.createElement("div");
+        newPlatform.style.width = `${platform.width}px`;
+        newPlatform.style.height = `${platform.height}px`;
+        newPlatform.style.position = "absolute";
+        newPlatform.style.top = `${platform.y}px`;
+        newPlatform.style.left = `${platform.x}px`;
+        newPlatform.style.background = "#000";
+        newPlatform.setAttribute("id", platform.id);
+        game.appendChild(newPlatform);
+      });
+    };
+    const detectOverlap = (() => {
+      const getPositions = (elem) => {
+        let pos = elem.getBoundingClientRect();
+        return [
+          [pos.left, pos.right],
+          [pos.top, pos.bottom],
+        ];
+      };
+      const comparePositions = (p1, p2) => {
+        let r1, r2;
+        if (p1[0] < p2[0]) {
+          r1 = p1;
+          r2 = p2;
+        } else {
+          r1 = p2;
+          r2 = p1;
+        }
+        return r1[1] > r2[0] || r1[0] === r2[0];
+      };
+      return (a, b) => {
+        let pos1 = getPositions(a),
+          pos2 = getPositions(b);
+        return (
+          comparePositions(pos1[0], pos2[0]) &&
+          comparePositions(pos1[1], pos2[1])
+        );
+      };
+    })();
+
+    const gameLoop = () => {
+      const jumpKey = keys[38] || keys[32] || keys[87];
+      const rightKey = keys[39] || keys[68];
+      const leftKey = keys[37] || keys[65];
+      const layEggKey = keys[40] || keys[83];
+
+      playerVelX *= FRICTION;
+      playerVelY += GRAVITY;
+
+      let touching = [];
+
+      platforms.forEach((platform) => {
+        const p = document.getElementById(platform.id);
+        if (detectOverlap(player, p)) {
+          touching.push(platform.id);
+        }
+      });
+
+      if (touching.length) {
+        GROUNDED = true;
+      }
+
+      if (GROUNDED) {
+        playerVelY = 0;
+      }
+
+      if (jumpKey && rightKey) {
+        if (!JUMPING && GROUNDED) {
+          GROUNDED = false;
+          playerVelY = -PLAYER_SPEED * JUMP_POWER;
+        }
+        if (playerVelX < PLAYER_SPEED) {
+          playerVelX++;
+        }
+      } else if (jumpKey && leftKey) {
+        if (!JUMPING && GROUNDED) {
+          GROUNDED = false;
+          playerVelY = -PLAYER_SPEED * JUMP_POWER;
+        }
+        if (playerVelX > -PLAYER_SPEED) {
+          player.velX--;
+        }
+      } else if (jumpKey) {
+        if (!JUMPING && GROUNDED) {
+          GROUNDED = false;
+          playerVelY = -PLAYER_SPEED * JUMP_POWER;
+        }
+      } else if (rightKey) {
+        if (playerVelX < PLAYER_SPEED) {
+          playerVelX++;
+        }
+      } else if (leftKey) {
+        if (playerVelX > -PLAYER_SPEED) {
+          playerVelX--;
+        }
+      }
+
+      player.style.left = `${
+        parseInt(player.style.left.split("px")[0], 10) + playerVelX
+      }px`;
+      player.style.bottom = `${
+        parseInt(player.style.bottom.split("px")[0], 10) - playerVelY
+      }px`;
+
+      GROUNDED = false;
+
+      if (player) {
+        // player.scrollIntoView();
+        window.scrollTo(0, player.offsetTop - 200);
+      }
+      requestAnimationFrame(gameLoop);
+    };
+
+    document.body.addEventListener("keydown", function (e) {
+      e.preventDefault()
+      e.target.click()
+      keys[e.keyCode] = true;
+    });
+
+    document.body.addEventListener("keyup", function (e) {
+      keys[e.keyCode] = false;
+    });
+
+    document.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+      // special hack to prevent zoom-to-tabs gesture in safari
+      document.body.style.zoom = 0.99;
+    });
+
+    document.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+      // special hack to prevent zoom-to-tabs gesture in safari
+      document.body.style.zoom = 0.99;
+    });
+
+    document.addEventListener("gestureend", function (e) {
+      e.preventDefault();
+      // special hack to prevent zoom-to-tabs gesture in safari
+      document.body.style.zoom = 0.99;
+    });
+  </script>
 </body>
