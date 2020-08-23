@@ -7,6 +7,10 @@
   />
   <title>Duck Game</title>
   <style>
+    @font-face {
+      font-family: "PressStart2P";
+      src: url("./PressStart2P-Regular.ttf");
+    }
     body,
     html {
       margin: 0;
@@ -65,6 +69,42 @@
       right: 100px;
       background: blue;
     }
+    .egg {
+      width: 30px;
+      height: 30px;
+      border-radius: 36% 64% 59% 41% / 46% 40% 60% 54%;
+      background: white;
+      box-shadow: -5px 5px 10px 3px rgba(0, 0, 0, 0.15), inset 5px 5px 0 #f7f7f7;
+      animation: pulse-white 2s infinite;
+    }
+    .egg:before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: #faca3b;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: inset -5px -10px 0 #f9bd09;
+    }
+    @keyframes pulse-white {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
   </style>
 </head>
 <body>
@@ -79,6 +119,7 @@
   </div>
   <script>
     let game;
+    let currentLevel = 0;
     let MAX_WIDTH = 600;
     const MAX_HEIGHT = 3000;
     const PLAYER_SPEED = 3;
@@ -92,9 +133,14 @@
     let playerVelX = 0;
     let playerVelY = 0;
     let eggVelY = 0;
+    let levels = [];
     let platforms = [];
     let eggs = [];
     let counter = 0;
+    let pause = false;
+    const levelCompleteText = [
+      "You flapped and hopped your way to your first feather! Quack...or tap...anywhere to continue.",
+    ];
 
     window.addEventListener("load", function () {
       const isMobile = () => {
@@ -158,107 +204,143 @@
         });
       }
 
-      platforms = [
+      levels = [
         {
-          //  Ground platform
-          x: 0,
-          y: MAX_HEIGHT - 20,
-          width: MAX_WIDTH,
-          height: 50,
-          velY: 0,
-          id: "1",
+          level: 0,
+          platforms: [
+            {
+              //  Ground platform
+              x: 0,
+              y: MAX_HEIGHT - 20,
+              width: MAX_WIDTH,
+              height: 50,
+              velY: 0,
+              id: "1",
+            },
+            {
+              x: 20,
+              y: MAX_HEIGHT - 200,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "2",
+            },
+            {
+              x: 90,
+              y: MAX_HEIGHT - 400,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "3",
+            },
+            {
+              x: 200,
+              y: MAX_HEIGHT - 600,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "4",
+            },
+            {
+              x: 320,
+              y: MAX_HEIGHT - 800,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "5",
+            },
+            {
+              x: MAX_WIDTH - 300,
+              y: MAX_HEIGHT - 1000,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "6",
+            },
+            {
+              x: MAX_WIDTH - 450,
+              y: MAX_HEIGHT - 1200,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "7",
+            },
+            {
+              x: 350,
+              y: MAX_HEIGHT - 1400,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "8",
+            },
+            {
+              x: 200,
+              y: MAX_HEIGHT - 1600,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "9",
+            },
+            {
+              x: 350,
+              y: MAX_HEIGHT - 1800,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "9",
+            },
+            {
+              x: 250,
+              y: MAX_HEIGHT - 2000,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "10",
+            },
+            {
+              x: 200,
+              y: MAX_HEIGHT - 2200,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "11",
+              collectible: {
+                type: "feather",
+                id: "main_feather",
+              },
+            },
+          ],
         },
         {
-          x: 20,
-          y: MAX_HEIGHT - 200,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "2",
-        },
-        {
-          x: 90,
-          y: MAX_HEIGHT - 400,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "3",
-        },
-        {
-          x: 200,
-          y: MAX_HEIGHT - 600,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "4",
-        },
-        {
-          x: 320,
-          y: MAX_HEIGHT - 800,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "5",
-        },
-        {
-          x: MAX_WIDTH - 140,
-          y: MAX_HEIGHT - 1000,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "6",
-        },
-        {
-          x: MAX_WIDTH - 250,
-          y: MAX_HEIGHT - 1200,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "7",
-        },
-        {
-          x: 500,
-          y: MAX_HEIGHT - 1400,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "8",
-        },
-        {
-          x: 300,
-          y: MAX_HEIGHT - 1600,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "9",
-        },
-        {
-          x: 500,
-          y: MAX_HEIGHT - 1800,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "9",
-        },
-        {
-          x: 700,
-          y: MAX_HEIGHT - 2000,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "10",
-        },
-        {
-          x: 900,
-          y: MAX_HEIGHT - 2200,
-          width: 100,
-          height: 20,
-          velY: 0,
-          id: "11",
+          level: 1,
+          platforms: [
+            {
+              //  Ground platform
+              x: 0,
+              y: MAX_HEIGHT - 20,
+              width: MAX_WIDTH,
+              height: 50,
+              velY: 0,
+              id: "1",
+            },
+            {
+              x: 20,
+              y: MAX_HEIGHT - 200,
+              width: 100,
+              height: 20,
+              velY: 0,
+              id: "2",
+            },
+          ],
         },
       ];
     });
     window.onload = () => {
+      //  Get level/checkpoint
+      currentLevel = localStorage.getItem("level")
+        ? parseInt(localStorage.getItem("level"), 10)
+        : 0;
+      loadLevel(currentLevel);
       //  Generate Player
       player = document.createElement("div");
       player.style.width = "50px";
@@ -277,6 +359,12 @@
       requestAnimationFrame(gameLoop);
     };
 
+    const loadLevel = (level) => {
+      //  Read in the number of platforms
+      const thisLevel = levels[level];
+      platforms = thisLevel.platforms;
+    };
+
     const layEgg = () => {
       const egg = document.createElement("div");
       egg.style.height = "80px";
@@ -292,6 +380,17 @@
       playerVelY = -PLAYER_SPEED * JUMP_POWER;
     };
 
+    const drawCollectible = (type) => {
+      switch (type) {
+        case "feather":
+          const feather = document.createElement("svg");
+          feather.setAttribute("class", "egg");
+          return feather;
+        default:
+          return;
+      }
+    };
+
     const drawPlatforms = () => {
       platforms.forEach((platform) => {
         const newPlatform = document.createElement("div");
@@ -302,7 +401,18 @@
         newPlatform.style.left = `${platform.x}px`;
         newPlatform.style.background = "#000";
         newPlatform.setAttribute("id", platform.id);
+
         game.appendChild(newPlatform);
+
+        //  Check for collectibles
+        if (platform.collectible) {
+          const collectible = drawCollectible(platform.collectible.type);
+          collectible.setAttribute("id", platform.collectible.id);
+          collectible.style.position = "absolute";
+          collectible.style.left = `${platform.x + platform.width / 2}px`;
+          collectible.style.top = `${platform.y - platform.height - 10}px`;
+          game.appendChild(collectible);
+        }
       });
     };
     const detectOverlap = (() => {
@@ -334,105 +444,154 @@
       };
     })();
 
-    const gameLoop = () => {
-      const jumpKey = keys[38] || keys[32] || keys[87];
-      const rightKey = keys[39] || keys[68];
-      const leftKey = keys[37] || keys[65];
-      const layEggKey = keys[40] || keys[83];
-
-      playerVelX *= FRICTION;
-      playerVelY += GRAVITY;
-
-      let touching = [];
-
-      platforms.forEach((platform) => {
-        const p = document.getElementById(platform.id);
-        if (detectOverlap(player, p)) {
-          touching.push(platform.id);
-        }
-      });
-
-      eggs.forEach((egg) => {
-        egg.style.bottom = `${
-          parseInt(egg.style.bottom.split("px")[0], 10) - eggVelY
-        }px`;
-        if (
-          parseInt(egg.style.bottom.split("px")[0], 10) < -window.innerHeight
-        ) {
-          eggs = [];
-          eggVelY = 0;
+    const handleNextLevel = (current) => {
+      pause = true;
+      const successText = document.createElement("h3");
+      successText.innerText = levelCompleteText[current];
+      successText.style.position = "fixed";
+      successText.style.textAlign = "center";
+      successText.style.top = "50px";
+      successText.style.fontFamily = "PressStart2P";
+      game.appendChild(successText);
+      document.addEventListener("pointerdown", (e) => {
+        for(const platform of platforms) {
+          const p = document.getElementById(platform.id);
+          p.remove();
+          successText.remove();
+          player.style.position = "absolute";
+          player.style.bottom = "50px";
+          player.style.left = "100px";
+        }  
+        eggs.forEach((egg) => {
           egg.remove();
+        })
+        if(pause) {
+            currentLevel++;
+            // localStorage.setItem('level', JSON.stringify(currentLevel));
+            platforms = levels[currentLevel].platforms;
+            drawPlatforms();
+            pause = false;
+            gameLoop();
         }
-        eggVelY += GRAVITY;
       });
+    };
 
-      if (touching.length) {
-        GROUNDED = true;
+    const gameLoop = () => {
+      if (!pause) {
+        const jumpKey = keys[38] || keys[32] || keys[87];
+        const rightKey = keys[39] || keys[68];
+        const leftKey = keys[37] || keys[65];
+        const layEggKey = keys[40] || keys[83];
+
+        playerVelX *= FRICTION;
+        playerVelY += GRAVITY;
+
+        let touching = [];
+
+        platforms.forEach((platform) => {
+          const p = document.getElementById(platform.id);
+          if (detectOverlap(player, p)) {
+            touching.push(platform.id);
+          }
+        });
+        platforms
+          .filter((p) => p.collectible !== undefined)
+          .forEach((collect) => {
+            const item = document.getElementById(collect.collectible.id);
+
+            const touching = detectOverlap(player, item);
+            //  Check if it's the main feather
+            if (touching && item.id === "main_feather") {
+              //  Trigger next level handling
+              item.remove();
+              handleNextLevel(currentLevel);
+            } else {
+              //  Save count of collectible type
+            }
+          });
+
+        eggs.forEach((egg) => {
+          egg.style.bottom = `${
+            parseInt(egg.style.bottom.split("px")[0], 10) - eggVelY
+          }px`;
+          if (
+            parseInt(egg.style.bottom.split("px")[0], 10) < -window.innerHeight
+          ) {
+            eggs = [];
+            eggVelY = 0;
+            egg.remove();
+          }
+          eggVelY += GRAVITY;
+        });
+
+        if (touching.length) {
+          GROUNDED = true;
+        }
+
+        if (GROUNDED) {
+          playerVelY = 0;
+        }
+
+        if (layEggKey) {
+          if (eggs.length === 0) {
+            layEgg();
+          }
+        }
+
+        if (jumpKey && rightKey) {
+          if (!JUMPING && GROUNDED) {
+            GROUNDED = false;
+            playerVelY = -PLAYER_SPEED * JUMP_POWER;
+          }
+          if (playerVelX < PLAYER_SPEED) {
+            playerVelX++;
+          }
+        } else if (jumpKey && leftKey) {
+          if (!JUMPING && GROUNDED) {
+            GROUNDED = false;
+            playerVelY = -PLAYER_SPEED * JUMP_POWER;
+          }
+          if (playerVelX > -PLAYER_SPEED) {
+            player.velX--;
+          }
+        } else if (jumpKey) {
+          if (!JUMPING && GROUNDED) {
+            GROUNDED = false;
+            playerVelY = -PLAYER_SPEED * JUMP_POWER;
+          }
+        } else if (rightKey) {
+          if (playerVelX < PLAYER_SPEED) {
+            playerVelX++;
+          }
+        } else if (leftKey) {
+          if (playerVelX > -PLAYER_SPEED) {
+            playerVelX--;
+          }
+        }
+
+        player.style.left = `${
+          parseInt(player.style.left.split("px")[0], 10) + playerVelX
+        }px`;
+        player.style.bottom = `${
+          parseInt(player.style.bottom.split("px")[0], 10) - playerVelY
+        }px`;
+
+        GROUNDED = false;
+
+        if (player) {
+          // player.scrollIntoView();
+          window.scrollTo(0, player.offsetTop - 200);
+        }
+
+        if (parseInt(player.style.left.split("px")[0], 10) > MAX_WIDTH) {
+          player.style.left = "0px";
+        }
+
+        if (parseInt(player.style.left.split("px")[0], 10) < -10) {
+          player.style.left = `${MAX_WIDTH}px`;
+        }
+        requestAnimationFrame(gameLoop);
       }
-
-      if (GROUNDED) {
-        playerVelY = 0;
-      }
-
-      if (layEggKey) {
-        if (eggs.length === 0) {
-          layEgg();
-        }
-      }
-
-      if (jumpKey && rightKey) {
-        if (!JUMPING && GROUNDED) {
-          GROUNDED = false;
-          playerVelY = -PLAYER_SPEED * JUMP_POWER;
-        }
-        if (playerVelX < PLAYER_SPEED) {
-          playerVelX++;
-        }
-      } else if (jumpKey && leftKey) {
-        if (!JUMPING && GROUNDED) {
-          GROUNDED = false;
-          playerVelY = -PLAYER_SPEED * JUMP_POWER;
-        }
-        if (playerVelX > -PLAYER_SPEED) {
-          player.velX--;
-        }
-      } else if (jumpKey) {
-        if (!JUMPING && GROUNDED) {
-          GROUNDED = false;
-          playerVelY = -PLAYER_SPEED * JUMP_POWER;
-        }
-      } else if (rightKey) {
-        if (playerVelX < PLAYER_SPEED) {
-          playerVelX++;
-        }
-      } else if (leftKey) {
-        if (playerVelX > -PLAYER_SPEED) {
-          playerVelX--;
-        }
-      }
-
-      player.style.left = `${
-        parseInt(player.style.left.split("px")[0], 10) + playerVelX
-      }px`;
-      player.style.bottom = `${
-        parseInt(player.style.bottom.split("px")[0], 10) - playerVelY
-      }px`;
-
-      GROUNDED = false;
-
-      if (player) {
-        // player.scrollIntoView();
-        window.scrollTo(0, player.offsetTop - 200);
-      }
-
-      if (parseInt(player.style.left.split("px")[0], 10) > MAX_WIDTH) {
-        player.style.left = "0px";
-      }
-
-      if (parseInt(player.style.left.split("px")[0], 10) < -10) {
-        player.style.left = `${MAX_WIDTH}px`;
-      }
-      requestAnimationFrame(gameLoop);
     };
 
     document.body.addEventListener("keydown", function (e) {
