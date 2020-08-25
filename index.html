@@ -169,9 +169,13 @@
           return false;
         }
       };
+
+      const world = document.getElementById("world");
+
       if (isMobile()) {
         MAX_WIDTH = window.innerWidth;
-        document.getElementById("world").style.width = `${window.innerWidth}px`;
+        
+        world.style.width = `${window.innerWidth}px`;
         const controls = document.getElementById("controls");
         controls.style.display = "block";
 
@@ -215,6 +219,26 @@
           keys[40] = false;
         });
       }
+
+      const navButtons = document.createElement('div');
+      navButtons.style.height = '75px';
+      navButtons.style.width = MAX_WIDTH;
+      navButtons.style.margin = 'auto';
+      navButtons.style.position = 'fixed';
+      navButtons.style.top = 0;
+      navButtons.style.display = 'flex';
+      navButtons.style.alignItems = 'center';
+      navButtons.style.zIndex = 1024;
+      navButtons.style.justifyContent = 'space-between';
+      const refresh = document.createElement('button');
+      refresh.innerText = 'Reload';
+      refresh.onclick = () => handleReload();
+      const pauseButton = document.createElement('button');
+      pauseButton.innerText = pause ? 'Start' : 'Pause';
+      pauseButton.onclick = () => handlePause();
+      navButtons.appendChild(refresh);
+      navButtons.appendChild(pauseButton);
+      world.appendChild(navButtons);
 
       levels = [
         {
@@ -391,6 +415,17 @@
       game.appendChild(egg);
       playerVelY = -PLAYER_SPEED * JUMP_POWER;
     };
+
+    const handleReload = () => {
+      console.log("Reload it")
+    }
+
+    const handlePause = () => {
+      pause = !pause;      
+      if(!pause) {
+        gameLoop();
+      }
+    }
 
     const drawCollectible = (type) => {
       switch (type) {
@@ -652,10 +687,7 @@
   </script>
   <script>
     const staticDuckGame = "duck-game";
-    const assets = [
-      "/",
-      "/index.html"
-    ];
+    const assets = ["/", "/index.html"];
 
     self.addEventListener("install", (installEvent) => {
       installEvent.waitUntil(
