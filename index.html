@@ -187,32 +187,30 @@
         controls.addEventListener(
           "touchstart",
           (e) => {
-            setTimeout(() => {
-              counter++;
-            }, 500);
-            if (counter < 1) {
-              e.preventDefault();
-            } else {
-              counter = 0;
-            }
+            e.preventDefault();
           },
           false
         );
 
         up.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
           keys[38] = true;
         });
-        down.addEventListener("pointerdown", () => {
+        down.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
           keys[40] = true;
         });
-        right.addEventListener("pointerdown", () => {
+        right.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
           keys[39] = true;
         });
-        left.addEventListener("pointerdown", () => {
+        left.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
           keys[37] = true;
         });
 
-        document.addEventListener("pointerup", () => {
+        document.addEventListener("pointerup", (e) => {
+          e.preventDefault();
           keys[39] = false;
           keys[38] = false;
           keys[37] = false;
@@ -377,6 +375,12 @@
         ? parseInt(localStorage.getItem("level"), 10)
         : 0;
       loadLevel(currentLevel);
+    };
+
+    const loadLevel = (level) => {   
+      //  Read in the number of platforms
+      const thisLevel = levels[level];
+      platforms = thisLevel.platforms;
       //  Generate Player
       player = document.createElement("div");
       player.style.width = "50px";
@@ -392,13 +396,8 @@
       player.style.left = "100px";
 
       drawPlatforms();
+      pause = false;
       requestAnimationFrame(gameLoop);
-    };
-
-    const loadLevel = (level) => {
-      //  Read in the number of platforms
-      const thisLevel = levels[level];
-      platforms = thisLevel.platforms;
     };
 
     const layEgg = () => {
@@ -417,7 +416,20 @@
     };
 
     const handleReload = () => {
-      console.log("Reload it")
+      wipeGame();
+      currentLevel = localStorage.getItem("level")
+        ? parseInt(localStorage.getItem("level"), 10)
+        : 0;
+      loadLevel(currentLevel);      
+    }
+
+    const wipeGame = () => {
+      pause = true;
+      if(pause && game) {
+        while (game.firstChild) {
+          game.removeChild(game.firstChild);
+        }
+      }     
     }
 
     const handlePause = () => {
@@ -503,7 +515,7 @@
       successText.style.fontFamily = "PressStart2P";
       successWrapper.appendChild(successText);
       game.appendChild(successWrapper);
-      document.addEventListener("pointerdown", (e) => {
+      document.addEventListener("pointerdown", (e) => {        
         for (const platform of platforms) {
           const p = document.getElementById(platform.id);
           p.remove();
@@ -669,20 +681,14 @@
 
     document.addEventListener("gesturestart", function (e) {
       e.preventDefault();
-      // special hack to prevent zoom-to-tabs gesture in safari
-      document.body.style.zoom = 0.99;
     });
 
     document.addEventListener("gesturechange", function (e) {
       e.preventDefault();
-      // special hack to prevent zoom-to-tabs gesture in safari
-      document.body.style.zoom = 0.99;
     });
 
     document.addEventListener("gestureend", function (e) {
       e.preventDefault();
-      // special hack to prevent zoom-to-tabs gesture in safari
-      document.body.style.zoom = 0.99;
     });
   </script>
   <script>
