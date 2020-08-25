@@ -446,13 +446,16 @@
 
     const handleNextLevel = (current) => {
       pause = true;
+      const successWrapper = document.createElement('div')
+      successWrapper.style.width = `${MAX_WIDTH}px`;
+      successWrapper.style.position = "fixed";
+      successWrapper.style.top = "50px";
       const successText = document.createElement("h3");
       successText.innerText = levelCompleteText[current];
-      successText.style.position = "fixed";
       successText.style.textAlign = "center";
-      successText.style.top = "50px";
       successText.style.fontFamily = "PressStart2P";
-      game.appendChild(successText);
+      successWrapper.appendChild(successText)
+      game.appendChild(successWrapper);
       document.addEventListener("pointerdown", (e) => {
         for(const platform of platforms) {
           const p = document.getElementById(platform.id);
@@ -497,6 +500,10 @@
 
             if(!(a.bottom > b.top + platform.height)) {
               touching.push(platform.id);
+              
+              if(a.bottom > b.top && platform.id !== '1') {
+                player.style.bottom = `${parseInt(player.style.bottom.split('px')[0]) + (a.bottom - b.top)}px`
+              }
             }        
           }
         });
