@@ -446,7 +446,7 @@
 
     const handleNextLevel = (current) => {
       pause = true;
-      const successWrapper = document.createElement('div')
+      const successWrapper = document.createElement("div");
       successWrapper.style.width = `${MAX_WIDTH}px`;
       successWrapper.style.position = "fixed";
       successWrapper.style.top = "50px";
@@ -454,27 +454,27 @@
       successText.innerText = levelCompleteText[current];
       successText.style.textAlign = "center";
       successText.style.fontFamily = "PressStart2P";
-      successWrapper.appendChild(successText)
+      successWrapper.appendChild(successText);
       game.appendChild(successWrapper);
       document.addEventListener("pointerdown", (e) => {
-        for(const platform of platforms) {
+        for (const platform of platforms) {
           const p = document.getElementById(platform.id);
           p.remove();
           successText.remove();
           player.style.position = "absolute";
           player.style.bottom = "50px";
           player.style.left = "100px";
-        }  
+        }
         eggs.forEach((egg) => {
           egg.remove();
-        })
-        if(pause) {
-            currentLevel++;
-            // localStorage.setItem('level', JSON.stringify(currentLevel));
-            platforms = levels[currentLevel].platforms;
-            drawPlatforms();
-            pause = false;
-            gameLoop();
+        });
+        if (pause) {
+          currentLevel++;
+          // localStorage.setItem('level', JSON.stringify(currentLevel));
+          platforms = levels[currentLevel].platforms;
+          drawPlatforms();
+          pause = false;
+          gameLoop();
         }
       });
     };
@@ -493,18 +493,22 @@
 
         platforms.forEach((platform) => {
           const p = document.getElementById(platform.id);
-          
+
           if (detectOverlap(player, p)) {
             const a = player.getBoundingClientRect();
-            const b = p.getBoundingClientRect()
+            const b = p.getBoundingClientRect();
 
-            if(!(a.bottom > b.top + platform.height)) {
+            if (!(a.bottom > b.top + platform.height)) {
               touching.push(platform.id);
-              
-              if(a.bottom > b.top && platform.id !== '1') {
-                player.style.bottom = `${parseInt(player.style.bottom.split('px')[0]) + (a.bottom - b.top)}px`
+
+              if (a.bottom > b.top && platform.id !== "1") {
+                player.style.bottom = `${
+                  parseInt(player.style.bottom.split("px")[0]) +
+                  (a.bottom - b.top)
+                }px`;
+                playerVelY = 0;
               }
-            }        
+            }
           }
         });
         platforms
@@ -632,6 +636,29 @@
       e.preventDefault();
       // special hack to prevent zoom-to-tabs gesture in safari
       document.body.style.zoom = 0.99;
+    });
+  </script>
+  <script>
+    const staticDuckGame = "duck-game";
+    const assets = [
+      "/",
+      "/index.html"
+    ];
+
+    self.addEventListener("install", (installEvent) => {
+      installEvent.waitUntil(
+        caches.open(staticDevCoffee).then((cache) => {
+          cache.addAll(assets);
+        })
+      );
+    });
+
+    self.addEventListener("fetch", (fetchEvent) => {
+      fetchEvent.respondWith(
+        caches.match(fetchEvent.request).then((res) => {
+          return res || fetch(fetchEvent.request);
+        })
+      );
     });
   </script>
 </body>
