@@ -19,10 +19,6 @@
   <meta name="theme-color" content="#db4938" />
   <title>Duck Game</title>
   <style>
-    @font-face {
-      font-family: "PressStart2P";
-      src: url("./PressStart2P-Regular.ttf");
-    }
     body,
     html {
       margin: 0;
@@ -131,6 +127,7 @@
     <div id="game"></div>
   </div>
   <script>
+    const FPS = 60;
     let game;
     let currentLevel = 0;
     let MAX_WIDTH = 600;
@@ -142,7 +139,6 @@
     let GROUNDED = true;
     let JUMPING = false;
     let player;
-    let sprite;
     const SPRITE_HEIGHT = 16.29;
     const SPRITE_WIDTH = 25;
     const SCALE = 1;
@@ -160,6 +156,7 @@
     let facingRight = true;
     let jumpingOff = false;
     let img = new Image();
+    let frameIncrement = 0;
 
     const levelCompleteText = [
       "You flapped and hopped your way to your first feather! Quack...or tap...anywhere to continue.",
@@ -182,8 +179,7 @@
       };
 
       const world = document.getElementById("world");
-      world.style.backgroundImage =
-        "url(level_1_backdrop.png)";
+      world.style.backgroundImage = "url(level_1_backdrop.png)";
       world.style.backgroundPosition = "bottom";
       world.style.backgroundSize = "cover";
 
@@ -272,7 +268,7 @@
               width: 80,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "2",
             },
             {
@@ -281,7 +277,7 @@
               width: 35,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "3",
             },
             {
@@ -290,7 +286,7 @@
               width: 120,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "4",
             },
             {
@@ -299,7 +295,7 @@
               width: 130,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "5",
             },
             {
@@ -308,7 +304,7 @@
               width: 190,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "6",
             },
             {
@@ -317,7 +313,7 @@
               width: 75,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "7",
             },
             {
@@ -326,7 +322,7 @@
               width: 50,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "8",
             },
             {
@@ -335,7 +331,7 @@
               width: 95,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "9",
             },
             {
@@ -344,7 +340,7 @@
               width: 115,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "10",
             },
             {
@@ -353,7 +349,7 @@
               width: 40,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "11",
             },
             {
@@ -362,7 +358,7 @@
               width: 33,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "12",
             },
             {
@@ -371,7 +367,7 @@
               width: 27,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "13",
             },
             {
@@ -380,7 +376,7 @@
               width: 135,
               height: 10,
               background: "color",
-              color: '#6b561d',
+              color: "#6b561d",
               id: "14",
             },
             {
@@ -403,7 +399,7 @@
               id: "16",
               metadata: {
                 borderBottomBetweenJumping: false,
-                borderTopBetweenJumping: true
+                borderTopBetweenJumping: true,
               },
             },
             {
@@ -457,55 +453,36 @@
     };
 
     const loadLevel = (level) => {
+      player = document.createElement('div');
+      player.style.height = `${SPRITE_HEIGHT * SCALE}px`
+      player.style.width = `${SPRITE_WIDTH * SCALE}px`;
+      player.style.backgroundImage = `url(${img.src})`
+      player.style.backgroundPosition = `0px ${SPRITE_HEIGHT * SCALE}px `
+      player.style.position = 'absolute';
       //  Read in the number of platforms
       const thisLevel = levels[level];
       platforms = thisLevel.platforms;
-      //  Generate Player
-      player = document.createElement("div");
-      player.style.width = `${SPRITE_WIDTH * SCALE}px`;
-      player.style.height = `${SPRITE_HEIGHT * SCALE}px`;
-      player.style.background = "green";
 
-      //  Make the sprite
-      sprite = document.createElement("img");
-      sprite.src = img.src;
-      sprite.setAttribute("id", "player-sprite");
-      sprite.style.clip = `rect(${SPRITE_HEIGHT}px ${
-        cycleLoop.length * SPRITE_WIDTH
-      }px 0px, 0px)`;
-      sprite.style.width = `${SPRITE_WIDTH}px`;
-      sprite.style.height = `${SPRITE_HEIGHT}px`;
-
-      //  Attach player and sprite to game view
+      //  Attach player game view
       game = document.getElementById("world");
       game.style.position = "relative";
       game.appendChild(player);
-      // game.appendChild(sprite);
 
       player.style.position = "absolute";
       player.style.bottom = `250px`;
       player.style.left = "100px";
 
-      sprite.style.position = "absolute";
-      sprite.style.bottom = "50px";
-      sprite.style.left = "100px";
       drawPlatforms();
       pause = false;
       requestAnimationFrame(gameLoop);
     };
 
-    const drawFrame = (frameX, frameY, x, y) => {
-      // ctx.drawImage(
-      //   img,
-      //   frameX * WIDTH,
-      //   frameY * HEIGHT,
-      //   WIDTH,
-      //   HEIGHT,
-      //   canvasX,
-      //   canvasY,
-      //   SCALED_WIDTH,
-      //   SCALED_HEIGHT
-      // );
+    const drawFrame = (frameX, frameY) => {
+      const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
+      const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
+      if(player) {
+        player.style.backgroundPosition = `${x} ${y}`;
+      }
     };
 
     const layEgg = () => {
@@ -570,7 +547,7 @@
           newPlatform.style.background = "none";
         } else if (platform.background === "border") {
           newPlatform.style.border = "0.5px solid #000";
-        } else if(platform.background === 'color') {
+        } else if (platform.background === "color") {
           newPlatform.style.background = platform.color;
         } else {
           newPlatform.style.background = "#000";
@@ -656,13 +633,14 @@
 
     const gameLoop = () => {
       if (!pause) {
+
         const jumpKey = keys[38] || keys[32] || keys[87];
         const rightKey = keys[39] || keys[68];
         const leftKey = keys[37] || keys[65];
         const layEggKey = keys[40] || keys[83];
 
         playerVelX *= FRICTION;
-        if(!jumpingOff) {
+        if (!jumpingOff) {
           playerVelY += GRAVITY;
         }
 
@@ -731,7 +709,7 @@
 
         if (GROUNDED && !jumpingOff) {
           playerVelY = 0;
-        } else if(jumpingOff) {
+        } else if (jumpingOff) {
           playerVelY *= FRICTION;
         }
 
@@ -740,9 +718,9 @@
             layEgg();
           } else if (jumpingOff) {
             playerVelY++;
-            if(facingRight && playerVelX < PLAYER_SPEED) {
+            if (facingRight && playerVelX < PLAYER_SPEED) {
               playerVelX++;
-            } else if(!facingRight && playerVelX > -PLAYER_SPEED) {
+            } else if (!facingRight && playerVelX > -PLAYER_SPEED) {
               playerVelX--;
             }
           }
@@ -757,6 +735,11 @@
           if (playerVelX < PLAYER_SPEED) {
             playerVelX++;
           }
+          const standingYFrame = facingRight ? 1 : 0;
+          drawFrame(
+            0,
+            standingYFrame
+          );
         } else if (jumpKey && leftKey) {
           facingRight = false;
           if (!JUMPING && GROUNDED && !jumpingOff) {
@@ -766,11 +749,21 @@
           if (playerVelX > -PLAYER_SPEED) {
             player.velX--;
           }
+          const standingYFrame = facingRight ? 1 : 0;
+          drawFrame(
+            0,
+            standingYFrame
+          );
         } else if (jumpKey) {
           if (!JUMPING && GROUNDED && !jumpingOff) {
             GROUNDED = false;
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
+          const standingYFrame = facingRight ? 1 : 0;
+          drawFrame(
+            0,
+            standingYFrame
+          );
         } else if (rightKey) {
           facingRight = true;
           if (playerVelX < PLAYER_SPEED) {
@@ -779,6 +772,7 @@
               playerVelY--;
             }
           }
+          drawFrame(cycleLoop[currentLoopIndex], 1);
         } else if (leftKey) {
           facingRight = false;
           if (playerVelX > -PLAYER_SPEED) {
@@ -787,12 +781,22 @@
               playerVelY--;
             }
           }
+          drawFrame(cycleLoop[currentLoopIndex], 0);
         } else {
           const standingYFrame = facingRight ? 1 : 0;
-          drawFrame(0, standingYFrame, player.style.left, player.style.bottom);
+          drawFrame(
+            0,
+            standingYFrame
+          );
         }
 
-        currentLoopIndex++;
+        if(frameIncrement < FPS) {
+          frameIncrement++
+        } else {
+          frameIncrement = 0;
+          currentLoopIndex++;
+        }
+
         if (currentLoopIndex >= cycleLoop.length) {
           currentLoopIndex = 0;
         }
