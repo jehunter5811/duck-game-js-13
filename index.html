@@ -122,7 +122,7 @@
 </head>
 <body>
   <div id="world">
-    <div style="display: none;" id="controls">
+    <div style="display: none" id="controls">
       <div id="up"></div>
       <div id="down"></div>
       <div id="left"></div>
@@ -138,10 +138,14 @@
     const PLAYER_SPEED = 3;
     const FRICTION = 0.8;
     const GRAVITY = 0.4;
-    const JUMP_POWER = 4.5;
+    const JUMP_POWER = 2.5;
     let GROUNDED = true;
     let JUMPING = false;
     let player;
+    let sprite;
+    const SPRITE_HEIGHT = 16.29;
+    const SPRITE_WIDTH = 25;
+    const SCALE = 1;
     let keys = [];
     let playerVelX = 0;
     let playerVelY = 0;
@@ -151,6 +155,12 @@
     let eggs = [];
     let counter = 0;
     let pause = false;
+    const cycleLoop = [0, 1, 0, 1];
+    let currentLoopIndex = 0;
+    let facingRight = true;
+    let jumpingOff = false;
+    let img = new Image();
+
     const levelCompleteText = [
       "You flapped and hopped your way to your first feather! Quack...or tap...anywhere to continue.",
     ];
@@ -172,10 +182,14 @@
       };
 
       const world = document.getElementById("world");
+      world.style.backgroundImage =
+        "url(Level_001ABC_duckpond_01A_backdrop.png)";
+      world.style.backgroundPosition = "bottom";
+      world.style.backgroundSize = "cover";
 
       if (isMobile()) {
         MAX_WIDTH = window.innerWidth;
-        
+
         world.style.width = `${window.innerWidth}px`;
         const controls = document.getElementById("controls");
         controls.style.display = "block";
@@ -219,21 +233,21 @@
         });
       }
 
-      const navButtons = document.createElement('div');
-      navButtons.style.height = '75px';
+      const navButtons = document.createElement("div");
+      navButtons.style.height = "75px";
       navButtons.style.width = MAX_WIDTH;
-      navButtons.style.margin = 'auto';
-      navButtons.style.position = 'fixed';
+      navButtons.style.margin = "auto";
+      navButtons.style.position = "fixed";
       navButtons.style.top = 0;
-      navButtons.style.display = 'flex';
-      navButtons.style.alignItems = 'center';
+      navButtons.style.display = "flex";
+      navButtons.style.alignItems = "center";
       navButtons.style.zIndex = 1024;
-      navButtons.style.justifyContent = 'space-between';
-      const refresh = document.createElement('button');
-      refresh.innerText = 'Reload';
+      navButtons.style.justifyContent = "space-between";
+      const refresh = document.createElement("button");
+      refresh.innerText = "Reload";
       refresh.onclick = () => handleReload();
-      const pauseButton = document.createElement('button');
-      pauseButton.innerText = pause ? 'Start' : 'Pause';
+      const pauseButton = document.createElement("button");
+      pauseButton.innerText = pause ? "Start" : "Pause";
       pauseButton.onclick = () => handlePause();
       navButtons.appendChild(refresh);
       navButtons.appendChild(pauseButton);
@@ -246,91 +260,138 @@
             {
               //  Ground platform
               x: 0,
-              y: MAX_HEIGHT - 20,
+              y: MAX_HEIGHT - 175,
               width: MAX_WIDTH,
-              height: 50,
-              velY: 0,
+              height: 20,
+              background: "none",
               id: "1",
             },
             {
-              x: 20,
-              y: MAX_HEIGHT - 200,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 150,
+              y: MAX_HEIGHT - 229,
+              width: 80,
+              height: 10,
+              background: "border",
               id: "2",
             },
             {
-              x: 90,
-              y: MAX_HEIGHT - 400,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 105,
+              y: MAX_HEIGHT - 265,
+              width: 35,
+              height: 10,
+              background: "border",
               id: "3",
             },
             {
-              x: 200,
-              y: MAX_HEIGHT - 600,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 155,
+              y: MAX_HEIGHT - 290,
+              width: 120,
+              height: 10,
+              background: "border",
               id: "4",
             },
             {
-              x: 320,
-              y: MAX_HEIGHT - 800,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 110,
+              y: MAX_HEIGHT - 340,
+              width: 130,
+              height: 10,
+              background: "border",
               id: "5",
             },
             {
-              x: MAX_WIDTH - 300,
-              y: MAX_HEIGHT - 1000,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 65,
+              y: MAX_HEIGHT - 487,
+              width: 190,
+              height: 10,
+              background: "border",
               id: "6",
             },
             {
-              x: MAX_WIDTH - 450,
-              y: MAX_HEIGHT - 1200,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 225,
+              y: MAX_HEIGHT - 530,
+              width: 75,
+              height: 10,
+              background: "border",
               id: "7",
             },
             {
-              x: 350,
-              y: MAX_HEIGHT - 1400,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 140,
+              y: MAX_HEIGHT - 540,
+              width: 50,
+              height: 10,
+              background: "border",
               id: "8",
             },
             {
-              x: 200,
-              y: MAX_HEIGHT - 1600,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 180,
+              y: MAX_HEIGHT - 580,
+              width: 95,
+              height: 10,
+              background: "border",
               id: "9",
             },
             {
-              x: 300,
-              y: MAX_HEIGHT - 1800,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 40,
+              y: MAX_HEIGHT - 605,
+              width: 115,
+              height: 10,
+              background: "border",
               id: "10",
             },
             {
-              x: 250,
-              y: MAX_HEIGHT - 2000,
-              width: 100,
-              height: 20,
-              velY: 0,
+              x: 180,
+              y: MAX_HEIGHT - 632,
+              width: 40,
+              height: 10,
+              background: "border",
               id: "11",
+            },
+            {
+              x: 138,
+              y: MAX_HEIGHT - 682,
+              width: 33,
+              height: 10,
+              background: "border",
+              id: "12",
+            },
+            {
+              x: 210,
+              y: MAX_HEIGHT - 692,
+              width: 27,
+              height: 10,
+              background: "border",
+              id: "13",
+            },
+            {
+              x: 163,
+              y: MAX_HEIGHT - 745,
+              width: 135,
+              height: 10,
+              background: "border",
+              id: "14",
+            },
+            {
+              x: 125,
+              y: MAX_HEIGHT - 787,
+              width: 50,
+              height: 10,
+              background: "border",
+              id: "15",
+              metadata: {
+                borderBottomBetweenJumping: true,
+              },
+            },
+            {
+              x: 0,
+              y: MAX_HEIGHT - 1130,
+              width: MAX_WIDTH,
+              height: 10,
+              background: "border",
+              id: "16",
+              metadata: {
+                borderBottomBetweenJumping: false,
+                borderTopBetweenJumping: true
+              },
             },
             {
               x: 200,
@@ -338,7 +399,7 @@
               width: 100,
               height: 20,
               velY: 0,
-              id: "12",
+              id: "17",
               collectible: {
                 type: "feather",
                 id: "main_feather",
@@ -371,34 +432,67 @@
       ];
     });
     window.onload = () => {
-      //  Get level/checkpoint
-      currentLevel = localStorage.getItem("level")
-        ? parseInt(localStorage.getItem("level"), 10)
-        : 0;
-      loadLevel(currentLevel);
+      img.src = "DuckSheet.png";
+      img.onload = () => {
+        console.log("Sprite sheet loaded");
+        //  Get level/checkpoint
+        currentLevel = localStorage.getItem("level")
+          ? parseInt(localStorage.getItem("level"), 10)
+          : 0;
+        loadLevel(currentLevel);
+      };
     };
 
-    const loadLevel = (level) => {   
+    const loadLevel = (level) => {
       //  Read in the number of platforms
       const thisLevel = levels[level];
       platforms = thisLevel.platforms;
       //  Generate Player
       player = document.createElement("div");
-      player.style.width = "50px";
-      player.style.height = "50px";
+      player.style.width = `${SPRITE_WIDTH * SCALE}px`;
+      player.style.height = `${SPRITE_HEIGHT * SCALE}px`;
       player.style.background = "green";
-      //  Attach player to game view
+
+      //  Make the sprite
+      sprite = document.createElement("img");
+      sprite.src = img.src;
+      sprite.setAttribute("id", "player-sprite");
+      sprite.style.clip = `rect(${SPRITE_HEIGHT}px ${
+        cycleLoop.length * SPRITE_WIDTH
+      }px 0px, 0px)`;
+      sprite.style.width = `${SPRITE_WIDTH}px`;
+      sprite.style.height = `${SPRITE_HEIGHT}px`;
+
+      //  Attach player and sprite to game view
       game = document.getElementById("world");
       game.style.position = "relative";
       game.appendChild(player);
+      // game.appendChild(sprite);
 
       player.style.position = "absolute";
-      player.style.bottom = "50px";
+      player.style.bottom = `176px`;
       player.style.left = "100px";
 
+      sprite.style.position = "absolute";
+      sprite.style.bottom = "50px";
+      sprite.style.left = "100px";
       drawPlatforms();
       pause = false;
       requestAnimationFrame(gameLoop);
+    };
+
+    const drawFrame = (frameX, frameY, x, y) => {
+      // ctx.drawImage(
+      //   img,
+      //   frameX * WIDTH,
+      //   frameY * HEIGHT,
+      //   WIDTH,
+      //   HEIGHT,
+      //   canvasX,
+      //   canvasY,
+      //   SCALED_WIDTH,
+      //   SCALED_HEIGHT
+      // );
     };
 
     const layEgg = () => {
@@ -413,7 +507,7 @@
       egg.setAttribute("id", "egg-1");
       eggs.push(egg);
       game.appendChild(egg);
-      playerVelY = -PLAYER_SPEED * JUMP_POWER;
+      playerVelY = -PLAYER_SPEED * (JUMP_POWER + 0.5);
     };
 
     const handleReload = () => {
@@ -421,24 +515,24 @@
       currentLevel = localStorage.getItem("level")
         ? parseInt(localStorage.getItem("level"), 10)
         : 0;
-      loadLevel(currentLevel);      
-    }
+      loadLevel(currentLevel);
+    };
 
     const wipeGame = () => {
       pause = true;
-      if(pause && game) {
+      if (pause && game) {
         while (game.firstChild) {
           game.removeChild(game.firstChild);
         }
-      }     
-    }
+      }
+    };
 
     const handlePause = () => {
-      pause = !pause;      
-      if(!pause) {
+      pause = !pause;
+      if (!pause) {
         gameLoop();
       }
-    }
+    };
 
     const drawCollectible = (type) => {
       switch (type) {
@@ -459,7 +553,13 @@
         newPlatform.style.position = "absolute";
         newPlatform.style.top = `${platform.y}px`;
         newPlatform.style.left = `${platform.x}px`;
-        newPlatform.style.background = "#000";
+        if (platform.background === "none") {
+          newPlatform.style.background = "none";
+        } else if (platform.background === "border") {
+          newPlatform.style.border = "0.5px solid #000";
+        } else {
+          newPlatform.style.background = "#000";
+        }
         newPlatform.setAttribute("id", platform.id);
 
         game.appendChild(newPlatform);
@@ -516,7 +616,7 @@
       successText.style.fontFamily = "PressStart2P";
       successWrapper.appendChild(successText);
       game.appendChild(successWrapper);
-      document.addEventListener("pointerdown", (e) => {        
+      document.addEventListener("pointerdown", (e) => {
         for (const platform of platforms) {
           const p = document.getElementById(platform.id);
           p.remove();
@@ -547,21 +647,30 @@
         const layEggKey = keys[40] || keys[83];
 
         playerVelX *= FRICTION;
-        playerVelY += GRAVITY;
+        if(!jumpingOff) {
+          playerVelY += GRAVITY;
+        }
 
         let touching = [];
 
         platforms.forEach((platform) => {
           const p = document.getElementById(platform.id);
+          const a = player.getBoundingClientRect();
+          const b = p.getBoundingClientRect();
 
           if (detectOverlap(player, p)) {
-            const a = player.getBoundingClientRect();
-            const b = p.getBoundingClientRect();
-
+            if (
+              platform.metadata &&
+              platform.metadata.borderBottomBetweenJumping
+            ) {
+              jumpingOff = true;
+            } else {
+              jumpingOff = false;
+            }
             if (!(a.bottom > b.top + platform.height)) {
               touching.push(platform.id);
 
-              if (a.bottom > b.top && platform.id !== "1") {
+              if (a.bottom > b.top && platform.id !== "1" && !jumpingOff) {
                 player.style.bottom = `${
                   parseInt(player.style.bottom.split("px")[0]) +
                   (a.bottom - b.top)
@@ -605,18 +714,28 @@
           GROUNDED = true;
         }
 
-        if (GROUNDED) {
+        if (GROUNDED && !jumpingOff) {
           playerVelY = 0;
+        } else if(jumpingOff) {
+          playerVelY *= FRICTION;
         }
 
         if (layEggKey) {
-          if (eggs.length === 0) {
+          if (eggs.length === 0 && !jumpingOff) {
             layEgg();
+          } else if (jumpingOff) {
+            playerVelY++;
+            if(facingRight && playerVelX < PLAYER_SPEED) {
+              playerVelX++;
+            } else if(!facingRight && playerVelX > -PLAYER_SPEED) {
+              playerVelX--;
+            }
           }
         }
 
         if (jumpKey && rightKey) {
-          if (!JUMPING && GROUNDED) {
+          facingRight = true;
+          if (!JUMPING && GROUNDED && !jumpingOff) {
             GROUNDED = false;
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
@@ -624,7 +743,8 @@
             playerVelX++;
           }
         } else if (jumpKey && leftKey) {
-          if (!JUMPING && GROUNDED) {
+          facingRight = false;
+          if (!JUMPING && GROUNDED && !jumpingOff) {
             GROUNDED = false;
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
@@ -632,18 +752,34 @@
             player.velX--;
           }
         } else if (jumpKey) {
-          if (!JUMPING && GROUNDED) {
+          if (!JUMPING && GROUNDED && !jumpingOff) {
             GROUNDED = false;
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
         } else if (rightKey) {
+          facingRight = true;
           if (playerVelX < PLAYER_SPEED) {
             playerVelX++;
+            if (jumpingOff) {
+              playerVelY--;
+            }
           }
         } else if (leftKey) {
+          facingRight = false;
           if (playerVelX > -PLAYER_SPEED) {
             playerVelX--;
+            if (jumpingOff) {
+              playerVelY--;
+            }
           }
+        } else {
+          const standingYFrame = facingRight ? 1 : 0;
+          drawFrame(0, standingYFrame, player.style.left, player.style.bottom);
+        }
+
+        currentLoopIndex++;
+        if (currentLoopIndex >= cycleLoop.length) {
+          currentLoopIndex = 0;
         }
 
         player.style.left = `${
