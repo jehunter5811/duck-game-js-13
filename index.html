@@ -183,7 +183,7 @@
 
       const world = document.getElementById("world");
       world.style.backgroundImage =
-        "url(Level_001ABC_duckpond_01A_backdrop.png)";
+        "url(level_1_backdrop.png)";
       world.style.backgroundPosition = "bottom";
       world.style.backgroundSize = "cover";
 
@@ -260,7 +260,7 @@
             {
               //  Ground platform
               x: 0,
-              y: MAX_HEIGHT - 175,
+              y: MAX_HEIGHT - 175 - 20,
               width: MAX_WIDTH,
               height: 20,
               background: "none",
@@ -271,7 +271,8 @@
               y: MAX_HEIGHT - 229,
               width: 80,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "2",
             },
             {
@@ -279,7 +280,8 @@
               y: MAX_HEIGHT - 265,
               width: 35,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "3",
             },
             {
@@ -287,7 +289,8 @@
               y: MAX_HEIGHT - 290,
               width: 120,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "4",
             },
             {
@@ -295,7 +298,8 @@
               y: MAX_HEIGHT - 340,
               width: 130,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "5",
             },
             {
@@ -303,7 +307,8 @@
               y: MAX_HEIGHT - 487,
               width: 190,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "6",
             },
             {
@@ -311,7 +316,8 @@
               y: MAX_HEIGHT - 530,
               width: 75,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "7",
             },
             {
@@ -319,7 +325,8 @@
               y: MAX_HEIGHT - 540,
               width: 50,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "8",
             },
             {
@@ -327,7 +334,8 @@
               y: MAX_HEIGHT - 580,
               width: 95,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "9",
             },
             {
@@ -335,7 +343,8 @@
               y: MAX_HEIGHT - 605,
               width: 115,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "10",
             },
             {
@@ -343,7 +352,8 @@
               y: MAX_HEIGHT - 632,
               width: 40,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "11",
             },
             {
@@ -351,7 +361,8 @@
               y: MAX_HEIGHT - 682,
               width: 33,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "12",
             },
             {
@@ -359,7 +370,8 @@
               y: MAX_HEIGHT - 692,
               width: 27,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "13",
             },
             {
@@ -367,13 +379,14 @@
               y: MAX_HEIGHT - 745,
               width: 135,
               height: 10,
-              background: "border",
+              background: "color",
+              color: '#6b561d',
               id: "14",
             },
             {
-              x: 125,
-              y: MAX_HEIGHT - 787,
-              width: 50,
+              x: 0,
+              y: MAX_HEIGHT - 787 - 80,
+              width: MAX_WIDTH,
               height: 10,
               background: "border",
               id: "15",
@@ -383,7 +396,7 @@
             },
             {
               x: 0,
-              y: MAX_HEIGHT - 1130,
+              y: MAX_HEIGHT - 1130 - 120,
               width: MAX_WIDTH,
               height: 10,
               background: "border",
@@ -470,7 +483,7 @@
       // game.appendChild(sprite);
 
       player.style.position = "absolute";
-      player.style.bottom = `176px`;
+      player.style.bottom = `250px`;
       player.style.left = "100px";
 
       sprite.style.position = "absolute";
@@ -557,6 +570,8 @@
           newPlatform.style.background = "none";
         } else if (platform.background === "border") {
           newPlatform.style.border = "0.5px solid #000";
+        } else if(platform.background === 'color') {
+          newPlatform.style.background = platform.color;
         } else {
           newPlatform.style.background = "#000";
         }
