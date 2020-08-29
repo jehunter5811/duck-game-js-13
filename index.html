@@ -132,6 +132,7 @@
     let currentLevel = 0;
     let MAX_WIDTH = 600;
     const MAX_HEIGHT = 3000;
+    const BACKGROUND_WIDTH = 216;
     const PLAYER_SPEED = 3;
     const FRICTION = 0.8;
     const GRAVITY = 0.4;
@@ -179,9 +180,6 @@
       };
 
       const world = document.getElementById("world");
-      world.style.backgroundImage = "url(level_1_backdrop.png)";
-      world.style.backgroundPosition = "bottom";
-      world.style.backgroundSize = "cover";
 
       if (isMobile()) {
         MAX_WIDTH = window.innerWidth;
@@ -229,6 +227,45 @@
         });
       }
 
+      world.style.margin = '0px';
+      world.style.padding = '0px';
+      for(let i = 0; i < 4; i++) {
+        console.log(i)
+        const el = document.createElement('div');
+        let height;
+        let bottom;
+        switch(i) {
+          case 0: 
+            height = 100 * (MAX_WIDTH/BACKGROUND_WIDTH);
+            bottom = 0;
+            break;
+          case 1: 
+            height = 350 * (MAX_WIDTH/BACKGROUND_WIDTH);
+            bottom = 100;
+            break;
+          case 2: 
+            height = 198 * (MAX_WIDTH/BACKGROUND_WIDTH);
+            bottom = 450;
+            break;
+          case 3: 
+            height = 2352 * (MAX_WIDTH/BACKGROUND_WIDTH);
+            bottom = 648;
+            break;
+          default: 
+            break;
+        }
+        el.setAttribute('id', `backgroundID-${i}`);
+        el.style.height = `${height}px`;
+        el.style.width = `${MAX_WIDTH}px`;
+        el.style.position = "absolute";
+        el.style.bottom = `${bottom}px`;
+        el.style.left = "0px";
+        el.style.backgroundImage = `url(newLevel1.png)`;
+        el.style.backgroundPosition = `0px ${bottom + height}px`;
+        el.style.backgroundSize = `cover`;
+        world.appendChild(el);
+      }
+
       const navButtons = document.createElement("div");
       navButtons.style.height = "75px";
       navButtons.style.width = MAX_WIDTH;
@@ -247,7 +284,7 @@
       pauseButton.onclick = () => handlePause();
       const playGameButton = document.createElement("button");
       playGameButton.innerText = "Play Game (**Plays Music**)";
-      playGameButton.onclick = () => handlePlayGame();
+      playGameButton.onclick = () => handlePlayMusic();
       navButtons.appendChild(refresh);
       navButtons.appendChild(pauseButton);
       navButtons.appendChild(playGameButton);
@@ -472,9 +509,9 @@
       game.style.position = "relative";
       game.appendChild(player);
 
-      player.style.position = "absolute";
       player.style.bottom = `250px`;
       player.style.left = "100px";
+      player.style.zIndex = "1024";
 
       drawPlatforms();
       pause = false;
@@ -528,8 +565,7 @@
       }
     };
 
-    const handlePlayGame = () => {
-      gameLoop();
+    const handlePlayMusic = () => {      
       // Audio Library
       let zzfxM = (f,n,o,t=125)=>{let z,e,l,r,g,h,x,a,u,c,d,i,m,p,G,M,R=[],b=[],j=[],k=0,q=1,s={},v=zzfxR/t*60>>2;for(;q;k++)R=[q=a=d=m=0],o.map((t,d)=>{for(x=n[t][k]||[0,0,0],q|=!!n[t][k],G=m+(n[t][0].length-2-!a)*v,e=2,r=m;e<x.length+(d==o.length-1);a=++e){for(g=x[e],u=c!=(x[0]||0)|g|0,l=0;l<v&&a;l++>v-99&&u?i+=(i<1)/99:0)h=(1-i)*R[p++]/2||0,b[r]=(b[r]||0)+h*M-h,j[r]=(j[r++]||0)+h*M+h;g&&(i=g%1,M=x[1]||0,(g|=0)&&(R=s[[c=x[p=0]||0,g]]=s[[c,g]]||(z=[...f[c]],z[2]*=2**((g-12)/12),zzfxG(...z))))}m=G});return[b,j]};
       let zzfx = (...t)=>zzfxP(zzfxG(...t));
@@ -546,6 +582,7 @@
 
       let mySongData = zzfxM(...song);
       let myAudioNode = zzfxP(...mySongData);
+      // requestAnimationFrame(gameLoop);
     }
 
 
@@ -683,7 +720,8 @@
               platform.metadata.borderBottomBetweenJumping
             ) {
               jumpingOff = true;
-            } else {
+            } else if(platform.metadata &&
+              platform.metadata.borderTopBetweenJumping) {              
               jumpingOff = false;
             }
             if (!(a.bottom > b.top + platform.height)) {
@@ -816,7 +854,7 @@
           );
         }
 
-        if(frameIncrement < FPS) {
+        if(frameIncrement < (FPS * 10)) {
           frameIncrement++
         } else {
           frameIncrement = 0;
