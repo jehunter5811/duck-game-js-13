@@ -127,7 +127,7 @@
     <div id="game"></div>
   </div>
   <script>
-    const FPS = 60;
+    const FPS = 10;
     let game;
     let currentLevel = 0;
     let MAX_WIDTH = 600;
@@ -140,7 +140,7 @@
     let GROUNDED = true;
     let JUMPING = false;
     let player;
-    const SPRITE_HEIGHT = 16.29;
+    const SPRITE_HEIGHT = 25;
     const SPRITE_WIDTH = 25;
     const SCALE = 1;
     let keys = [];
@@ -149,15 +149,22 @@
     let eggVelY = 0;
     let levels = [];
     let platforms = [];
-    let eggs = [];
+    let eggs = [];    
+    const MAX_EGG_TIMER = 250;
+    let eggTimer = MAX_EGG_TIMER;
     let counter = 0;
     let pause = false;
-    const cycleLoop = [0, 1, 0, 1];
+    const cycleLoop = [10, 11, 12, 13, 14, 15];
+    const eggLoop = [9, 8, 7, 6, 5, 4];
+    const jumpLoop = [4, 3, 2, 1];
+    let eggLoopIndex = 0;
     let currentLoopIndex = 0;
     let facingRight = true;
     let jumpingOff = false;
     let img = new Image();
-    let frameIncrement = 0;
+    let frame = 0;
+    let layingEgg = false;
+    let eggTimerBar;
 
     const levelCompleteText = [
       "You flapped and hopped your way to your first feather! Quack...or tap...anywhere to continue.",
@@ -230,7 +237,6 @@
       world.style.margin = '0px';
       world.style.padding = '0px';
       for(let i = 0; i < 4; i++) {
-        console.log(i)
         const el = document.createElement('div');
         let height;
         let bottom;
@@ -297,7 +303,7 @@
             {
               //  Ground platform
               x: 0,
-              y: MAX_HEIGHT - 175 - 20,
+              y: MAX_HEIGHT - (100 * (MAX_WIDTH/BACKGROUND_WIDTH)),
               width: MAX_WIDTH,
               height: 20,
               background: "none",
@@ -419,30 +425,7 @@
               background: "color",
               color: "#6b561d",
               id: "14",
-            },
-            {
-              x: 0,
-              y: MAX_HEIGHT - 787 - 80,
-              width: MAX_WIDTH,
-              height: 10,
-              background: "border",
-              id: "15",
-              metadata: {
-                borderBottomBetweenJumping: true,
-              },
-            },
-            {
-              x: 0,
-              y: MAX_HEIGHT - 1130 - 120,
-              width: MAX_WIDTH,
-              height: 10,
-              background: "border",
-              id: "16",
-              metadata: {
-                borderBottomBetweenJumping: false,
-                borderTopBetweenJumping: true,
-              },
-            },
+            },            
             {
               x: 200,
               y: MAX_HEIGHT - 2200,
@@ -482,7 +465,7 @@
       ];
     });
     window.onload = () => {
-      img.src = "DuckSheet.png";
+      img.src = "sprites.png";
       img.onload = () => {
         console.log("Sprite sheet loaded");
         //  Get level/checkpoint
@@ -494,6 +477,22 @@
     };
 
     const loadLevel = (level) => {
+      const eggTimerBarContainer = document.createElement('div');
+      eggTimerBarContainer.style.position = 'fixed';
+      eggTimerBarContainer.style.zIndex = '2000';
+      eggTimerBarContainer.style.top = '50px';
+      eggTimerBarContainer.style.width = `${MAX_WIDTH/2 - 10}px`;
+      eggTimerBarContainer.style.height = '20px';
+      eggTimerBarContainer.style.border = '1px solid #282828';
+
+      eggTimerBar = document.createElement('div');
+      eggTimerBar.style.margin ='0px';
+      eggTimerBar.style.height = '100%';
+      eggTimerBar.style.width = '100%';
+      eggTimerBar.style.background = 'yellow';
+      eggTimerBar.style.opacity = '0.5';
+      eggTimerBarContainer.appendChild(eggTimerBar);      
+
       player = document.createElement('div');
       player.style.height = `${SPRITE_HEIGHT * SCALE}px`
       player.style.width = `${SPRITE_WIDTH * SCALE}px`;
@@ -509,7 +508,9 @@
       game.style.position = "relative";
       game.appendChild(player);
 
-      player.style.bottom = `250px`;
+      game.appendChild(eggTimerBarContainer);
+
+      player.style.bottom = `${(100 * (MAX_WIDTH/BACKGROUND_WIDTH)) - 2}px`;
       player.style.left = "100px";
       player.style.zIndex = "1024";
 
@@ -518,28 +519,76 @@
       requestAnimationFrame(gameLoop);
     };
 
-    const drawFrame = (frameX, frameY) => {
-      const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
-      const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
-      if(player) {
-        player.style.backgroundPosition = `${x} ${y}`;
+    const drawFrame = (frameX, frameY) => {      
+      if(!layingEgg && !JUMPING) {
+        frame++
+        if(frame >= FPS) {
+          frame = 0;
+          const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
+          const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
+          if(player) {
+            player.style.backgroundPosition = `${x} ${y}`;
+          }
+        }
+      } else {
+        const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
+        const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
+        if(player) {
+          player.style.backgroundPosition = `${x} ${y}`;
+        }
       }
     };
 
-    const layEgg = () => {
-      const egg = document.createElement("div");
-      egg.style.height = "80px";
-      egg.style.width = "60px";
-      egg.style.background = "yellow";
-      egg.style.borderRadius = "50px 50px 100px 100px";
-      egg.style.position = "absolute";
-      egg.style.left = player.style.left;
-      egg.style.bottom = player.style.bottom;
-      egg.setAttribute("id", "egg-1");
-      eggs.push(egg);
-      game.appendChild(egg);
-      playerVelY = -PLAYER_SPEED * (JUMP_POWER + 0.5);
-    };
+    const timeoutPromise = (time) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, time)
+      })
+    }
+
+    const jump = async(dir) => {
+      if(dir === 'right') {
+        for(fr of jumpLoop) {     
+          drawFrame(fr, 0);
+          await timeoutPromise(50);
+        }
+      } else {
+        for(fr of jumpLoop) {     
+          drawFrame(fr, 1);
+          await timeoutPromise(50);
+        }        
+      }      
+    }
+
+    const layEgg = async () => {
+      if(eggTimer === MAX_EGG_TIMER) {
+        eggTimer = 0;
+        eggTimerBar.style.width = '0%';
+        layingEgg = true;
+        const dir = facingRight ? 0 : 1;
+        for(fr of eggLoop) {     
+          drawFrame(fr, dir);
+          await timeoutPromise(100);
+        }
+        layingEgg = false;
+        eggLoopIndex = 0;          
+        const egg = document.createElement("div");
+        egg.style.height = `${SPRITE_WIDTH}px`;
+        egg.style.width = `${SPRITE_HEIGHT}px`;
+        egg.style.background = "url(sprites.png)";
+        const x = `${SPRITE_WIDTH * SCALE * 16}px`;
+        const y = `${SPRITE_HEIGHT * SCALE}px`;
+        egg.style.backgroundPosition = `${x} ${y}`
+        egg.style.position = "absolute";
+        egg.style.left = player.style.left;
+        egg.style.bottom = player.style.bottom;
+        egg.setAttribute("id", "egg-1");
+        eggs.push(egg);
+        game.appendChild(egg);
+        playerVelY = -PLAYER_SPEED * (JUMP_POWER + 0.5); 
+      }      
+    }
 
     const handleReload = () => {
       wipeGame();
@@ -696,15 +745,31 @@
 
     const gameLoop = () => {
       if (!pause) {
-
+        if(eggTimer < MAX_EGG_TIMER) {
+          eggTimer++;
+          eggTimerBar.style.width = `${eggTimer/MAX_EGG_TIMER * 100}%`;
+        }
         const jumpKey = keys[38] || keys[32] || keys[87];
         const rightKey = keys[39] || keys[68];
         const leftKey = keys[37] || keys[65];
         const layEggKey = keys[40] || keys[83];
 
+        const walkingZone = document.getElementById('backgroundID-1');
+        const pRect = player.getBoundingClientRect();
+        const wRect = walkingZone.getBoundingClientRect();
+        if(pRect.bottom > wRect.bottom && pRect.bottom < wRect.top) {
+          jumpingOff = true;
+        } else {
+          jumpingOff = false;
+        }
+
         playerVelX *= FRICTION;
-        if (!jumpingOff) {
+        if (!jumpingOff && !layingEgg) {
           playerVelY += GRAVITY;
+        } else {
+          if(playerVelY > 0) {
+            playerVelY--;
+          }
         }
 
         let touching = [];
@@ -714,16 +779,7 @@
           const a = player.getBoundingClientRect();
           const b = p.getBoundingClientRect();
 
-          if (detectOverlap(player, p)) {
-            if (
-              platform.metadata &&
-              platform.metadata.borderBottomBetweenJumping
-            ) {
-              jumpingOff = true;
-            } else if(platform.metadata &&
-              platform.metadata.borderTopBetweenJumping) {              
-              jumpingOff = false;
-            }
+          if (detectOverlap(player, p)) {           
             if (!(a.bottom > b.top + platform.height)) {
               touching.push(platform.id);
 
@@ -769,6 +825,7 @@
 
         if (touching.length) {
           GROUNDED = true;
+          JUMPING = false;
         }
 
         if (GROUNDED && !jumpingOff) {
@@ -778,7 +835,7 @@
         }
 
         if (layEggKey) {
-          if (eggs.length === 0 && !jumpingOff) {
+          if (!jumpingOff) {         
             layEgg();
           } else if (jumpingOff) {
             playerVelY++;
@@ -799,11 +856,11 @@
           if (playerVelX < PLAYER_SPEED) {
             playerVelX++;
           }
-          const standingYFrame = facingRight ? 1 : 0;
-          drawFrame(
-            0,
-            standingYFrame
-          );
+
+          if(!layingEgg && !JUMPING) {
+            JUMPING = true;
+            jump('right');
+          }
         } else if (jumpKey && leftKey) {
           facingRight = false;
           if (!JUMPING && GROUNDED && !jumpingOff) {
@@ -812,22 +869,23 @@
           }
           if (playerVelX > -PLAYER_SPEED) {
             player.velX--;
-          }
-          const standingYFrame = facingRight ? 1 : 0;
-          drawFrame(
-            0,
-            standingYFrame
-          );
+          }          
+
+          if(!layingEgg && !JUMPING) {
+            jump('left');
+          }          
         } else if (jumpKey) {
           if (!JUMPING && GROUNDED && !jumpingOff) {
             GROUNDED = false;
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
-          const standingYFrame = facingRight ? 1 : 0;
-          drawFrame(
-            0,
-            standingYFrame
-          );
+
+          if(!layingEgg && !JUMPING) {
+            JUMPING = true;
+
+            const dir = facingRight ? 'right' : 'left';
+            jump(dir);
+          }          
         } else if (rightKey) {
           facingRight = true;
           if (playerVelX < PLAYER_SPEED) {
@@ -836,7 +894,9 @@
               playerVelY--;
             }
           }
-          drawFrame(cycleLoop[currentLoopIndex], 1);
+          if(!layingEgg) {
+            drawFrame(cycleLoop[currentLoopIndex], 0);
+          }          
         } else if (leftKey) {
           facingRight = false;
           if (playerVelX > -PLAYER_SPEED) {
@@ -845,21 +905,24 @@
               playerVelY--;
             }
           }
-          drawFrame(cycleLoop[currentLoopIndex], 0);
+          if(!layingEgg) {
+            drawFrame(cycleLoop[currentLoopIndex], 1);
+          }          
         } else {
-          const standingYFrame = facingRight ? 1 : 0;
-          drawFrame(
-            0,
-            standingYFrame
-          );
+          if(facingRight) {
+            if(!layingEgg) {
+              drawFrame(15, 0);  
+            }            
+          } else {
+            if(!layingEgg) {
+              drawFrame(15, 1);  
+            }            
+          }    
         }
 
-        if(frameIncrement < (FPS * 10)) {
-          frameIncrement++
-        } else {
-          frameIncrement = 0;
-          currentLoopIndex++;
-        }
+        if(rightKey || leftKey) {
+            currentLoopIndex++;
+          }
 
         if (currentLoopIndex >= cycleLoop.length) {
           currentLoopIndex = 0;
@@ -886,6 +949,7 @@
         if (parseInt(player.style.left.split("px")[0], 10) < -10) {
           player.style.left = `${MAX_WIDTH}px`;
         }
+
         requestAnimationFrame(gameLoop);
       }
     };
