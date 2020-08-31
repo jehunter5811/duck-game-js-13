@@ -124,10 +124,11 @@
       <div id="left"></div>
       <div id="right"></div>
     </div>
-    <div id="game"></div>
+    <div id="game">
+    </div>
   </div>
   <script>
-    const FPS = 10;
+    const FPS = 15;
     let game;
     let currentLevel = 0;
     let MAX_WIDTH = 600;
@@ -147,12 +148,12 @@
     let playerVelX = 0;
     let playerVelY = 0;
     let eggVelY = 0;
+    let itemVelY = 0;
     let levels = [];
     let platforms = [];
     let eggs = [];    
     const MAX_EGG_TIMER = 250;
     let eggTimer = MAX_EGG_TIMER;
-    let counter = 0;
     let pause = false;
     const cycleLoop = [10, 11, 12, 13, 14, 15];
     const eggLoop = [9, 8, 7, 6, 5, 4];
@@ -165,6 +166,10 @@
     let frame = 0;
     let layingEgg = false;
     let eggTimerBar;
+    let droppingItems = false;
+    let dropCount = 0;
+    const maxDropCount = 100;
+    let droppedItems = [];
 
     const levelCompleteText = [
       "You flapped and hopped your way to your first feather! Quack...or tap...anywhere to continue.",
@@ -236,41 +241,6 @@
 
       world.style.margin = '0px';
       world.style.padding = '0px';
-      for(let i = 0; i < 4; i++) {
-        const el = document.createElement('div');
-        let height;
-        let bottom;
-        switch(i) {
-          case 0: 
-            height = 100 * (MAX_WIDTH/BACKGROUND_WIDTH);
-            bottom = 0;
-            break;
-          case 1: 
-            height = 350 * (MAX_WIDTH/BACKGROUND_WIDTH);
-            bottom = 100;
-            break;
-          case 2: 
-            height = 198 * (MAX_WIDTH/BACKGROUND_WIDTH);
-            bottom = 450;
-            break;
-          case 3: 
-            height = 2352 * (MAX_WIDTH/BACKGROUND_WIDTH);
-            bottom = 648;
-            break;
-          default: 
-            break;
-        }
-        el.setAttribute('id', `backgroundID-${i}`);
-        el.style.height = `${height}px`;
-        el.style.width = `${MAX_WIDTH}px`;
-        el.style.position = "absolute";
-        el.style.bottom = `${bottom}px`;
-        el.style.left = "0px";
-        el.style.backgroundImage = `url(newLevel1.png)`;
-        el.style.backgroundPosition = `0px ${bottom + height}px`;
-        el.style.backgroundSize = `cover`;
-        world.appendChild(el);
-      }
 
       const navButtons = document.createElement("div");
       navButtons.style.height = "75px";
@@ -303,11 +273,12 @@
             {
               //  Ground platform
               x: 0,
-              y: MAX_HEIGHT - (100 * (MAX_WIDTH/BACKGROUND_WIDTH)),
+              y: MAX_HEIGHT - 175,
               width: MAX_WIDTH,
-              height: 20,
-              background: "none",
-              id: "1",
+              height: 175,
+              id: "pond",
+              background: 'color', 
+              color: 'blue'
             },
             {
               x: 150,
@@ -423,21 +394,27 @@
               width: 135,
               height: 10,
               background: "color",
-              color: "#6b561d",
+              color: "red",
               id: "14",
             },            
             {
-              x: 200,
-              y: MAX_HEIGHT - 2200,
-              width: 100,
+              //  Embankment
+              x: 0, 
+              y: MAX_HEIGHT - 1350,
+              width: MAX_WIDTH, 
+              height: 500,
+              walking: true,
+              background: "color",
+              color: 'yellow'
+            }, 
+            {
+              x: 0, 
+              y: MAX_HEIGHT - 1370,
+              width: MAX_WIDTH, 
               height: 20,
-              velY: 0,
-              id: "17",
-              collectible: {
-                type: "feather",
-                id: "main_feather",
-              },
-            },
+              background: "color",
+              color: 'brown'
+            }
           ],
         },
         {
@@ -450,6 +427,8 @@
               width: MAX_WIDTH,
               height: 50,
               velY: 0,
+              background: "color",
+              color: "blue",
               id: "1",
             },
             {
@@ -519,24 +498,31 @@
       requestAnimationFrame(gameLoop);
     };
 
-    const drawFrame = (frameX, frameY) => {      
-      if(!layingEgg && !JUMPING) {
-        frame++
-        if(frame >= FPS) {
-          frame = 0;
-          const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
-          const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
-          if(player) {
-            player.style.backgroundPosition = `${x} ${y}`;
-          }
-        }
-      } else {
-        const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
-        const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
-        if(player) {
-          player.style.backgroundPosition = `${x} ${y}`;
-        }
-      }
+    const dropItem = (itemType) => {
+      const item = document.createElement('div');
+      item.style.width = '25px';
+      item.style.height = '25px';
+      item.style.position = 'absolute';
+      item.style.zIndex = 2000;
+      item.style.left = `${Math.floor(Math.random() * MAX_WIDTH) + 1}px`;
+      item.style.bottom = `${MAX_HEIGHT - 100}px`;
+      switch(itemType) {        
+        case 'acorn': 
+          item.style.backgroundImage = 'url(acorn.png)';
+        default: 
+          item.style.backgroundImage = 'url(acorn.png)';
+      }  
+      
+      item.setAttribute('class', 'dropped-item')
+      game.appendChild(item);      
+    }
+
+    const drawFrame = (frameX, frameY) => {  
+      const x = `${SPRITE_WIDTH * SCALE * frameX}px`;
+      const y = `${SPRITE_HEIGHT * SCALE * frameY}px`;
+      if(player) {
+        player.style.backgroundPosition = `${x} ${y}`;
+      }   
     };
 
     const timeoutPromise = (time) => {
@@ -551,12 +537,12 @@
       if(dir === 'right') {
         for(fr of jumpLoop) {     
           drawFrame(fr, 0);
-          await timeoutPromise(50);
+          await timeoutPromise(100);
         }
       } else {
         for(fr of jumpLoop) {     
           drawFrame(fr, 1);
-          await timeoutPromise(50);
+          await timeoutPromise(100);
         }        
       }      
     }
@@ -650,11 +636,6 @@
     const drawPlatforms = () => {
       platforms.forEach((platform) => {
         const newPlatform = document.createElement("div");
-        newPlatform.style.width = `${platform.width}px`;
-        newPlatform.style.height = `${platform.height}px`;
-        newPlatform.style.position = "absolute";
-        newPlatform.style.top = `${platform.y}px`;
-        newPlatform.style.left = `${platform.x}px`;
         if (platform.background === "none") {
           newPlatform.style.background = "none";
         } else if (platform.background === "border") {
@@ -664,6 +645,11 @@
         } else {
           newPlatform.style.background = "#000";
         }
+        newPlatform.style.width = `${platform.width}px`;
+        newPlatform.style.height = `${platform.height}px`;
+        newPlatform.style.position = "absolute";
+        newPlatform.style.top = `${platform.y}px`;
+        newPlatform.style.left = `${platform.x}px`;        
         newPlatform.setAttribute("id", platform.id);
 
         game.appendChild(newPlatform);
@@ -749,21 +735,22 @@
           eggTimer++;
           eggTimerBar.style.width = `${eggTimer/MAX_EGG_TIMER * 100}%`;
         }
+
+        if(droppingItems) {
+          const droppedItems = document.getElementsByClassName('dropped-item');
+          if(!droppedItems || droppedItems.length === 0) {
+            dropItem('acorn');
+            dropCount = 0;
+          }
+        }
+
         const jumpKey = keys[38] || keys[32] || keys[87];
         const rightKey = keys[39] || keys[68];
         const leftKey = keys[37] || keys[65];
         const layEggKey = keys[40] || keys[83];
 
-        const walkingZone = document.getElementById('backgroundID-1');
-        const pRect = player.getBoundingClientRect();
-        const wRect = walkingZone.getBoundingClientRect();
-        if(pRect.bottom > wRect.bottom && pRect.bottom < wRect.top) {
-          jumpingOff = true;
-        } else {
-          jumpingOff = false;
-        }
-
         playerVelX *= FRICTION;
+
         if (!jumpingOff && !layingEgg) {
           playerVelY += GRAVITY;
         } else {
@@ -781,14 +768,21 @@
 
           if (detectOverlap(player, p)) {           
             if (!(a.bottom > b.top + platform.height)) {
-              touching.push(platform.id);
+              if(platform.walking === true) {
+                jumpingOff = true;
+                droppingItems = true;
+              } else {
+                jumpingOff = false;
+                droppingItems = false;
+                touching.push(platform.id);
 
-              if (a.bottom > b.top && platform.id !== "1" && !jumpingOff) {
-                player.style.bottom = `${
-                  parseInt(player.style.bottom.split("px")[0]) +
-                  (a.bottom - b.top)
-                }px`;
-                playerVelY = 0;
+                if (a.bottom > b.top && platform.id !== "1" && !jumpingOff) {
+                  player.style.bottom = `${
+                    parseInt(player.style.bottom.split("px")[0]) +
+                    (a.bottom - b.top)
+                  }px`;
+                  playerVelY = 0;
+                }
               }
             }
           }
@@ -808,6 +802,23 @@
               //  Save count of collectible type
             }
           });
+        
+        const droppedItems = document.getElementsByClassName('dropped-item');
+        if(droppedItems && droppedItems.length > 0) {
+          for(const item of droppedItems) {
+            console.log(item)
+            item.style.bottom = `${
+              parseInt(item.style.bottom.split("px")[0], 10) - itemVelY
+            }px`;
+            if (
+              parseInt(item.style.bottom.split("px")[0], 10) < -window.innerHeight
+            ) {            
+              item.remove();
+              itemVelY = 0;
+            }
+            itemVelY += GRAVITY;
+          }
+        }       
 
         eggs.forEach((egg) => {
           egg.style.bottom = `${
@@ -868,7 +879,7 @@
             playerVelY = -PLAYER_SPEED * JUMP_POWER;
           }
           if (playerVelX > -PLAYER_SPEED) {
-            player.velX--;
+            playerVelX--;
           }          
 
           if(!layingEgg && !JUMPING) {
@@ -894,8 +905,8 @@
               playerVelY--;
             }
           }
-          if(!layingEgg) {
-            drawFrame(cycleLoop[currentLoopIndex], 0);
+          if(!layingEgg && (!JUMPING || jumpingOff)) {            
+            drawFrame(cycleLoop[currentLoopIndex], 0);           
           }          
         } else if (leftKey) {
           facingRight = false;
@@ -905,24 +916,28 @@
               playerVelY--;
             }
           }
-          if(!layingEgg) {
+          if(!layingEgg && (!JUMPING || jumpingOff)) {
             drawFrame(cycleLoop[currentLoopIndex], 1);
           }          
         } else {
           if(facingRight) {
-            if(!layingEgg) {
+            if(!layingEgg && !JUMPING) {
               drawFrame(15, 0);  
             }            
           } else {
-            if(!layingEgg) {
+            if(!layingEgg && !JUMPING) {
               drawFrame(15, 1);  
             }            
           }    
         }
 
         if(rightKey || leftKey) {
-            currentLoopIndex++;
-          }
+          frame++
+          if(frame >= FPS) {
+            frame = 0;
+            currentLoopIndex++;  
+          } 
+        }
 
         if (currentLoopIndex >= cycleLoop.length) {
           currentLoopIndex = 0;
