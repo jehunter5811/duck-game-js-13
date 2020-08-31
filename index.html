@@ -98,6 +98,57 @@
       transform: translate(-50%, -50%);
       box-shadow: inset -5px -10px 0 #f9bd09;
     }
+    .container{
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+    /* TREE CSS */
+    .tree{
+      background: #5d3010;
+      height: 100%;
+      width: 13vw;
+      position: relative;
+    }
+    .tree .trunk{
+      width: 25%;
+      position: absolute;
+    }
+    .tree .upper.trunk{
+      height: 30%;
+      top: 0;
+    }
+    .tree .lower.trunk{
+      height: 70%;
+      bottom: 0;
+    }
+    .tree .right.trunk{
+      right: 0;
+    }
+    .tree .left.trunk{
+      left: 0;
+    }
+    .tree .upper.left.trunk{
+      border-top-right-radius: 100%;
+    }
+    .tree .upper.right.trunk{
+      border-top-left-radius: 100%;
+    }
+    .tree .lower.left.trunk{
+      border-bottom-right-radius: 100%;
+    }
+    .tree .lower.right.trunk{
+      border-bottom-left-radius: 100%;
+    }
+    .shake {
+      /* Start the shake animation and make the animation last for 0.5 seconds */
+      animation: shake 0.5s;
+
+      /* When the animation is finished, start again */
+      animation-iteration-count: infinite;
+    }
     @keyframes pulse-white {
       0% {
         transform: scale(0.95);
@@ -113,6 +164,19 @@
         transform: scale(0.95);
         box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
       }
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
   </style>
 </head>
@@ -137,6 +201,7 @@
     const PLAYER_SPEED = 3;
     const FRICTION = 0.8;
     const GRAVITY = 0.4;
+    const ITEM_GRAVITY = 0.2;
     const JUMP_POWER = 2.5;
     let GROUNDED = true;
     let JUMPING = false;
@@ -505,13 +570,9 @@
       item.style.position = 'absolute';
       item.style.zIndex = 2000;
       item.style.left = `${Math.floor(Math.random() * MAX_WIDTH) + 1}px`;
-      item.style.bottom = `${MAX_HEIGHT - 100}px`;
-      switch(itemType) {        
-        case 'acorn': 
-          item.style.backgroundImage = 'url(acorn.png)';
-        default: 
-          item.style.backgroundImage = 'url(acorn.png)';
-      }  
+      item.style.bottom = `${parseInt(player.style.bottom.split('px')[0], 10) + 600}px`;
+      item.style.backgroundImage = 'url(acorn.png)';
+      item.style.backgroundSize = 'cover';
       
       item.setAttribute('class', 'dropped-item')
       game.appendChild(item);      
@@ -654,6 +715,30 @@
 
         game.appendChild(newPlatform);
 
+        if(platform.walking) {
+          const treeSection = document.createElement('div');
+          treeSection.setAttribute('class', 'container')
+          const tree = document.createElement('div');
+          tree.setAttribute('class', 'tree');
+          const treeUpperRight = document.createElement('div');
+          treeUpperRight.setAttribute('class', 'trunk upper right')
+          const treeUpperLeft = document.createElement('div');
+          treeUpperLeft.setAttribute('class', 'trunk upper left')
+          const treeLowerRight = document.createElement('div');
+          treeLowerRight.setAttribute('class', 'trunk lower right')
+          const treeLowerLeft = document.createElement('div');
+          treeLowerLeft.setAttribute('class', 'trunk lower left');
+
+          tree.appendChild(treeUpperLeft)
+          tree.appendChild(treeUpperRight)
+          tree.appendChild(treeLowerLeft)
+          tree.appendChild(treeLowerRight)
+          treeSection.appendChild(tree);
+          treeSection.style.position = 'absolute';
+          treeSection.style.bottom = `${platform.y - 300}px`;
+          game.appendChild(treeSection);
+        }
+
         //  Check for collectibles
         if (platform.collectible) {
           const collectible = drawCollectible(platform.collectible.type);
@@ -729,7 +814,7 @@
       });
     };
 
-    const gameLoop = () => {
+    const gameLoop = async () => {
       if (!pause) {
         if(eggTimer < MAX_EGG_TIMER) {
           eggTimer++;
@@ -806,7 +891,18 @@
         const droppedItems = document.getElementsByClassName('dropped-item');
         if(droppedItems && droppedItems.length > 0) {
           for(const item of droppedItems) {
-            console.log(item)
+            const touching = detectOverlap(player, item);
+            if(touching) {
+              navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+              if(navigator.vibrate) {
+                navigator.vibrate(1000);
+              }              
+              world.classList.add('shake');
+              await timeoutPromise(100);
+              world.classList.remove('shake');
+              item.remove();
+            }
+
             item.style.bottom = `${
               parseInt(item.style.bottom.split("px")[0], 10) - itemVelY
             }px`;
@@ -816,9 +912,9 @@
               item.remove();
               itemVelY = 0;
             }
-            itemVelY += GRAVITY;
+            itemVelY += ITEM_GRAVITY;
           }
-        }       
+        }      
 
         eggs.forEach((egg) => {
           egg.style.bottom = `${
