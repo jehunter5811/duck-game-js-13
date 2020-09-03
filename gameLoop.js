@@ -4,7 +4,7 @@ const dropItem = (itemType) => {
   item.style.height = '19px';
   item.style.position = 'absolute';
   item.style.zIndex = 2000;
-  item.style.left = `${Math.floor(Math.random() * gameVariables.MAX_WIDTH) + 1}px`;
+  item.style.left = `${Math.floor(Math.random() * gameVariables.GAME_WIDTH) + 1}px`;
   item.style.bottom = `${parseInt(gameVariables.player.style.bottom.split('px')[0], 10) + 600}px`;
   item.style.backgroundImage = 'url(acorn.png)';
   item.style.backgroundSize = 'cover';
@@ -100,6 +100,41 @@ const timeoutPromise = (time) => {
   })
 }
 
+const handleNextLevel = (current) => {
+  const game = document.getElementById('game');
+  let level = current;
+  gameVariables.pause = true;
+  const successWrapper = document.createElement("div");
+  successWrapper.style.width = `${gameVariables.GAME_WIDTH}px`;
+  successWrapper.style.position = "fixed";
+  successWrapper.style.top = "50px";
+  const successText = document.createElement("h3");
+  successText.innerText = gameVariables.levelCompleteText[level];
+  successText.style.textAlign = "center";
+  successText.style.fontFamily = "PressStart2P";
+  successWrapper.appendChild(successText);
+  game.appendChild(successWrapper);
+
+  setTimeout(() => {
+    while (game.firstChild) {
+      game.removeChild(game.firstChild);
+    }
+  
+    gameVariables.player = undefined;
+    const player = document.getElementById('player');
+    if(player) {
+      player.remove();
+    }
+    if(gameVariables.eggs) {
+      gameVariables.eggs[0].remove();
+    }
+  
+    level++;
+    // localStorage.setItem('level', JSON.stringify(currentLevel));
+    loadLevel(level);
+  }, 2500)  
+};
+
 const gameLoop = async () => {
   if (!gameVariables.pause) {
     if(gameVariables.eggTimer < gameVariables.MAX_EGG_TIMER) {
@@ -134,10 +169,19 @@ const gameLoop = async () => {
 
     const platforms = document.getElementsByClassName('platform');
     const embankments = document.getElementsByClassName('embankment');
-    console.log(gameVariables.jumpingOff)
+    const feathers = document.getElementsByClassName('feather');
+    const feather = feathers[0] //Always only one;
+    let featherTouching = [];
+    const a = gameVariables.player.getBoundingClientRect();
+    // const c = feather.getBoundingClientRect();
+    if(feather) {
+      if (detectOverlap(gameVariables.player, feather)) {  
+        featherTouching.push(feather);
+      } 
+    }    
+    
     for (var i = 0; i < platforms.length; i++) {
-      const p = platforms[i];
-      const a = gameVariables.player.getBoundingClientRect();
+      const p = platforms[i];      
       const b = p.getBoundingClientRect();
 
       if (detectOverlap(gameVariables.player, p)) {           
@@ -171,6 +215,11 @@ const gameLoop = async () => {
       gameVariables.jumpingOff = true;
     } else {
       gameVariables.jumpingOff = false;
+    }
+
+    if(featherTouching.length > 0) {
+      const currentLevel = parseInt(localStorage.getItem('level'), 10);
+      handleNextLevel(currentLevel);
     }
     
     const droppedItems = document.getElementsByClassName('dropped-item');
@@ -338,12 +387,12 @@ const gameLoop = async () => {
       window.scrollTo(0, gameVariables.player.offsetTop - 200);
     }
 
-    if (parseInt(gameVariables.player.style.left.split("px")[0], 10) > gameVariables.MAX_WIDTH) {
+    if (parseInt(gameVariables.player.style.left.split("px")[0], 10) > gameVariables.GAME_WIDTH) {
       gameVariables.player.style.left = "0px";
     }
 
     if (parseInt(gameVariables.player.style.left.split("px")[0], 10) < -10) {
-      gameVariables.player.style.left = `${gameVariables.MAX_WIDTH}px`;
+      gameVariables.player.style.left = `${gameVariables.GAME_WIDTH}px`;
     }
 
     requestAnimationFrame(gameLoop);
@@ -351,3 +400,4 @@ const gameLoop = async () => {
 };
 
 window.gameLoop = gameLoop;
+window.handleNextLevel = handleNextLevel;

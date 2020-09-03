@@ -40,7 +40,10 @@ let gameVariables = {
   droppingItems: false, 
   dropCount: 0, 
   maxDropCount: 100, 
-  droppedItems: []
+  droppedItems: [], 
+  levelCompleteText: [
+    "You flapped and hopped your way to your first feather! Keep going so you can catch up to your family.",
+  ]
 }
 
 window.gameVariables = gameVariables;
