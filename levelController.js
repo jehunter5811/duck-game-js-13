@@ -106,7 +106,7 @@ const loadLevel = (level) => {
         platform.style.left = `${i * columnWidth}px`;
         platform.style.margin = "0px";
         if (row[i] === 2) {
-          platform.style.height = "20px";
+          platform.style.height = "10px";
           platform.style.background = "#000";
           platform.setAttribute("class", "collider platform");
         } else if (row[i] === 1) {
@@ -118,9 +118,21 @@ const loadLevel = (level) => {
           platform.style.background = "yellow";
           platform.style.height = `${rowHeight}px`;
         } else if(row[i] === 4) {
-          //  These will be collectibles on platforms
+          platform.style.height = "10px";
+          platform.style.background = "#000";
+          platform.setAttribute("class", "collider platform");
+          //  Now create the collectible
+          const coll = document.createElement('div');
+          coll.style.backgroundImage = 'url(bug.png)';
+          coll.style.width = '11px';
+          coll.style.height = '12px';
+          coll.style.position = 'absolute';
+          coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 10}px`;
+          coll.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
+          coll.setAttribute('class', 'small-bug');
+          game.appendChild(coll);
         } else if(row[i] === 5) {
-          platform.style.height = "20px";
+          platform.style.height = "10px";
           platform.style.background = "#000";
           platform.setAttribute("class", "collider platform");
           const feather = document.createElement('div');
@@ -155,15 +167,16 @@ const loadLevel = (level) => {
   eggTimerBarContainer.style.position = "fixed";
   eggTimerBarContainer.style.zIndex = "2000";
   eggTimerBarContainer.style.top = "50px";
-  eggTimerBarContainer.style.width = `${gameVariables.MAX_WIDTH / 2 - 10}px`;
+  eggTimerBarContainer.style.width = `${gameVariables.GAME_WIDTH / 2 - 10}px`;
   eggTimerBarContainer.style.height = "20px";
   eggTimerBarContainer.style.border = "1px solid #282828";
+  eggTimerBarContainer.setAttribute('id', 'timer')
 
   gameVariables.eggTimerBar = document.createElement("div");
   gameVariables.eggTimerBar.style.margin = "0px";
   gameVariables.eggTimerBar.style.height = "100%";
-  gameVariables.eggTimerBar.style.width = "100%";
-  gameVariables.eggTimerBar.style.background = "yellow";
+  gameVariables.eggTimerBar.style.width = "0%";
+  gameVariables.eggTimerBar.style.background = "black";
   gameVariables.eggTimerBar.style.opacity = "0.5";
   eggTimerBarContainer.appendChild(gameVariables.eggTimerBar);
 

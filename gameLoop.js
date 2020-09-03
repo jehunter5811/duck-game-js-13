@@ -3,9 +3,9 @@ const dropItem = (itemType) => {
   item.style.width = '15px';
   item.style.height = '19px';
   item.style.position = 'absolute';
-  item.style.zIndex = 2000;
+  item.style.zIndex = '2000';
   item.style.left = `${Math.floor(Math.random() * gameVariables.GAME_WIDTH) + 1}px`;
-  item.style.bottom = `${parseInt(gameVariables.player.style.bottom.split('px')[0], 10) + 600}px`;
+  item.style.bottom = `${parseInt(gameVariables.player.style.bottom.split('px')[0], 10) + 400}px`;
   item.style.backgroundImage = 'url(acorn.png)';
   item.style.backgroundSize = 'cover';
   item.setAttribute('class', 'dropped-item spin')
@@ -64,6 +64,7 @@ const jump = async(dir) => {
 }
 
 const layEgg = async () => {
+  console.log(gameVariables.eggTimer, gameVariables.MAX_EGG_TIMER);
   if(gameVariables.eggTimer === gameVariables.MAX_EGG_TIMER) {
     gameVariables.eggTimer = 0;
     gameVariables.eggTimerBar.style.width = '0%';
@@ -137,11 +138,6 @@ const handleNextLevel = (current) => {
 
 const gameLoop = async () => {
   if (!gameVariables.pause) {
-    if(gameVariables.eggTimer < gameVariables.MAX_EGG_TIMER) {
-      gameVariables.eggTimer++;
-      gameVariables.eggTimerBar.style.width = `${gameVariables.eggTimer/gameVariables.MAX_EGG_TIMER * 100}%`;
-    }
-
     if(gameVariables.droppingItems) {
       const droppedItems = document.getElementsByClassName('dropped-item');
       if(!droppedItems || droppedItems.length === 0) {
@@ -170,6 +166,7 @@ const gameLoop = async () => {
     const platforms = document.getElementsByClassName('platform');
     const embankments = document.getElementsByClassName('embankment');
     const feathers = document.getElementsByClassName('feather');
+    const smallBugs = document.getElementsByClassName('small-bug');
     const feather = feathers[0] //Always only one;
     let featherTouching = [];
     const a = gameVariables.player.getBoundingClientRect();
@@ -204,22 +201,33 @@ const gameLoop = async () => {
     let embankmentTouching = [];
     for (var i = 0; i < embankments.length; i++) {
       const p = embankments[i];
-      const a = gameVariables.player.getBoundingClientRect();
-      const b = p.getBoundingClientRect();
       if (detectOverlap(gameVariables.player, p)) {  
         embankmentTouching.push(p);
       } 
     }
 
     if(embankmentTouching.length > 0) {
+      gameVariables.droppingItems = true;
       gameVariables.jumpingOff = true;
     } else {
       gameVariables.jumpingOff = false;
+      gameVariables.droppingItems = false;
     }
 
     if(featherTouching.length > 0) {
       const currentLevel = parseInt(localStorage.getItem('level'), 10);
       handleNextLevel(currentLevel);
+    }
+
+    for (var i = 0; i < smallBugs.length; i++) {
+      const p = smallBugs[i];
+      if (detectOverlap(gameVariables.player, p)) {  
+        if(gameVariables.eggTimer < gameVariables.MAX_EGG_TIMER) {
+          gameVariables.eggTimer = gameVariables.eggTimer + 10;
+          gameVariables.eggTimerBar.style.width = `${gameVariables.eggTimer/gameVariables.MAX_EGG_TIMER * 100}%`;
+        }        
+        smallBugs[i].remove();
+      } 
     }
     
     const droppedItems = document.getElementsByClassName('dropped-item');
@@ -227,26 +235,31 @@ const gameLoop = async () => {
       for(const item of droppedItems) {
         const touching = detectOverlap(gameVariables.player, item);
         if(touching) {
+          const dir = gameVariables.facingRight ? 0 : 1;
+          drawFrame(9, dir);
           navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
           if(navigator.vibrate) {
             navigator.vibrate(1000);
           }              
           world.classList.add('shake');
           await timeoutPromise(100);
+          drawFrame(15, dir);
           world.classList.remove('shake');
           item.remove();
         }
 
         item.style.bottom = `${
-          parseInt(item.style.bottom.split("px")[0], 10) - itemVelY
+          parseInt(item.style.bottom.split("px")[0], 10) - gameVariables.itemVelY
         }px`;
         if (
           parseInt(item.style.bottom.split("px")[0], 10) < -window.innerHeight
         ) {            
           item.remove();
-          itemVelY = 0;
+          gameVariables.itemVelY = 0;
         }
-        itemVelY += ITEM_GRAVITY;
+        if(gameVariables.itemVelY < 10) {
+          gameVariables.itemVelY += gameVariables.GRAVITY;
+        }        
       }
     }      
 
@@ -350,14 +363,9 @@ const gameLoop = async () => {
         drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex], 1);
       }          
     } else {
-      if(gameVariables.facingRight) {
-        if(!gameVariables.layingEgg && !gameVariables.JUMPING) {
-          drawFrame(15, 0);  
-        }            
-      } else {
-        if(!gameVariables.layingEgg && !gameVariables.JUMPING) {
-          drawFrame(15, 1);  
-        }            
+      const dir = gameVariables.facingRight ? 0 : 1;
+      if(!gameVariables.layingEgg && !gameVariables.JUMPING) {
+        drawFrame(15, dir);  
       }    
     }
 

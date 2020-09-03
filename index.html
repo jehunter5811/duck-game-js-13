@@ -137,6 +137,20 @@
       /* When the animation is finished, start again */
       animation-iteration-count: infinite;
     }
+    .spin {
+      animation-name: spin;
+      animation-duration: 2000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear; 
+    }
+    @keyframes spin {
+      from {
+          transform:rotate(0deg);
+      }
+      to {
+          transform:rotate(360deg);
+      }
+    }
     @keyframes pulse-white {
       0% {
         transform: scale(0.95);
