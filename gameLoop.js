@@ -64,7 +64,6 @@ const jump = async(dir) => {
 }
 
 const layEgg = async () => {
-  console.log(gameVariables.eggTimer, gameVariables.MAX_EGG_TIMER);
   if(gameVariables.eggTimer === gameVariables.MAX_EGG_TIMER) {
     gameVariables.eggTimer = 0;
     gameVariables.eggTimerBar.style.width = '0%';

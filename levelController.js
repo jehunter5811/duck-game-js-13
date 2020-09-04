@@ -31,6 +31,8 @@ const loadLevel = (level) => {
     const down = document.getElementById("down");
     const left = document.getElementById("left");
     const right = document.getElementById("right");
+    const leftJump = document.getElementById("left-jump");
+    const rightJump = document.getElementById("right-jump");
 
     controls.addEventListener(
       "touchstart",
@@ -56,6 +58,18 @@ const loadLevel = (level) => {
       e.preventDefault();
       gameVariables.keys[37] = true;
     });
+    leftJump.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      gameVariables.keys[38] = true;
+      gameVariables.keys[37] = true;
+    });
+
+    rightJump.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      gameVariables.keys[38] = true;
+      gameVariables.keys[39] = true;
+    });
+
 
     document.addEventListener("pointerup", (e) => {
       e.preventDefault();
@@ -156,6 +170,13 @@ const loadLevel = (level) => {
             owl.style.zIndex = '999';
             owl.style.backgroundImage = 'url(owl.png)';
             game.appendChild(owl);
+            const treeSection = document.createElement('div');
+            treeSection.style.height = `${rowHeight * 28}px`;
+            treeSection.style.width = `${gameVariables.GAME_WIDTH}px`;
+            treeSection.innerHTML = `<div class="tree"><div class="trunk upper left"></div><div class="trunk upper right"></div><div class="trunk lower left"></div><div class="trunk lower right"></div>`
+            treeSection.style.position = 'absolute';
+            treeSection.style.top = '0px';
+            game.appendChild(treeSection)
           }
         }
         game.appendChild(platform);

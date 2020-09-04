@@ -43,40 +43,56 @@
       position: fixed;
       z-index: 1024;
       bottom: 0px;
-      opacity: 0.3;
+      opacity: 0.5;
       left: 0px;
       width: 100vw;
     }
+    #left-jump {
+      position: absolute;
+      bottom: 175px;
+      height: 70px;
+      width: 25vw;
+      left: 0px;
+      background: pink;
+    }
+    #right-jump {
+      position: absolute;
+      bottom: 175px;
+      height: 70px;
+      width: 25vw;
+      right: 0;
+      background: teal;
+    }
     #up {
       position: absolute;
-      bottom: 100px;
+      bottom: 175px;
       height: 70px;
-      width: 100vw;
-      left: 0px;
-      background: black;
+      width: 50vw;
+      left: 25%;
+      background: red;
     }
     #right {
       position: absolute;
       bottom: 0px;
       height: 170px;
-      width: 80px;
+      width: 40vw;
       right: 0;
-      background: black;
+      background: green;
     }
     #left {
       position: absolute;
       bottom: 0px;
       height: 170px;
-      width: 80px;
+      width: 40vw;
       left: 0px;
-      background: black;
+      background: brown;
     }
     #down {
       position: absolute;
-      bottom: 0px;
-      height: 60px;
-      width: 25%;
-      left: 37.5%;
+      bottom: 90px;
+      height: 80px;
+      width: 20vw;
+      left: 40%;
       background: black;
     }
     .feather {
@@ -99,6 +115,7 @@
       height: 100%;
       width: 13vw;
       position: relative;
+      margin: auto;
     }
     .tree .trunk{
       width: 25%;
@@ -188,7 +205,9 @@
       <div id="up"></div>
       <div id="down"></div>
       <div id="left"></div>
+      <div id="left-jump"></div>
       <div id="right"></div>
+      <div id="right-jump"></div>
     </div>
     <div id="game">
     </div>
