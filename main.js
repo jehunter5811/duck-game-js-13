@@ -1,4 +1,9 @@
 window.onload = () => {
+  //  Check local storage
+  const level = localStorage.getItem('level');
+  if(!level) {
+    localStorage.setItem('level', JSON.stringify(0));
+  }
   gameVariables.img.src = "sprites.png";
   gameVariables.img.onload = () => {
     console.log("Sprite sheet loaded");

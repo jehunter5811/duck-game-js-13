@@ -125,7 +125,7 @@ const handleNextLevel = (current) => {
     if(player) {
       player.remove();
     }
-    if(gameVariables.eggs) {
+    if(gameVariables.eggs,length > 0) {
       gameVariables.eggs[0].remove();
     }
   
@@ -224,7 +224,7 @@ const gameLoop = async () => {
         if(gameVariables.eggTimer < gameVariables.MAX_EGG_TIMER) {
           gameVariables.eggTimer = gameVariables.eggTimer + 10;
           gameVariables.eggTimerBar.style.width = `${gameVariables.eggTimer/gameVariables.MAX_EGG_TIMER * 100}%`;
-        }        
+        }      
         smallBugs[i].remove();
       } 
     }

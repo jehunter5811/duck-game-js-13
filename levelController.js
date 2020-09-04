@@ -19,7 +19,6 @@ const handleReload = () => {
 }
 
 const loadLevel = (level) => {
-  console.log("Loading level ", level);
   const world = document.getElementById("world");
   if (isMobile()) {
     gameVariables.GAME_WIDTH = window.innerWidth;
@@ -106,6 +105,24 @@ const loadLevel = (level) => {
   game.style.height = gameVariables.GAME_HEIGHT;
   game.style.width = gameVariables.GAME_WIDTH;
 
+  //  Draw Background  
+  const prevBG = document.getElementById(`level-bg-${level - 1}`)
+
+  if(prevBG) {
+    prevBG.style.display = 'none';
+  }
+
+  const currentBG = document.getElementById(`level-bg-${level}`)
+
+  if(currentBG) {
+    currentBG.style.display = 'block';  
+    currentBG.style.position = 'absolute';
+    currentBG.style.zIndex = 980;
+    currentBG.style.bottom = '255px';
+    currentBG.style.height = '100%';
+    currentBG.style.width = '100%';
+  }
+
   //  Draw the map
   const thisLevel = levels[level];
   const columnWidth = gameVariables.GAME_WIDTH / thisLevel[0].length;
@@ -124,7 +141,6 @@ const loadLevel = (level) => {
           platform.style.background = "#000";
           platform.setAttribute("class", "collider platform");
         } else if (row[i] === 1) {
-          platform.style.background = "blue";
           platform.style.height = `${rowHeight}px`;
           platform.setAttribute("class", "collider platform");
         } else if (row[i] === 3) {
@@ -144,6 +160,7 @@ const loadLevel = (level) => {
           coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 10}px`;
           coll.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
           coll.setAttribute('class', 'small-bug');
+          coll.style.zIndex = 1024;
           game.appendChild(coll);
         } else if(row[i] === 5) {
           platform.style.height = "10px";
@@ -156,7 +173,7 @@ const loadLevel = (level) => {
           feather.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
           feather.style.height = '27px';
           feather.style.width = '5px';
-          feather.style.zIndex = '1024';
+          feather.style.zIndex = 1024;
           feather.style.backgroundImage = 'url(feather.png)';
           game.appendChild(feather);
           if(level === 0) {
@@ -167,21 +184,16 @@ const loadLevel = (level) => {
             owl.style.position = 'absolute';
             owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
             owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
-            owl.style.zIndex = '999';
+            owl.style.zIndex = 999;
             owl.style.backgroundImage = 'url(owl.png)';
-            game.appendChild(owl);
-            const treeSection = document.createElement('div');
-            treeSection.style.height = `${rowHeight * 28}px`;
-            treeSection.style.width = `${gameVariables.GAME_WIDTH}px`;
-            treeSection.innerHTML = `<div class="tree"><div class="trunk upper left"></div><div class="trunk upper right"></div><div class="trunk lower left"></div><div class="trunk lower right"></div>`
-            treeSection.style.position = 'absolute';
-            treeSection.style.top = '0px';
-            game.appendChild(treeSection)
+            game.appendChild(owl);            
           }
         }
+        platform.style.zIndex = 1024;
         game.appendChild(platform);
       }
     }
+    
   }
 
   const eggTimerBarContainer = document.createElement("div");

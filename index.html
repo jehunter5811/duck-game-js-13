@@ -41,11 +41,13 @@
     }
     #controls {
       position: fixed;
-      z-index: 1024;
+      z-index: 2000;
       bottom: 0px;
-      opacity: 0.5;
       left: 0px;
       width: 100vw;
+      color: #fff;
+      font-size: 24px;
+      text-align: center;
     }
     #left-jump {
       position: absolute;
@@ -110,41 +112,43 @@
       position: absolute;
     }
     /* TREE CSS */
-    .tree{
+    .single-tree{
       background: #5d3010;
       height: 100%;
       width: 13vw;
-      position: relative;
+      position: absolute;
       margin: auto;
+      z-index: 999;
+      left: 45%;
     }
-    .tree .trunk{
+    .single-tree .trunk{
       width: 25%;
       position: absolute;
     }
-    .tree .upper.trunk{
+    .single-tree .upper.trunk{
       height: 30%;
       top: 0;
     }
-    .tree .lower.trunk{
+    .single-tree .lower.trunk{
       height: 70%;
       bottom: 0;
     }
-    .tree .right.trunk{
+    .single-tree .right.trunk{
       right: 0;
     }
-    .tree .left.trunk{
+    .single-tree .left.trunk{
       left: 0;
     }
-    .tree .upper.left.trunk{
+    .single-tree .upper.left.trunk{
       border-top-right-radius: 100%;
     }
-    .tree .upper.right.trunk{
+    .single-tree .upper.right.trunk{
       border-top-left-radius: 100%;
     }
-    .tree .lower.left.trunk{
+    .single-tree .lower.left.trunk{
       border-bottom-right-radius: 100%;
     }
-    .tree .lower.right.trunk{
+    .single-tree .lower.right.trunk{
       border-bottom-left-radius: 100%;
     }
     .shake {
@@ -160,6 +164,362 @@
       animation-iteration-count: infinite;
       animation-timing-function: linear; 
     }
+    .svg-scalable--center {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+      width: 100%;
+      height: auto;
+    }
+
+    /**
+    *mixin stamb and branches
+    */
+    .wrap-tree {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      margin: 0 auto;
+      height: 100%;
+      background-color: #f9eff6;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .tree {
+      display: inline-block;
+      position: absolute;
+      width: 80px;
+      padding-bottom: 30px;
+      font-size: 0;
+      -webkit-transform-origin: 0 bottom 0;
+              transform-origin: 0 bottom 0;
+      z-index: 99;
+      /**
+      *variables
+      * $heightBranch, $left, $bottom, $widthTree, $heightTree, $heightStamb, $widthStamb, $colorTree, $colorStamb
+      */
+    }
+    .tree:nth-of-type(1) {
+      left: 80px;
+      bottom: 0;
+      -webkit-animation: growup 3.3s 0s linear;
+              animation: growup 3.3s 0s linear;
+      z-index: 10;
+    }
+    .tree:nth-of-type(1) .tree__stamb {
+      position: absolute;
+    }
+    .tree:nth-of-type(1) .tree__stamb::before {
+      border-left: 8px solid transparent;
+      border-bottom: 140px solid #8e763b;
+    }
+    .tree:nth-of-type(1) .tree__stamb::after {
+      border-right: 8px solid transparent;
+      border-bottom: 140px solid #6a582c;
+    }
+    .tree:nth-of-type(1) .tree__branch--1 {
+      height: 37px;
+    }
+    .tree:nth-of-type(1) .tree__branch--1::before {
+      border-left: 36px solid transparent;
+      border-bottom: 54px solid #3b8e42;
+    }
+    .tree:nth-of-type(1) .tree__branch--1::after {
+      border-right: 36px solid transparent;
+      border-bottom: 54px solid #2c6a31;
+    }
+    .tree:nth-of-type(1) .tree__branch--2 {
+      height: 37px;
+    }
+    .tree:nth-of-type(1) .tree__branch--2::before {
+      border-left: 48px solid transparent;
+      border-bottom: 72px solid #3b8e42;
+    }
+    .tree:nth-of-type(1) .tree__branch--2::after {
+      border-right: 48px solid transparent;
+      border-bottom: 72px solid #2c6a31;
+    }
+    .tree:nth-of-type(1) .tree__branch--3 {
+      height: 37px;
+    }
+    .tree:nth-of-type(1) .tree__branch--3::before {
+      border-left: 60px solid transparent;
+      border-bottom: 90px solid #3b8e42;
+    }
+    .tree:nth-of-type(1) .tree__branch--3::after {
+      border-right: 60px solid transparent;
+      border-bottom: 90px solid #2c6a31;
+    }
+    .tree:nth-of-type(1) .tree__branch--4 {
+      height: 37px;
+    }
+    .tree:nth-of-type(1) .tree__branch--4::before {
+      border-left: 72px solid transparent;
+      border-bottom: 108px solid #3b8e42;
+    }
+    .tree:nth-of-type(1) .tree__branch--4::after {
+      border-right: 72px solid transparent;
+      border-bottom: 108px solid #2c6a31;
+    }
+    .tree:nth-of-type(2) {
+      left: 227px;
+      bottom: 0;
+      -webkit-animation: growup 3s 0s linear;
+              animation: growup 3s 0s linear;
+      z-index: 10;
+    }
+    .tree:nth-of-type(2) .tree__stamb {
+      position: absolute;
+    }
+    .tree:nth-of-type(2) .tree__stamb::before {
+      border-left: 8px solid transparent;
+      border-bottom: 140px solid #8e763b;
+    }
+    .tree:nth-of-type(2) .tree__stamb::after {
+      border-right: 8px solid transparent;
+      border-bottom: 140px solid #6a582c;
+    }
+    .tree:nth-of-type(2) .tree__branch--1 {
+      height: 33px;
+    }
+    .tree:nth-of-type(2) .tree__branch--1::before {
+      border-left: 36px solid transparent;
+      border-bottom: 48px solid #3b8e42;
+    }
+    .tree:nth-of-type(2) .tree__branch--1::after {
+      border-right: 36px solid transparent;
+      border-bottom: 48px solid #2c6a31;
+    }
+    .tree:nth-of-type(2) .tree__branch--2 {
+      height: 33px;
+    }
+    .tree:nth-of-type(2) .tree__branch--2::before {
+      border-left: 48px solid transparent;
+      border-bottom: 64px solid #3b8e42;
+    }
+    .tree:nth-of-type(2) .tree__branch--2::after {
+      border-right: 48px solid transparent;
+      border-bottom: 64px solid #2c6a31;
+    }
+    .tree:nth-of-type(2) .tree__branch--3 {
+      height: 33px;
+    }
+    .tree:nth-of-type(2) .tree__branch--3::before {
+      border-left: 60px solid transparent;
+      border-bottom: 80px solid #3b8e42;
+    }
+    .tree:nth-of-type(2) .tree__branch--3::after {
+      border-right: 60px solid transparent;
+      border-bottom: 80px solid #2c6a31;
+    }
+    .tree:nth-of-type(2) .tree__branch--4 {
+      height: 33px;
+    }
+    .tree:nth-of-type(2) .tree__branch--4::before {
+      border-left: 72px solid transparent;
+      border-bottom: 96px solid #3b8e42;
+    }
+    .tree:nth-of-type(2) .tree__branch--4::after {
+      border-right: 72px solid transparent;
+      border-bottom: 96px solid #2c6a31;
+    }
+
+    .tree__branch {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      height: 50px;
+      z-index: 1;
+    }
+    .tree__branch::before, .tree__branch::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+    }
+    .tree__branch::before {
+      right: 50%;
+    }
+    .tree__branch::after {
+      left: 50%;
+    }
+
+    .tree__stamb {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      z-index: 2;
+    }
+    .tree__stamb::before, .tree__stamb::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 2px;
+      bottom: 0 !important;
+    }
+    .tree__stamb::before {
+      right: 50%;
+    }
+    .tree__stamb::after {
+      left: 50%;
+    }
+    .flex-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+.mountain, .mountain-two, .mountain-three {
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    border-left: 350px solid transparent;
+    border-right: 350px solid transparent;
+    border-bottom: 1500px solid #7ac1e4;
+    z-index: 1;
+}
+.mountain-two { 
+    left: 80px;
+    bottom: -20px;
+    opacity: .3;
+    z-index: 0;
+}
+.mountain-three {
+    left: -60px;
+    bottom:-10px;
+    opacity: .5;
+    z-index: 0;
+}
+.mountain-top {
+    position: absolute;
+    right: -65px;
+    border-left: 65px solid transparent;
+    border-right: 65px solid transparent;
+    border-bottom: 77px solid #ceeaf6;
+    z-index: 2;
+}
+.mountain-cap-1, .mountain-cap-2, .mountain-cap-3 {
+    position: absolute;
+    top: 70px;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-top: 25px solid #ceeaf6;
+}
+.mountain-cap-1 { left: -55px; }
+.mountain-cap-2 { left: -25px; }
+.mountain-cap-3 { left: 5px; }
+.cloud, .cloud:before, .cloud:after {
+  position: absolute;
+  width: 70px;
+	height: 30px;
+	background: #fff;
+  z-index: 1000;
+	-webkit-border-radius: 100px / 50px;
+	border-radius: 100px / 50px;
+}
+
+.cloud { 
+  -webkit-animation: cloud 50s infinite linear;
+          animation: cloud 50s infinite linear;
+}
+
+.cloud-1 {
+  bottom: 500px;
+}
+
+.cloud-2 {
+  bottom: 300px;
+}
+@-webkit-keyframes cloud {
+    0%   { left: -100px; }
+    100% { left: 1000px; } 
+}
+@keyframes cloud {
+   
+    0%   { left: -100px; }
+    100% { left: 1000px; } 
+}
+.cloud:before {
+  content: '';
+  left: 50px;
+}
+.cloud:after {
+  content: '';
+  left: 25px;
+  top: -10px;
+}
+
+    /**
+    *animate
+    */
+    @-webkit-keyframes growup {
+      0% {
+        bottom: -100px;
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+      }
+      80% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+      }
+      85% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      90% {
+        -webkit-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+      }
+      95% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+    }
+    @keyframes growup {
+      0% {
+        bottom: -100px;
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+      }
+      80% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+      }
+      85% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      90% {
+        -webkit-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+      }
+      95% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+    }
+
     @keyframes spin {
       from {
           transform:rotate(0deg);
@@ -202,14 +562,147 @@
 <body>
   <div id="world">
     <div style="display: none" id="controls">
-      <div id="up"></div>
-      <div id="down"></div>
-      <div id="left"></div>
-      <div id="left-jump"></div>
-      <div id="right"></div>
-      <div id="right-jump"></div>
+      <div id="up">Up</div>
+      <div id="down">Lay Egg</div>
+      <div id="left">Left</div>
+      <div id="left-jump">< Jump</div>
+      <div id="right">Right</div>
+      <div id="right-jump">Jump ></div>
     </div>
-    <div id="game">
+    <div style='display: none;' id='level-bg-0'>
+      <div class="single-tree">
+        <div class="trunk upper left"></div>
+        <div class="trunk upper right"></div>
+        <div class="trunk lower left"></div>
+        <div class="trunk lower right"></div>
+      </div>
+      <svg style="display: none">
+        <symbol  id="clouds-back" viewBox="-360.318 -89.013 720.637 178.025">
+          <path style="fill:#EDD2B6;" d="M-116.231-54.054c0-19.309-16.434-34.959-36.707-34.959h-170.675v0.044
+            c-20.425,0.916-36.706,17.76-36.706,38.41c0,21.238,17.217,38.455,38.456,38.455c7.508,0,14.511-2.162,20.431-5.882
+            c2.832,32.403,30.018,57.828,63.158,57.828c33.516,0,60.941-26.007,63.241-58.938h22.096
+            C-132.665-19.096-116.231-34.748-116.231-54.054z M184.409,21.342c0-13.913,11.844-25.193,26.454-25.193h123.002v0.032
+            c14.72,0.659,26.453,12.799,26.453,27.681c0,15.307-12.407,27.714-27.713,27.714c-5.411,0-10.459-1.557-14.726-4.24
+            c-2.04,23.353-21.632,41.676-45.517,41.676c-24.155,0-43.919-18.744-45.576-42.477h-15.924
+            C196.253,46.536,184.409,35.257,184.409,21.342z"/>
+        </symbol>
+        <symbol  id="clouds-front" viewBox="-194.985 -131.474 389.969 262.948">
+          <path style="fill:#EDD2B6;" d="M194.984-110.297c0,11.661-9.453,21.113-21.114,21.113v0.014h-6.325
+            c0.29,2.146,0.451,4.332,0.451,6.557c0,26.984-21.875,48.858-48.859,48.858c-26.985,0-48.86-21.875-48.86-48.858
+            c0-1.565,0.081-3.111,0.227-4.638c-4.287,12.737-16.316,21.915-30.498,21.915c-14.8,0-27.259-9.996-31.013-23.601
+            c-4.331,3.928-10.079,6.324-16.388,6.324c-13.475,0-24.398-10.924-24.398-24.399s10.924-24.399,24.398-24.399H116.66
+            c0.82-0.04,1.646-0.062,2.477-0.062s1.655,0.022,2.476,0.062h52.258l0,0C185.531-131.412,194.984-121.959,194.984-110.297z
+             M-181.384,68.57L-181.384,68.57h33.66c0.529-0.026,1.061-0.041,1.595-0.041s1.067,0.015,1.595,0.041h79.907
+            c8.68,0,15.717,7.036,15.717,15.715c0,8.68-7.037,15.717-15.717,15.717c-4.063,0-7.766-1.542-10.557-4.073
+            c-2.417,8.764-10.441,15.202-19.975,15.202c-9.136,0-16.883-5.912-19.645-14.117c0.093,0.984,0.145,1.979,0.145,2.988
+            c0,17.381-14.09,31.471-31.471,31.471s-31.472-14.09-31.472-31.471c0-1.433,0.104-2.842,0.29-4.224h-4.073V95.77
+            c-7.512,0-13.601-6.088-13.601-13.6S-188.896,68.57-181.384,68.57z"/>
+        </symbol>
+        <symbol  id="mounts" viewBox="-268.295 -157.145 536.59 314.289">
+          <path style="fill:#833137;" d="M-28.28-157.145h-120.223h-119.792l119.792,257.61l0.214,0.461L-28.28-157.145z M122.144,157.144
+            l-0.26-0.561L-24.004-157.145h145.888h146.411L122.144,157.144z"/>
+          <path style="fill:#9F4544;" d="M-28.28-157.145h-120.223v257.61l0.214,0.461L-28.28-157.145z M122.144,157.144l-0.26-0.561
+            v-313.728h146.411L122.144,157.144z"/>
+          <path style="fill:#9A5049;" d="M-99.106-4.837l-27.856,13.098l-21.325-25.494l-0.215,0.215l-25.418,25.279l-24.408-14.945
+            l49.826,107.15l0.214,0.461L-99.106-4.837z M122.144,157.144l-0.26-0.561L61.203,26.091l29.725,18.201l30.956-30.787l0.262-0.26
+            l25.97,31.046l33.925-15.951L122.144,157.144z"/>
+          <path style="fill:#AF6F56;" d="M-99.106-4.837l-27.856,13.098l-21.325-25.494l-0.215,0.215v117.484l0.214,0.461L-99.106-4.837z
+             M122.144,157.144l-0.26-0.561V13.505l0.262-0.26l25.97,31.046l33.925-15.951L122.144,157.144z"/>
+        </symbol>
+        <symbol  id="small-hills" viewBox="-280.679 -48.945 561.357 97.89">
+          <path style="fill:#230000;" d="M-117.896-48.945h-81.392h-81.391C-261.541-19.616-246.262,3.768-245.71,4.5
+            c10.59,14.089,27.441,23.203,46.422,23.203c18.981,0,35.833-9.114,46.423-23.203C-152.313,3.768-137.034-19.616-117.896-48.945z
+             M245.71,4.5c-10.59,14.089-27.441,23.203-46.423,23.203S163.455,18.589,152.864,4.5c-0.551-0.732-15.832-24.116-34.969-53.445
+            h81.392h81.392C261.542-19.616,246.261,3.768,245.71,4.5z M37.205,25.743C26.614,39.831,9.764,48.945-9.218,48.945
+            S-45.05,39.831-55.64,25.743c-0.68-0.904-23.747-36.232-48.826-74.688h95.248h95.249C60.949-10.489,37.885,24.839,37.205,25.743z"
+            />
+          <path style="fill:#3F0B14;" d="M-199.288-48.945v76.648c18.981,0,35.833-9.114,46.423-23.203
+            c0.552-0.732,15.831-24.116,34.969-53.445H-199.288z M280.679-48.945C261.542-19.616,246.261,3.768,245.71,4.5
+            c-10.59,14.089-27.441,23.203-46.423,23.203v-76.648H280.679z M86.031-48.945C60.949-10.489,37.885,24.839,37.205,25.743
+            C26.614,39.831,9.764,48.945-9.218,48.945v-97.891H86.031z"/>
+        </symbol>
+        <symbol  id="sun" viewBox="-228.044 -190.563 456.088 381.126">
+          <path style="fill:#E1B284;" d="M-163.23-37.481c0,90.15,73.081,163.23,163.23,163.23c90.15,0,163.23-73.081,163.23-163.23
+            c0-70.185-44.301-130.021-106.464-153.082h112.258c36.675,40.47,59.02,94.165,59.02,153.081
+            c0,125.947-102.097,228.045-228.043,228.045c-125.945,0-228.045-102.098-228.045-228.045c0-58.916,22.346-112.611,59.021-153.081
+            h112.258C-118.929-167.502-163.23-107.666-163.23-37.481z"/>
+          <path style="fill:#DAA071;" d="M163.23-37.481c0,90.15-73.08,163.23-163.23,163.23c-90.149,0-163.23-73.081-163.23-163.23
+            c0-70.185,44.301-130.021,106.464-153.082H56.767C118.93-167.502,163.23-107.666,163.23-37.481z M0-132.868
+            c-52.68,0-95.386,42.708-95.386,95.387c0,52.681,42.706,95.386,95.386,95.386c52.68,0,95.385-42.705,95.385-95.386
+            C95.385-90.16,52.68-132.868,0-132.868z"/>
+          <path style="fill:#CD7746;" d="M0,57.904c-52.68,0-95.386-42.705-95.386-95.386c0-52.679,42.706-95.387,95.386-95.387
+            c52.68,0,95.385,42.708,95.385,95.387C95.385,15.199,52.68,57.904,0,57.904z"/>
+        </symbol>
+        <symbol  id="trees" viewBox="-11.267 -16.899 22.532 33.798">
+          <polygon style="fill:#772A29;" points="11.266,-9.993 6.415,-2.135 9.388,-2.135 4.894,5.148 7.251,5.148 0,16.898 -7.252,5.148 
+            -4.895,5.148 -9.388,-2.135 -6.415,-2.135 -11.267,-9.993 -2.168,-9.993 -2.168,-16.899 2.167,-16.899 2.167,-9.993 	"/>
+          <polygon style="fill:#BA6C3E;" points="6.415,-2.135 9.388,-2.135 4.894,5.148 7.251,5.148 0,16.898 0,-9.993 11.266,-9.993 	"/>
+        </symbol>
+      </svg>
+      
+      <div class="wrap-tree">
+        <div class="tree">
+          <div class="tree__stamb"></div>
+          <div class="tree__branch tree__branch--1"></div>
+          <div class="tree__branch tree__branch--2"></div>
+          <div class="tree__branch tree__branch--3"></div>
+          <div class="tree__branch tree__branch--4"></div>
+        </div>
+        <div class="tree">
+          <div class="tree__stamb"></div>
+          <div class="tree__branch tree__branch--1"></div>
+          <div class="tree__branch tree__branch--2"></div>
+          <div class="tree__branch tree__branch--3"></div>
+          <div class="tree__branch tree__branch--4"></div>
+        </div>
+        <div class="background">
+          <svg class="svg-scalable  svg-scalable--center" version="1.1" id="background-svg-druart.2018" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="800px" height="600px" viewBox="0 0 800 600" style="enable-background:new 0 0 800 600;"
+           xml:space="preserve">	
+            <use xlink:href="#sun"  width="456.088" height="381.126" x="-228.044" y="-190.563" transform="matrix(1.2764 0 0 -1.2764 408.9678 355.8848)" style="overflow:visible;"/>
+            <use xlink:href="#clouds-back"  width="720.637" height="178.025" x="-360.318" y="-89.013" transform="matrix(1 0 0 -1 404.79 209.6367)" style="overflow:visible;"/>
+            <use xlink:href="#mounts"  width="536.59" height="314.289" x="-268.295" y="-157.145" transform="matrix(1.2764 0 0 -1.2764 401.3838 352.0635)" style="overflow:visible;"/>
+            <use xlink:href="#small-hills"  width="561.357" height="97.89" x="-280.679" y="-48.945" transform="matrix(1.2764 0 0 -1.2764 393.7275 490.1719)" style="overflow:visible;"/>
+            <line style="fill:none;stroke:#230000;stroke-width:60;stroke-linecap:round;stroke-miterlimit:10;" x1="31.874" y1="568.662" x2="767.897" y2="568.662"/>
+            <use xlink:href="#clouds-front"  width="389.969" height="262.948" x="-194.985" y="-131.474" transform="matrix(1.2764 0 0 -1.2764 520.9424 219.7905)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.2764 0 0 -1.2764 640.5947 529.7734)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.448 0 0 -2.448 269.5283 517.6592)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.2962 0 0 -2.2962 426.2119 520.3477)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.8297 0 0 -1.8297 506.4404 520.4082)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.7513 0 0 -2.7513 45.2017 525.3652)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.8297 0 0 -1.8297 180.0029 520.4102)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 329.7656 529.7734)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 549.9863 529.7734)" style="overflow:visible;"/>
+            <use xlink:href="#trees"  width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 690.7686 534.0117)" style="overflow:visible;"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div id='level-bg-1' style='display: none;'>
+      <div class="mountain">
+        <div class="mountain-top">
+          <div class="mountain-cap-1"></div>
+          <div class="mountain-cap-2"></div>
+          <div class="mountain-cap-3"></div>
+        </div>
+      </div>
+      <div class="mountain-two">
+        <div class="mountain-top">
+          <div class="mountain-cap-1"></div>
+          <div class="mountain-cap-2"></div>
+          <div class="mountain-cap-3"></div>
+        </div>
+      </div>
+       <div class="mountain-three">
+        <div class="mountain-top">
+          <div class="mountain-cap-1"></div>
+          <div class="mountain-cap-2"></div>
+          <div class="mountain-cap-3"></div>
+        </div>
+      </div>
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+    </div>
+    <div id="game">      
     </div>
   </div>
   <script src='gameVariables.js'></script>
