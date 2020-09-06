@@ -31,6 +31,13 @@
     body::-webkit-scrollbar {
       display: none;
     }
+    #warp {
+      display: flex;
+      align-items: flex-start;
+      position: fixed;
+      z-index: 2;
+      bottom: 85vh;
+    }
     #world {
       width: 600px;
       height: 3000px;
@@ -641,6 +648,13 @@
       <div id="left-jump">< Jump</div>
       <div id="right">Right</div>
       <div id="right-jump">Jump ></div>
+    </div>
+    <div id='warp'>
+      <button onclick='window.handleNextLevel(-1)'>Level 1</button>
+      <button onclick='window.handleNextLevel(0)'>Level 2</button>
+      <button onclick='window.handleNextLevel(1)'>Level 3</button>
+      <button onclick='window.handleNextLevel(2)'>Level 4</button>
+      <button onclick='window.handleNextLevel(3)'>Level 5</button>
     </div>
     <!-- <div style='display: none;' id='level-bg-0'>
       <div class="single-tree">

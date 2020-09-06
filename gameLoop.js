@@ -122,8 +122,22 @@ const handleNextLevel = (current) => {
   if ((gameVariables.eggs, length > 0)) {
     gameVariables.eggs[0].remove();
   }
-  level++;
-  localStorage.setItem('level', JSON.stringify(level));
+
+  if(level === 4) {
+    const titleDiv = document.createElement('div');
+    titleDiv.style.width = '85%';
+    titleDiv.style.position = 'fixed';
+    titleDiv.style.margin = 'auto';
+    titleDiv.style.textAlign = 'center';
+    titleDiv.style.top = '40px';
+    const title = document.createElement('h3');
+    title.innerText = "Congrats you collected all your feathers!";
+    titleDiv.append(title);
+    gameVariables.game.appendChild(titleDiv);
+  } else {
+    level++;
+    localStorage.setItem('level', JSON.stringify(level));
+  }
   setTimeout(() => loadLevel(level), 1500);
 };
 
