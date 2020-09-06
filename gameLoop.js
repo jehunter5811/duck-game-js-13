@@ -1,4 +1,3 @@
-const thisLevel = parseInt(localStorage.getItem('level'), 10);
 const dropItem = (itemType) => {
   const item = document.createElement("div");
   item.style.width = "15px";
@@ -311,11 +310,9 @@ const gameLoop = async () => {
       gameVariables.facingRight = true;
       if (!gameVariables.JUMPING && gameVariables.GROUNDED && !gameVariables.jumpingOff) {
         gameVariables.GROUNDED = false;
-        if(thisLevel > 1) {
-          gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
-        } else {
+        
           gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
-        }
+       
         
       }
 
@@ -344,13 +341,10 @@ const gameLoop = async () => {
         !gameVariables.jumpingOff
       ) {
         gameVariables.GROUNDED = false;
-        if(thisLevel > 1) {
-          gameVariables.playerVelY =
-        -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
-        } else {
+        
           gameVariables.playerVelY =
           -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
-        }
+      
       }
       if (gameVariables.playerVelX > -gameVariables.PLAYER_SPEED) {
         gameVariables.playerVelX--;
@@ -366,13 +360,10 @@ const gameLoop = async () => {
         !gameVariables.jumpingOff
       ) {
         gameVariables.GROUNDED = false;
-        if(thisLevel > 1) {
-          gameVariables.playerVelY =
-        -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
-        } else {
+       
           gameVariables.playerVelY =
           -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
-        }
+        
       }
 
       if (!gameVariables.layingEgg && !gameVariables.JUMPING) {

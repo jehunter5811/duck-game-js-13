@@ -105,23 +105,23 @@ const loadLevel = (level) => {
   game.style.height = gameVariables.GAME_HEIGHT;
   game.style.width = gameVariables.GAME_WIDTH;
 
-  //  Draw Background  
-  const prevBG = document.getElementById(`level-bg-${level - 1}`)
+  // //  Draw Background  
+  // const prevBG = document.getElementById(`level-bg-${level - 1}`)
 
-  if(prevBG) {
-    prevBG.style.display = 'none';
-  }
+  // if(prevBG) {
+  //   prevBG.style.display = 'none';
+  // }
 
-  const currentBG = document.getElementById(`level-bg-${level}`)
+  // const currentBG = document.getElementById(`level-bg-${level}`)
 
-  if(currentBG) {
-    currentBG.style.display = 'block';  
-    currentBG.style.position = 'absolute';
-    currentBG.style.zIndex = 980;
-    currentBG.style.bottom = '255px';
-    currentBG.style.height = '100%';
-    currentBG.style.width = '100%';
-  }
+  // if(currentBG) {
+  //   currentBG.style.display = 'block';  
+  //   currentBG.style.position = 'absolute';
+  //   currentBG.style.zIndex = 980;
+  //   currentBG.style.bottom = '255px';
+  //   currentBG.style.height = '100%';
+  //   currentBG.style.width = '100%';
+  // }
 
   //  Draw the map
   const thisLevel = levels[level];
@@ -142,14 +142,11 @@ const loadLevel = (level) => {
         platform.style.left = `${i * columnWidth}px`;
         platform.style.margin = "0px";
         if (row[i] === 2) {
-          if(level === 2) {
-            platform.setAttribute("class", "collider platform pajaro");
-            platform.innerText = '··'
-          } else {
+          
             platform.style.height = "10px";
             platform.style.background = "#000";
             platform.setAttribute("class", "collider platform");
-          }          
+                
         } else if (row[i] === 1) {
           platform.style.height = `${rowHeight}px`;
           platform.setAttribute("class", "collider platform");
@@ -194,18 +191,18 @@ const loadLevel = (level) => {
           feather.style.zIndex = 1024;
           feather.style.backgroundImage = 'url(feather.png)';
           game.appendChild(feather);
-          if(level === 0) {
-            //  Attach the owl
-            const owl = document.createElement('div');
-            owl.style.width = '62px';
-            owl.style.height = '54px';
-            owl.style.position = 'absolute';
-            owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
-            owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
-            owl.style.zIndex = 999;
-            owl.style.backgroundImage = 'url(owl.png)';
-            game.appendChild(owl);            
-          }
+          // if(level === 0) {
+          //   //  Attach the owl
+          //   const owl = document.createElement('div');
+          //   owl.style.width = '62px';
+          //   owl.style.height = '54px';
+          //   owl.style.position = 'absolute';
+          //   owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
+          //   owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
+          //   owl.style.zIndex = 999;
+          //   owl.style.backgroundImage = 'url(owl.png)';
+          //   game.appendChild(owl);            
+          // }
         }
         platform.style.zIndex = 1024;
         game.appendChild(platform);
