@@ -153,6 +153,9 @@ const loadLevel = (level) => {
         } else if (row[i] === 1) {
           platform.style.height = `${rowHeight}px`;
           platform.setAttribute("class", "collider platform");
+          if(level === 2) {
+            platform.style.background = 'brown';
+          }
         } else if (row[i] === 3) {
           platform.setAttribute("class", "embankment");
           platform.style.background = "none";

@@ -123,9 +123,8 @@ const handleNextLevel = (current) => {
   if ((gameVariables.eggs, length > 0)) {
     gameVariables.eggs[0].remove();
   }
-
   level++;
-  // localStorage.setItem('level', JSON.stringify(currentLevel));
+  localStorage.setItem('level', JSON.stringify(level));
   setTimeout(() => loadLevel(level), 1500);
 };
 
@@ -310,17 +309,14 @@ const gameLoop = async () => {
 
     if (jumpKey && rightKey) {
       gameVariables.facingRight = true;
-      if (thisLevel > 2) {
-        //  Track double flaps
-        if (gameVariables.flapCount < 2) {
-          gameVariables.GROUNDED = false;
-          gameVariables.playerVelY =
-            -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
-          gameVariables.flapCount++
-        } 
-      } else if (!gameVariables.JUMPING && gameVariables.GROUNDED && !gameVariables.jumpingOff) {
+      if (!gameVariables.JUMPING && gameVariables.GROUNDED && !gameVariables.jumpingOff) {
         gameVariables.GROUNDED = false;
-        gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
+        if(thisLevel > 1) {
+          gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
+        } else {
+          gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
+        }
+        
       }
 
       if (
@@ -342,20 +338,19 @@ const gameLoop = async () => {
       }
     } else if (jumpKey && leftKey) {
       gameVariables.facingRight = false;
-      if(thisLevel > 1) {
-        if (gameVariables.flapCount < 2) {
-          gameVariables.GROUNDED = false;
-          gameVariables.playerVelY = -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
-          gameVariables.flapCount++
-        } 
-      } else if (
+      if (
         !gameVariables.JUMPING &&
         gameVariables.GROUNDED &&
         !gameVariables.jumpingOff
       ) {
         gameVariables.GROUNDED = false;
-        gameVariables.playerVelY =
+        if(thisLevel > 1) {
+          gameVariables.playerVelY =
+        -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
+        } else {
+          gameVariables.playerVelY =
           -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
+        }
       }
       if (gameVariables.playerVelX > -gameVariables.PLAYER_SPEED) {
         gameVariables.playerVelX--;
@@ -365,21 +360,19 @@ const gameLoop = async () => {
         jump("left");
       }
     } else if (jumpKey) {
-      if(thisLevel > 1) {
-        if (gameVariables.flapCount < 2) {
-          gameVariables.GROUNDED = false;
-          gameVariables.playerVelY =
-          -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 1.15;
-          gameVariables.flapCount++
-        }
-      } else if (
+      if (
         !gameVariables.JUMPING &&
         gameVariables.GROUNDED &&
         !gameVariables.jumpingOff
       ) {
         gameVariables.GROUNDED = false;
-        gameVariables.playerVelY =
+        if(thisLevel > 1) {
+          gameVariables.playerVelY =
+        -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER * 2;
+        } else {
+          gameVariables.playerVelY =
           -gameVariables.PLAYER_SPEED * gameVariables.JUMP_POWER;
+        }
       }
 
       if (!gameVariables.layingEgg && !gameVariables.JUMPING) {
