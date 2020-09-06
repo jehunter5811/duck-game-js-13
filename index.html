@@ -385,10 +385,10 @@
 .mountain, .mountain-two, .mountain-three {
     position: absolute;
     bottom: 0;
-    left: 40px;
+    left: 25px;
     border-left: 350px solid transparent;
     border-right: 350px solid transparent;
-    border-bottom: 1500px solid #7ac1e4;
+    border-bottom: 1500px solid #bba478;
     z-index: 1;
 }
 .mountain-two { 
@@ -406,16 +406,16 @@
 .mountain-top {
     position: absolute;
     right: -65px;
-    border-left: 65px solid transparent;
-    border-right: 65px solid transparent;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
     border-bottom: 77px solid #ceeaf6;
     z-index: 2;
 }
 .mountain-cap-1, .mountain-cap-2, .mountain-cap-3 {
     position: absolute;
     top: 70px;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
     border-top: 25px solid #ceeaf6;
 }
 .mountain-cap-1 { left: -55px; }
@@ -461,6 +461,70 @@
   left: 25px;
   top: -10px;
 }
+
+.pajaro{
+  background:black;
+  border-radius: 50% 50% 20% 20%;
+  color:white;
+  line-height:20px;
+  letter-spacing: 2px;
+  font-size:0.8em;
+  text-align:center;
+  margin-top:-20px; margin-left:-10px;
+  width:15px; height:15px;
+  animation:planeo 0.8s linear infinite;
+  z-index:999;
+}
+
+.pajaro:after,
+.pajaro:before{
+  content:"";
+  position:absolute;
+  top:50%; left:50%;
+}
+.pajaro:after{
+  border-radius: 100% 100% 0 0;
+  box-shadow: inset 0px 5px 0 black;
+  width:100px; height:100px;
+  margin-top:-7px; margin-left:-50px;
+  transform-origin: 100% 0%;
+  animation:alas 3s linear infinite;
+}
+
+/*------------------------------------------------------ bird beak
+*/
+
+.pajaro:before{
+  background:#FFC37F;
+  border-radius: 100% 0% 20% 0%;
+  margin-top:3px; margin-left:-4px;
+  width:6px; height:6px;
+  transform:rotateZ(45deg);
+}
+
+/*------------------------------------------------------ wings animation
+*/
+
+@keyframes alas {
+  50%{
+    transform:rotateX(-1440deg);
+  }
+}
+
+/*------------------------------------------------------ bird animation
+*/
+
+@keyframes planeo {
+  40%{
+    transform:rotateZ(2deg) translateX(2px) translateY(10px) translateZ(0);
+    line-height:16px;
+    font-size:0.6em;
+  }
+  80%{
+    transform:rotateZ(-2deg) translateX(5px) translateY(8px) translateZ(0);
+  }
+}
+
 
     /**
     *animate
@@ -701,6 +765,10 @@
       </div>
       <div class="cloud cloud-1"></div>
       <div class="cloud cloud-2"></div>
+    </div>
+
+    <div id='bg-level-2'>
+      
     </div>
     <div id="game">      
     </div>

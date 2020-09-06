@@ -1,8 +1,11 @@
 window.onload = () => {
   //  Check local storage
-  const level = localStorage.getItem('level');
+  let level = localStorage.getItem('level')
   if(!level) {
-    localStorage.setItem('level', JSON.stringify(0));
+    localStorage.setItem('level', JSON.stringify(0));    
+    level = 0;
+  } else {
+    level = parseInt(level, 10);
   }
   gameVariables.img.src = "sprites.png";
   gameVariables.img.onload = () => {
@@ -29,7 +32,7 @@ window.onload = () => {
       e.preventDefault();
     });
 
-    loadLevel(0);
+    loadLevel(level);
   };
 };
 

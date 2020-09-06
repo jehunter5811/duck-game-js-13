@@ -130,27 +130,42 @@ const loadLevel = (level) => {
   for (const row of thisLevel) {
     for (let i = 0; i < row.length; i++) {
       if(row[i] !== 0) {
-        const platform = document.createElement("p");
+        let platform;
+        if(level === 2) {
+          platform = document.createElement("div");
+        } else {
+          platform = document.createElement("p");
+        }
         platform.style.width = `${columnWidth}px`;
         platform.style.position = "absolute";
         platform.style.top = `${thisLevel.indexOf(row) * rowHeight}px`;
         platform.style.left = `${i * columnWidth}px`;
         platform.style.margin = "0px";
         if (row[i] === 2) {
-          platform.style.height = "10px";
-          platform.style.background = "#000";
-          platform.setAttribute("class", "collider platform");
+          if(level === 2) {
+            platform.setAttribute("class", "collider platform pajaro");
+            platform.innerText = '··'
+          } else {
+            platform.style.height = "10px";
+            platform.style.background = "#000";
+            platform.setAttribute("class", "collider platform");
+          }          
         } else if (row[i] === 1) {
           platform.style.height = `${rowHeight}px`;
           platform.setAttribute("class", "collider platform");
         } else if (row[i] === 3) {
           platform.setAttribute("class", "embankment");
-          platform.style.background = "yellow";
+          platform.style.background = "none";
           platform.style.height = `${rowHeight}px`;
         } else if(row[i] === 4) {
-          platform.style.height = "10px";
-          platform.style.background = "#000";
-          platform.setAttribute("class", "collider platform");
+          if(level === 2) {
+            platform.setAttribute("class", "collider platform pajaro");
+            platform.innerText = '··'
+          } else {
+            platform.style.height = "10px";
+            platform.style.background = "#000";
+            platform.setAttribute("class", "collider platform");
+          }
           //  Now create the collectible
           const coll = document.createElement('div');
           coll.style.backgroundImage = 'url(bug.png)';
