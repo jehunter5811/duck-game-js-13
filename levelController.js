@@ -228,18 +228,16 @@ const loadLevel = (level) => {
           feather.style.zIndex = 1024;
           feather.style.backgroundImage = 'url(feather.png)';
           game.appendChild(feather);
-          // if(level === 0) {
-          //   //  Attach the owl
-          //   const owl = document.createElement('div');
-          //   owl.style.width = '62px';
-          //   owl.style.height = '54px';
-          //   owl.style.position = 'absolute';
-          //   owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
-          //   owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
-          //   owl.style.zIndex = 999;
-          //   owl.style.backgroundImage = 'url(owl.png)';
-          //   game.appendChild(owl);            
-          // }
+          //  Attach the owl
+          const owl = document.createElement('div');
+          owl.style.width = '62px';
+          owl.style.height = '54px';
+          owl.style.position = 'absolute';
+          owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
+          owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
+          owl.style.zIndex = 999;
+          owl.style.backgroundImage = 'url(owl.png)';
+          game.appendChild(owl);  
         } else if(row[i] === 6) {
           platform.style.height = `${rowHeight}px`;
           platform.style.width = '40px';

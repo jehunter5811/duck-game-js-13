@@ -1,8 +1,16 @@
 let flaps = 0;
 const dropItem = (itemType) => {
   const item = document.createElement("div");
-  item.style.width = "15px";
-  item.style.height = "19px";
+  if(itemType === 'rock') {
+    item.setAttribute('class', 'rock dropped-item spin');
+  } else {
+    item.style.width = "15px";
+    item.style.height = "19px";
+    
+    item.style.backgroundImage = `url(${itemType}.png)`;
+    item.style.backgroundSize = "cover";
+    item.setAttribute("class", "dropped-item spin");
+  }  
   item.style.position = "absolute";
   item.style.zIndex = "2000";
   item.style.left = `${
@@ -11,9 +19,6 @@ const dropItem = (itemType) => {
   item.style.bottom = `${
     parseInt(gameVariables.player.style.bottom.split("px")[0], 10) + 400
   }px`;
-  item.style.backgroundImage = `url(${itemType}.png)`;
-  item.style.backgroundSize = "cover";
-  item.setAttribute("class", "dropped-item spin");
   gameVariables.game.appendChild(item);
 };
 
@@ -181,7 +186,7 @@ const gameLoop = async () => {
     if (gameVariables.droppingItems) {
       const droppedItems = document.getElementsByClassName("dropped-item");
       if (!droppedItems || droppedItems.length === 0) {
-        dropItem("acorn");
+        dropItem("rock");
         gameVariables.dropCount = 0;
       }
     }
