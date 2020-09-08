@@ -35,8 +35,8 @@
       display: flex;
       align-items: flex-start;
       position: fixed;
-      z-index: 2;
-      bottom: 85vh;
+      z-index: 2000;
+      top: 5px;
     }
     #world {
       width: 600px;
@@ -478,6 +478,15 @@
   top: -10px;
 }
 
+.flipped {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
 .pajaro{
   background:black;
   border-radius: 50% 50% 20% 20%;
@@ -637,9 +646,29 @@
       90% { transform: translate(1px, 2px) rotate(0deg); }
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
+    #home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+    }
+    .startbtn {
+      margin: 10px;
+    }
   </style>
 </head>
 <body>
+  <!-- <div id='home'>
+    <div>
+      <h3 style='margin-right: 20px'>Feathers Not Found</h3>
+    </div>   
+    <div>
+      <button class='startbtn'>Story</button>
+      <button onclick='window.continueGame()' class='startbtn' id='continue' style='display: none;'>Continue</button>
+      <button onclick='window.continueGame()' class='startbtn' id='start' style='display: none;'>Start Game</button>
+      <button class='startbtn'>Select Level</button>
+    </div>    
+  </div> -->
   <div id="world">
     <div style="display: none" id="controls">
       <div id="up">Up</div>

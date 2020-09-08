@@ -1,3 +1,4 @@
+let flaps = 0;
 const dropItem = (itemType) => {
   const item = document.createElement("div");
   item.style.width = "15px";
@@ -44,13 +45,29 @@ const detectOverlap = (() => {
   };
 })();
 
-const drawFrame = (frameX, frameY) => {
+const drawFrame = (frameX, frameY) => {  
   const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * frameX}px`;
   const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE * frameY}px`;
   if (gameVariables.player) {
     gameVariables.player.style.backgroundPosition = `${x} ${y}`;
   }
+  if(gameVariables.facingRight) {
+    gameVariables.player.classList.add('flipped');
+  } else {
+    gameVariables.player.classList.remove('flipped');
+  }
 };
+
+const drawBird = (frameX, frameY) => {
+  if(flaps >= 10) {
+    const x = `${gameVariables.BIRD_WIDTH * gameVariables.SCALE * frameX}px`;
+    const y = `${gameVariables.BIRD_HEIGHT * gameVariables.SCALE * frameY}px`;
+    const birds = document.getElementsByClassName('birds');
+    for(let i=0;i<birds.length;i++) {
+     birds[i].style.backgroundPosition = `${x} ${y}`;
+    }
+  }  
+}
 
 const jump = async (dir) => {
   if (dir === "right") {
@@ -114,6 +131,10 @@ const handleNextLevel = (current) => {
     game.removeChild(game.firstChild);
   }
 
+  for(let i=0; i< gameVariables.eggs.length;i++) {
+    gameVariables.eggs[i].remove();
+  }
+
   gameVariables.player = undefined;
   const player = document.getElementById("player");
   if (player) {
@@ -143,11 +164,26 @@ const handleNextLevel = (current) => {
 
 const gameLoop = async () => {
   if (!gameVariables.pause) {
+    if(flaps < 10) {
+      flaps++
+    } else {
+      flaps = 0;
+    }
     if (gameVariables.droppingItems) {
       const droppedItems = document.getElementsByClassName("dropped-item");
       if (!droppedItems || droppedItems.length === 0) {
         dropItem("acorn");
         gameVariables.dropCount = 0;
+      }
+    }
+
+    const birds = document.getElementsByClassName('birds');
+    if(birds) {
+      drawBird(gameVariables.birdLoop[gameVariables.currentBirdIndex], 0);
+      if(gameVariables.currentBirdIndex < 2) {
+        gameVariables.currentBirdIndex++;
+      } else {
+        gameVariables.currentBirdIndex = 0;
       }
     }
 
@@ -175,6 +211,8 @@ const gameLoop = async () => {
     const embankments = document.getElementsByClassName("embankment");
     const feathers = document.getElementsByClassName("feather");
     const smallBugs = document.getElementsByClassName("small-bug");
+    const refillStation = document.getElementsByClassName('refill');
+    const station = refillStation[0];
     const feather = feathers[0]; //Always only one;
     let featherTouching = [];
     const a = gameVariables.player.getBoundingClientRect();
@@ -182,6 +220,18 @@ const gameLoop = async () => {
     if (feather) {
       if (detectOverlap(gameVariables.player, feather)) {
         featherTouching.push(feather);
+      }
+    }
+
+    if(station) {
+      if(detectOverlap(gameVariables.player, station)) {
+        //  Respawn bugs
+        for(let i=0;i < smallBugs.length;i++) {
+          if(smallBugs[i].style.display === 'none') {
+            smallBugs[i].style.display = 'inline'
+          }
+        }
+
       }
     }
 
@@ -236,7 +286,7 @@ const gameLoop = async () => {
             (gameVariables.eggTimer / gameVariables.MAX_EGG_TIMER) * 100
           }%`;
         }
-        smallBugs[i].remove();
+        smallBugs[i].style.display = 'none';
       }
     }
 
@@ -415,9 +465,9 @@ const gameLoop = async () => {
         drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex], 1);
       }
     } else {
-      const dir = gameVariables.facingRight ? 0 : 1;
+
       if (!gameVariables.layingEgg && !gameVariables.JUMPING) {
-        drawFrame(15, dir);
+        drawFrame(10, 1);
       }
     }
 

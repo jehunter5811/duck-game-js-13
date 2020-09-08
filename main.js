@@ -1,12 +1,15 @@
 window.onload = () => {
   //  Check local storage
-  let level = localStorage.getItem('level')
+  let level = localStorage.getItem('level');
   if(!level) {
     localStorage.setItem('level', JSON.stringify(0));    
     level = 0;
+    // document.getElementById('start').style.display = 'block'
   } else {
+    // document.getElementById('continue').style.display = 'block';
     level = parseInt(level, 10);
   }
+  window.level = level;
   gameVariables.img.src = "sprites.png";
   gameVariables.img.onload = () => {
     console.log("Sprite sheet loaded");

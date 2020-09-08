@@ -18,7 +18,17 @@ const handleReload = () => {
   handleNextLevel(currentLevel - 1);
 }
 
+const continueGame = () => {
+  document.getElementById('home').style.display = 'hide';  
+  const world = document.getElementById("world");
+  world.style.display = 'block';
+  gameVariables.pause = false;
+}
+
+window.continueGame = continueGame;
+
 const loadLevel = (level) => {
+  console.log(`Level ${level}`)
   const world = document.getElementById("world");
   if (isMobile()) {
     gameVariables.GAME_WIDTH = window.innerWidth;
@@ -86,7 +96,7 @@ const loadLevel = (level) => {
   navButtons.style.width = gameVariables.MAX_WIDTH;
   navButtons.style.margin = "auto";
   navButtons.style.position = "fixed";
-  navButtons.style.top = 0;
+  navButtons.style.top = '10px';
   navButtons.style.display = "flex";
   navButtons.style.alignItems = "center";
   navButtons.style.zIndex = 1024;
@@ -159,8 +169,10 @@ const loadLevel = (level) => {
           platform.style.height = `${rowHeight}px`;
         } else if(row[i] === 4) {
           if(level === 2) {
-            platform.setAttribute("class", "collider platform pajaro");
-            platform.innerText = '··'
+            platform.setAttribute("class", "collider platform birds");
+            platform.style.backgroundImage = 'url(bird.png)';
+            platform.style.height = '38px';
+            platform.style.width = '50.33px';
           } else {
             platform.style.height = "10px";
             platform.style.background = "#000";
@@ -203,6 +215,12 @@ const loadLevel = (level) => {
           //   owl.style.backgroundImage = 'url(owl.png)';
           //   game.appendChild(owl);            
           // }
+        } else if(row[i] === 6) {
+          platform.style.height = `${rowHeight}px`;
+          platform.style.width = '40px';
+          platform.style.background = 'brown';
+          platform.style.border = '1px solid black';
+          platform.setAttribute('class','collider platform refill');
         }
         platform.style.zIndex = 1024;
         game.appendChild(platform);
@@ -214,7 +232,7 @@ const loadLevel = (level) => {
   const eggTimerBarContainer = document.createElement("div");
   eggTimerBarContainer.style.position = "fixed";
   eggTimerBarContainer.style.zIndex = "2000";
-  eggTimerBarContainer.style.top = "50px";
+  eggTimerBarContainer.style.top = "65px";
   eggTimerBarContainer.style.width = `${gameVariables.GAME_WIDTH / 2 - 10}px`;
   eggTimerBarContainer.style.height = "20px";
   eggTimerBarContainer.style.border = "1px solid #282828";
