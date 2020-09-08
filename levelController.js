@@ -29,6 +29,10 @@ const continueGame = () => {
 window.continueGame = continueGame;
 
 const selectLevel = () => {
+  const win = document.getElementById('win');
+  if(win) {
+    win.style.display = 'none';
+  }
   const home = document.getElementById('home');
   home.style.display = 'none';
   const world = document.getElementById("world");
@@ -127,9 +131,11 @@ const loadLevel = (level) => {
   navButtons.style.zIndex = 1024;
   navButtons.style.justifyContent = "space-between";
   const refresh = document.createElement("button");
+  refresh.setAttribute('class', 'eightbit-btn')
   refresh.innerText = "Reload";
   refresh.onclick = () => handleReload();
   const pauseButton = document.createElement('button');
+  pauseButton.setAttribute('class', 'eightbit-btn')
   pauseButton.innerText = 'Levels';
   pauseButton.onclick = () => selectLevel();
   navButtons.appendChild(refresh);
@@ -260,6 +266,7 @@ const loadLevel = (level) => {
   eggTimerBarContainer.style.height = "20px";
   eggTimerBarContainer.style.border = "1px solid #282828";
   eggTimerBarContainer.setAttribute('id', 'timer')
+  eggTimerBarContainer.setAttribute('class', 'egg-timer');
 
   gameVariables.eggTimerBar = document.createElement("div");
   gameVariables.eggTimerBar.style.margin = "0px";

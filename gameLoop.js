@@ -128,50 +128,46 @@ const timeoutPromise = (time) => {
 };
 
 const handleNextLevel = (current) => {
-  gameVariables.eggTimer = 0;
-  const pauseScreen = document.getElementById('pause-screen')
-  if(pauseScreen) {
-    pauseScreen.style.display = 'none';
-  }
-  const world = document.getElementById('world');
-  world.style.display = 'block';
-  const game = document.getElementById("game");
-  let level = current;
-  gameVariables.pause = true;
-  //  @TODO - We'll do an animation here
-  while (game.firstChild) {
-    game.removeChild(game.firstChild);
-  }
-
-  for(let i=0; i< gameVariables.eggs.length;i++) {
-    gameVariables.eggs[i].remove();
-  }
-
-  gameVariables.player = undefined;
-  const player = document.getElementById("player");
-  if (player) {
-    player.remove();
-  }
-  if ((gameVariables.eggs, length > 0)) {
-    gameVariables.eggs[0].remove();
-  }
-
-  if(level === 4) {
-    const titleDiv = document.createElement('div');
-    titleDiv.style.width = '85%';
-    titleDiv.style.position = 'fixed';
-    titleDiv.style.margin = 'auto';
-    titleDiv.style.textAlign = 'center';
-    titleDiv.style.top = '40px';
-    const title = document.createElement('h3');
-    title.innerText = "Congrats you collected all your feathers!";
-    titleDiv.append(title);
-    gameVariables.game.appendChild(titleDiv);
+  if(current === 4) {
+    const world = document.getElementById('world');
+    world.style.display = 'none';
+    const win = document.getElementById('win')
+    win.style.display = 'block';
   } else {
+    gameVariables.eggTimer = 0;
+    const pauseScreen = document.getElementById('pause-screen')
+    if(pauseScreen) {
+      pauseScreen.style.display = 'none';
+    }
+    const world = document.getElementById('world');
+    world.style.display = 'block';
+    const game = document.getElementById("game");
+    let level = current;
+    gameVariables.pause = true;
+    //  @TODO - We'll do an animation here
+    while (game.firstChild) {
+      game.removeChild(game.firstChild);
+    }
+  
+    for(let i=0; i< gameVariables.eggs.length;i++) {
+      gameVariables.eggs[i].remove();
+    }
+  
+    gameVariables.player = undefined;
+    const player = document.getElementById("player");
+    if (player) {
+      player.remove();
+    }
+    if ((gameVariables.eggs, length > 0)) {
+      gameVariables.eggs[0].remove();
+    }
+  
+    
     level++;
     localStorage.setItem('level', JSON.stringify(level));
-  }
-  setTimeout(() => loadLevel(level), 1500);
+  
+    setTimeout(() => loadLevel(level), 1500);
+  }  
 };
 
 const gameLoop = async () => {

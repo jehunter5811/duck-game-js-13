@@ -606,6 +606,54 @@
       90% { transform: translate(1px, 2px) rotate(0deg); }
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
+
+    #story, #home, #pause-screen {
+      max-width: 85%;
+      margin: auto;
+      margin-top: 60px;
+    }
+    .eightbit-btn {
+  background: #023978;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: inset -4px -4px 0px 0px #020878;
+  margin: 5px;
+}
+.eightbit-btn:hover, .eightbit-btn:focus {
+  background: #76c442;
+  box-shadow: inset -6px -6px 0px 0px #4AA52E;
+}
+.eightbit-btn:active {
+  box-shadow: inset 4px 4px 0px 0px #4AA52E;
+}
+.eightbit-btn:before, .eightbit-btn:after, .egg-timer:before, .egg-timer:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+}
+.eightbit-btn:before, .egg-timer:before {
+  top: -6px;
+  left: 0;
+  border-top: 6px black solid;
+  border-bottom: 6px black solid;
+}
+.eightbit-btn:after, .egg-timer:after {
+  left: -6px;
+  top: 0;
+  border-left: 6px black solid;
+  border-right: 6px black solid;
+}
+
+.egg-timer {
+  margn-top: 5px;
+}
     #home {
       display: flex;
       align-items: center;
@@ -623,27 +671,34 @@
       <h3 style='margin-right: 20px'>Feathers Not Found</h3>
     </div>   
     <div>
-      <button onclick='window.toggleStoryScreen()' class='startbtn'>Story</button>
-      <button onclick='window.continueGame()' class='startbtn' id='continue' style='display: none;'>Continue</button>
-      <button onclick='window.continueGame()' class='startbtn' id='start' style='display: none;'>Start Game</button>
-      <button class='startbtn' onclick='window.selectLevel()'>Select Level</button>
+      <button class='eightbit-btn' onclick='window.toggleStoryScreen()' class='startbtn'>Story</button>
+      <button class='eightbit-btn' onclick='window.continueGame()' class='startbtn' id='continue' style='display: none;'>Continue</button>
+      <button class='eightbit-btn' onclick='window.continueGame()' class='startbtn' id='start' style='display: none;'>Start Game</button>
+      <button class='eightbit-btn' class='startbtn' onclick='window.selectLevel()'>Select Level</button>
     </div>    
   </div>
   <div id='pause-screen' style='display: none;'>
     <h1>Feathers Not Found</h1>
     <div id='warp'>
-      <button onclick='window.handleNextLevel(-1)'>Level 1</button>
-      <button onclick='window.handleNextLevel(0)'>Level 2</button>
-      <button onclick='window.handleNextLevel(1)'>Level 3</button>
-      <button onclick='window.handleNextLevel(2)'>Level 4</button>
-      <button onclick='window.handleNextLevel(3)'>Level 5</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(-1)'>Level 1</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(0)'>Level 2</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(1)'>Level 3</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(2)'>Level 4</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(3)'>Level 5</button>
     </div>    
   </div>
   <div id='story' style='display: none;'>
     <h1>Feathers Not Found</h1>
     <p>You're a duck. Yep, a duck. Problem is, your feathers didn't come in right and you can't fly.</p>
     <p>To catch up with your family, all of whom have just migrated, you have to collect feathers so you can finally fly.</p>
-    <button onclick='window.toggleStoryScreen()'>Play</button>
+    <p>Eat bugs to give you the energy to lay eggs for a nice boost. Avoid falling acorns and rocks. And most of all, collect those feathers!</p>
+    <button class='eightbit-btn' onclick='window.toggleStoryScreen()'>Play</button>
+  </div>
+  <div id='win' style='display: none;'>
+    <h1>Congratulations!</h1>
+    <p>You completed the game, gathering all the feathers you need to learn to fly. Now you can join your family.</p>
+    <button class='eightbit-btn' onclick='window.loadCredits()'>Credits</button>
+    <button class='eightbit-btn' onclick='window.selectLevel()'>Play Again</button>
   </div>
   <div id="world" style='display: none'>
     <div style="display: none" id="controls">
