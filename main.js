@@ -4,9 +4,9 @@ window.onload = () => {
   if(!level) {
     localStorage.setItem('level', JSON.stringify(0));    
     level = 0;
-    // document.getElementById('start').style.display = 'block'
+    document.getElementById('start').style.display = 'block'
   } else {
-    // document.getElementById('continue').style.display = 'block';
+    document.getElementById('continue').style.display = 'block';
     level = parseInt(level, 10);
   }
   window.level = level;

@@ -19,16 +19,41 @@ const handleReload = () => {
 }
 
 const continueGame = () => {
-  document.getElementById('home').style.display = 'hide';  
+  document.getElementById('home').style.display = 'none';  
   const world = document.getElementById("world");
   world.style.display = 'block';
   gameVariables.pause = false;
+  requestAnimationFrame(window.gameLoop);
 }
 
 window.continueGame = continueGame;
 
+const selectLevel = () => {
+  const home = document.getElementById('home');
+  home.style.display = 'none';
+  const world = document.getElementById("world");
+  world.style.display = 'none';
+  const pauseScreen = document.getElementById('pause-screen')
+  pauseScreen.style.display = 'block';
+}
+
+window.selectLevel = selectLevel;
+
+const toggleStoryScreen = () => {
+  const story = document.getElementById('story');
+  const home = document.getElementById('home');
+  if(story && story.style.display !== 'none') {
+    story.style.display = 'none';
+    home.style.display = 'block';
+  } else {
+    home.style.display = 'none';
+    story.style.display = 'block';
+  }
+}
+
+window.toggleStoryScreen = toggleStoryScreen;
+
 const loadLevel = (level) => {
-  console.log(`Level ${level}`)
   const world = document.getElementById("world");
   if (isMobile()) {
     gameVariables.GAME_WIDTH = window.innerWidth;
@@ -104,11 +129,11 @@ const loadLevel = (level) => {
   const refresh = document.createElement("button");
   refresh.innerText = "Reload";
   refresh.onclick = () => handleReload();
-  const playGameButton = document.createElement("button");
-  playGameButton.innerText = "Play Game (**Plays Music**)";
-  playGameButton.onclick = () => handlePlayMusic();
+  const pauseButton = document.createElement('button');
+  pauseButton.innerText = 'Levels';
+  pauseButton.onclick = () => selectLevel();
   navButtons.appendChild(refresh);
-  navButtons.appendChild(playGameButton);
+  navButtons.appendChild(pauseButton);
   world.appendChild(navButtons);
 
   let game = document.getElementById("game");

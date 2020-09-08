@@ -11,7 +11,7 @@ const dropItem = (itemType) => {
   item.style.bottom = `${
     parseInt(gameVariables.player.style.bottom.split("px")[0], 10) + 400
   }px`;
-  item.style.backgroundImage = "url(acorn.png)";
+  item.style.backgroundImage = `url(${itemType}.png)`;
   item.style.backgroundSize = "cover";
   item.setAttribute("class", "dropped-item spin");
   gameVariables.game.appendChild(item);
@@ -123,6 +123,13 @@ const timeoutPromise = (time) => {
 };
 
 const handleNextLevel = (current) => {
+  gameVariables.eggTimer = 0;
+  const pauseScreen = document.getElementById('pause-screen')
+  if(pauseScreen) {
+    pauseScreen.style.display = 'none';
+  }
+  const world = document.getElementById('world');
+  world.style.display = 'block';
   const game = document.getElementById("game");
   let level = current;
   gameVariables.pause = true;
@@ -163,7 +170,9 @@ const handleNextLevel = (current) => {
 };
 
 const gameLoop = async () => {
-  if (!gameVariables.pause) {
+  const homeScreen = document.getElementById('home');
+  const world = document.getElementById('world');
+  if (!gameVariables.pause && homeScreen.style.display === 'none' && world.style.display !== 'none') {
     if(flaps < 10) {
       flaps++
     } else {
