@@ -4,11 +4,13 @@ const dropItem = (itemType) => {
   if(itemType === 'rock') {
     item.setAttribute('class', 'rock dropped-item spin');
   } else {
-    item.style.width = "15px";
-    item.style.height = "19px";
+    item.style.width = "26px";
+    item.style.height = "33px";
     
-    item.style.backgroundImage = `url(${itemType}.png)`;
-    item.style.backgroundSize = "cover";
+    item.style.backgroundImage = `url(sprites.png)`;
+    const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 14}px`;
+    const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+    item.style.backgroundPosition = `${x} ${y}`;
     item.setAttribute("class", "dropped-item spin");
   }  
   item.style.position = "absolute";
@@ -75,17 +77,7 @@ const drawBird = (frameX, frameY) => {
 }
 
 const jump = async (dir) => {
-  if (dir === "right") {
-    for (fr of gameVariables.jumpLoop) {
-      drawFrame(fr, 0);
-      await timeoutPromise(100);
-    }
-  } else {
-    for (fr of gameVariables.jumpLoop) {
-      drawFrame(fr, 1);
-      await timeoutPromise(100);
-    }
-  }
+  drawFrame(1, 1);
 };
 
 const layEgg = async () => {
@@ -93,18 +85,17 @@ const layEgg = async () => {
     gameVariables.eggTimer = 0;
     gameVariables.eggTimerBar.style.width = "0%";
     gameVariables.layingEgg = true;
-    const dir = gameVariables.facingRight ? 0 : 1;
     for (fr of gameVariables.eggLoop) {
-      drawFrame(fr, dir);
+      drawFrame(fr, 1);
       await timeoutPromise(100);
     }
     gameVariables.layingEgg = false;
     gameVariables.eggLoopIndex = 0;
     const egg = document.createElement("div");
-    egg.style.height = `${gameVariables.SPRITE_WIDTH}px`;
-    egg.style.width = `${gameVariables.SPRITE_HEIGHT}px`;
+    egg.style.height = `${gameVariables.SPRITE_HEIGHT}px`;
+    egg.style.width = `${gameVariables.SPRITE_WIDTH}px`;
     egg.style.background = "url(sprites.png)";
-    const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 16}px`;
+    const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 10}px`;
     const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
     egg.style.backgroundPosition = `${x} ${y}`;
     egg.style.position = "absolute";
@@ -182,7 +173,7 @@ const gameLoop = async () => {
     if (gameVariables.droppingItems) {
       const droppedItems = document.getElementsByClassName("dropped-item");
       if (!droppedItems || droppedItems.length === 0) {
-        dropItem("rock");
+        dropItem("acorn");
         gameVariables.dropCount = 0;
       }
     }
@@ -305,8 +296,8 @@ const gameLoop = async () => {
       for (const item of droppedItems) {
         const touching = detectOverlap(gameVariables.player, item);
         if (touching) {
-          const dir = gameVariables.facingRight ? 0 : 1;
-          drawFrame(9, dir);
+          drawFrame(3, 1);
+          gameVariables.eggTimer = 0;
           navigator.vibrate =
             navigator.vibrate ||
             navigator.webkitVibrate ||
@@ -317,7 +308,7 @@ const gameLoop = async () => {
           }
           world.classList.add("shake");
           await timeoutPromise(100);
-          drawFrame(15, dir);
+          drawFrame(8, 1);
           world.classList.remove("shake");
           item.remove();
         }
@@ -477,7 +468,7 @@ const gameLoop = async () => {
     } else {
 
       if (!gameVariables.layingEgg && !gameVariables.JUMPING) {
-        drawFrame(10, 1);
+        drawFrame(8, 1);
       }
     }
 

@@ -211,11 +211,14 @@ const loadLevel = (level) => {
           }
           //  Now create the collectible
           const coll = document.createElement('div');
-          coll.style.backgroundImage = 'url(bug.png)';
-          coll.style.width = '11px';
-          coll.style.height = '12px';
+          coll.style.backgroundImage = 'url(sprites.png)';
+          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 12}px`;
+          const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          coll.style.backgroundPosition = `${x} ${y}`;
+          coll.style.width = `${gameVariables.SPRITE_WIDTH}px`;
+          coll.style.height = '33px';
           coll.style.position = 'absolute';
-          coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 10}px`;
+          coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 33}px`;
           coll.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
           coll.setAttribute('class', 'small-bug');
           coll.style.zIndex = 1024;
@@ -227,22 +230,28 @@ const loadLevel = (level) => {
           const feather = document.createElement('div');
           feather.setAttribute('class', 'feather');
           feather.style.position = 'absolute';
+          feather.style.backgroundImage = 'url(sprites.png)';
+          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 13}px`;
+          const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          feather.style.backgroundPosition = `${x} ${y}`;
           feather.style.top = `${parseInt(platform.style.top.split('px')[0] - 27, 10)}px`;
-          feather.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
-          feather.style.height = '27px';
-          feather.style.width = '5px';
-          feather.style.zIndex = 1024;
-          feather.style.backgroundImage = 'url(feather.png)';
+          feather.style.left = `${(i * columnWidth) + (columnWidth/2) - 10}px`;
+          feather.style.height = '33px';
+          feather.style.width = '26px';
+          feather.style.zIndex = 1024;          
           game.appendChild(feather);
-          //  Attach the owl
+          //  Attach the owl          
           const owl = document.createElement('div');
-          owl.style.width = '62px';
-          owl.style.height = '54px';
+          owl.style.width = '26px';
+          owl.style.height = '33px';
           owl.style.position = 'absolute';
+          owl.style.backgroundImage = 'url(sprites.png)';
+          const owlX = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 11}px`;
+          const owlY = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          owl.style.backgroundPosition = `${owlX} ${owlY}`;     
           owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
-          owl.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
-          owl.style.zIndex = 999;
-          owl.style.backgroundImage = 'url(owl.png)';
+          owl.style.left = `${(i * columnWidth) + (columnWidth/2) - 10}px`;
+          owl.style.zIndex = 999;          
           game.appendChild(owl);  
         } else if(row[i] === 6) {
           platform.style.height = `${rowHeight}px`;
