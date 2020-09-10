@@ -5,23 +5,14 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
-  <link rel="manifest" href="manifest.json" />
-  <!-- ios support -->
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <link rel="apple-touch-icon" href="DUCK.png" />
-  <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
   <meta name="theme-color" content="#db4938" />
+  <link rel="icon" type="image/x-icon" href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAE4BAMAAAByDPGJAAAAJFBMVEUAAAAEzv/88AD88CTnzq/qAwDQiAAAAAD/kQCHVgC9VwD87NyH1dVwAAAAAXRSTlMAQObYZgAAA4dJREFUeNrt279v00AYxvEq/NiPqB2YyIkCZaKK2KlkJpa2cDsI6QY2GJq9QsDMlpEJKTMb/xxv0sZPHDv0cva9sd3nO6SSZec+UfvKpybZYylyFYVeS8ymiCmmQghlEUNMGEaFYCpyFRFDTIswJjBiiGkHJoAQwCKml5jx+IUuxvv3YRg46mPyiOkfRlLD3Pc+AmMaKRYDR5OYPGJqYvISY8QhbYsxDUdMfzFyY0iHEUOXMS9NsohpAINMig68J4aYpBh0nGCQiCGmaQy6U/KY8OymMEhryYrEEJMQEz5SD+z/Gi0GiZhgzCkx9TGoNuaJ98QQo45Bx7cYc89Jb3Ux+046JaYpDFDEENNljEQMMZ3GgFPCPJ1IX3LCsx/lvhFDTDrMmTGNYZbLTwpd5JIPxnQBgzcBNTGSm0fMthhpGIlBGKQ1B5JLiCGmpZhryfdVigCIIaYDmA2DRAwxShipWQwI2Mp0A7Pci+8Cs9yVExOBkaIxz2fSbziqJMQQkwqDhvUx0kXpNtAxzLm1u8FYe0hMFAbFYEbGzOZN8lYHiRhiFDBoGIGRHlaMlJFCMHgeTQyuIqZPGOHEYA68n80DxhhiiFHFoBiM9Ckfqc/GBGIG1u4YIz0ipicYe5X3H8frhX0IY3bVr0CMLaaJscWI6T4Gf11+XgQGm3BiiNkZJnykyhiDtsAcTae7wUynP4npL0YKw2CQ4jBopIApPjsxfcVgpMIwRorBYJr0MTJNxPQcU8iWwvXEENM+TKl0GHnQxIiDGGJqYuBYHNbEYFV5IIaYSIwkh3ZzO8DSxBCzFab1+5lFh2camP1zYoghhhhiShjnXGqMLEFMfYxFmhhp0AaMfDCDGGKiMBIO62KOsBdHRaOblwaD7+QNiOk2BiOlicEgEUNMLQxGShODQarEAApRUxg45t0CTJanhMFXny+1MDghPQYvvKOYRbUxcCTEwIE0MZISpnBWQkz1IIXPd30MpjoakxeJgSMp5nG2oRMNjHTNudTC4NRUGLzcLmMW1cbgN5QGk2Vv/kp/qj0qGIxUcgxKj5GfPcBAtCgAAwIcqTBfswyY6k56ikHNYlAvMc69uxnz2jk9zNJBDDEBhWL2EgeMRAwx4d29GfNqT6cssKpriSGGGGKIIUYihhhiiCGGGIkYYoghpnP/EiGGmKhaMUjEEFOrtjiIISa+tjiIIYat9A+ziesitlwBtQAAAABJRU5ErkJggg==' />
   <title>Duck Game</title>
   <style>
     body,
     html {
       font-family: sans-serif;
+      background: #282828;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
@@ -38,10 +29,10 @@
       align-items: flex-start;
     }
     #world {
-      width: 600px;
+      width: 450px;
       height: 3000px;
       background: lightblue;
-      margin: auto;
+      margin: auto!important;
       overflow-y: hidden;
       overflow-x: hidden;
     }
@@ -437,10 +428,9 @@
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
 
-    #story, #pause-screen {
-      max-width: 85%;
-      margin: auto;
-      margin-top: 60px;
+    #story, #pause-screen {      
+      width: 450px;        
+      margin: auto!important;
     }
     .eightbit-btn {
   background: #023978;
@@ -485,69 +475,55 @@
   margin-top: 5px;
 }
 
-#line-1 {
+.line-1 {
   background: #9046E3;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-2 {
+.line-2 {
   background: #8635E0;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-3 {
+.line-3 {
   background: #781EDC;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-4 {
+.line-4 {
   background: #6905D8;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-5 {
+.line-5 {
   background: #6000C2;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-6 {
+.line-6 {
   background: #5700AA;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
-#line-7 {
+.line-7 {
   background: #46008A;
   height: calc(100vh/7);
-  width: 100vw;
+  width: 100%;
 }
     #home {
       height: 100vh;
-      width: 100vw;
-      margin: 0;      
+      width: 450px;
+      margin: auto;      
     }
-
+    
     #duck {
-      background: url('sprites.png');
-      background-position: 26px 32px;
+      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAE4BAMAAAByDPGJAAAAJFBMVEUAAAAEzv/88AD88CTnzq/qAwDQiAAAAAD/kQCHVgC9VwD87NyH1dVwAAAAAXRSTlMAQObYZgAAA4dJREFUeNrt279v00AYxvEq/NiPqB2YyIkCZaKK2KlkJpa2cDsI6QY2GJq9QsDMlpEJKTMb/xxv0sZPHDv0cva9sd3nO6SSZec+UfvKpybZYylyFYVeS8ymiCmmQghlEUNMGEaFYCpyFRFDTIswJjBiiGkHJoAQwCKml5jx+IUuxvv3YRg46mPyiOkfRlLD3Pc+AmMaKRYDR5OYPGJqYvISY8QhbYsxDUdMfzFyY0iHEUOXMS9NsohpAINMig68J4aYpBh0nGCQiCGmaQy6U/KY8OymMEhryYrEEJMQEz5SD+z/Gi0GiZhgzCkx9TGoNuaJ98QQo45Bx7cYc89Jb3Ux+046JaYpDFDEENNljEQMMZ3GgFPCPJ1IX3LCsx/lvhFDTDrMmTGNYZbLTwpd5JIPxnQBgzcBNTGSm0fMthhpGIlBGKQ1B5JLiCGmpZhryfdVigCIIaYDmA2DRAwxShipWQwI2Mp0A7Pci+8Cs9yVExOBkaIxz2fSbziqJMQQkwqDhvUx0kXpNtAxzLm1u8FYe0hMFAbFYEbGzOZN8lYHiRhiFDBoGIGRHlaMlJFCMHgeTQyuIqZPGOHEYA68n80DxhhiiFHFoBiM9Ckfqc/GBGIG1u4YIz0ipicYe5X3H8frhX0IY3bVr0CMLaaJscWI6T4Gf11+XgQGm3BiiNkZJnykyhiDtsAcTae7wUynP4npL0YKw2CQ4jBopIApPjsxfcVgpMIwRorBYJr0MTJNxPQcU8iWwvXEENM+TKl0GHnQxIiDGGJqYuBYHNbEYFV5IIaYSIwkh3ZzO8DSxBCzFab1+5lFh2camP1zYoghhhhiShjnXGqMLEFMfYxFmhhp0AaMfDCDGGKiMBIO62KOsBdHRaOblwaD7+QNiOk2BiOlicEgEUNMLQxGShODQarEAApRUxg45t0CTJanhMFXny+1MDghPQYvvKOYRbUxcCTEwIE0MZISpnBWQkz1IIXPd30MpjoakxeJgSMp5nG2oRMNjHTNudTC4NRUGLzcLmMW1cbgN5QGk2Vv/kp/qj0qGIxUcgxKj5GfPcBAtCgAAwIcqTBfswyY6k56ikHNYlAvMc69uxnz2jk9zNJBDDEBhWL2EgeMRAwx4d29GfNqT6cssKpriSGGGGKIIUYihhhiiCGGGIkYYoghpnP/EiGGmKhaMUjEEFOrtjiIISa+tjiIIYat9A+ziesitlwBtQAAAABJRU5ErkJggg==');
       position: absolute;
       z-index: 1024;
-      width: 26px;
-      height: 32px;
-      top: 300px;
-      transform: scale(2);
-      left: 50%;
-    }
-
-    #egg {
-      background: url('sprites.png');
-      background-position: 260px 32px;
-      position: absolute;
-      z-index: 1024;
-      width: 26px;
-      height: 32px;
-      top: 400px;
-      transform: scale(2);
-      left: 60%;
+      width: 280px;
+      height: 312px;
+      top: 50px;
+      left: calc(50vw - 140px);
     }
     #title-and-buttons {
       display: flex;
@@ -555,9 +531,10 @@
       justify-content: center;
       position: absolute;
       z-index: 1024;
-      width: 85%;
       margin: auto;
-      top: 200px;
+      top: 400px;
+      width: 100%;
+      left: 0;
     }
     .startbtn {
       margin: 10px;
@@ -574,23 +551,32 @@
       #9B1923
     );
     }
+    .abs {
+      color: #fff;
+      position: absolute;
+      z-index: 0;
+      width: 400px;
+      margin: auto!important;
+      top: 0;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
   </style>
 </head>
 <body>
   <div id='home'>
-    <div id='line-1'></div>
-    <div id='line-2'></div>
-    <div id='line-3'></div>
-    <div id='line-4'></div>
-    <div id='line-5'></div>
-    <div id='line-6'></div>
-    <div id='line-7'></div>
+    <div class='line-1'></div>
+    <div class='line-2'></div>
+    <div class='line-3'></div>
+    <div class='line-4'></div>
+    <div class='line-5'></div>
+    <div class='line-6'></div>
+    <div class='line-7'></div>
+    <div id='duck'></div>  
     <div id='title-and-buttons'>
       <div>
         <h3 style='margin-right: 20px'>Feathers Not Found</h3>
-      </div>  
-      <div id='duck'></div> 
-      <div id='egg'></div> 
+      </div>             
       <div>
         <button class='eightbit-btn' onclick='window.toggleStoryScreen()' class='startbtn'>Story</button>
         <button class='eightbit-btn' onclick='window.continueGame()' class='startbtn' id='continue' style='display: none;'>Continue</button>
@@ -600,21 +586,58 @@
     </div>  
   </div>
   <div id='pause-screen' style='display: none;'>
-    <h1>Feathers Not Found</h1>
-    <div id='warp'>
-      <button class='eightbit-btn' onclick='window.handleNextLevel(-1)'>Level 1</button>
-      <button class='eightbit-btn' onclick='window.handleNextLevel(0)'>Level 2</button>
-      <button class='eightbit-btn' onclick='window.handleNextLevel(1)'>Level 3</button>
-      <button class='eightbit-btn' onclick='window.handleNextLevel(2)'>Level 4</button>
-      <button class='eightbit-btn' onclick='window.handleNextLevel(3)'>Level 5</button>
-    </div>    
+    <div class='line-1'></div>
+    <div class='line-2'></div>
+    <div class='line-3'></div>
+    <div class='line-4'></div>
+    <div class='line-5'></div>
+    <div class='line-6'></div>
+    <div class='line-7'></div>
+    <div class='abs'>
+      <h1>Feathers Not Found</h1>
+      <div id='warp'>
+        <button class='eightbit-btn' onclick='window.handleNextLevel(-1)'>Level 1</button>
+        <button class='eightbit-btn' onclick='window.handleNextLevel(0)'>Level 2</button>
+        <button class='eightbit-btn' onclick='window.handleNextLevel(1)'>Level 3</button>
+        <button class='eightbit-btn' onclick='window.handleNextLevel(2)'>Level 4</button>
+        <button class='eightbit-btn' onclick='window.handleNextLevel(3)'>Level 5</button>
+      </div>  
+      <div id='help'>
+        <h3>How to play</h3>
+        <p>On a computer: </p>
+        <code>Jump = W or 🔼</code><br/>
+        <code>Right = D or ▶️</code><br/>
+        <code>Left = A or ◀️</code><br/>
+        <code>Lay Egg = S or 🔽</code><br/>
+        <p>On mobile: </p>
+        <code>Use on screen keypad.</code>
+
+        <div>
+          <h4>General Info</h4>
+          <p>Your goal is to collect the feather at the end of each level so that you can fly. You must eat bugs along the way to increase your energy. The energy 
+            bar is in the top-left. Once the bar is full, you can lay an egg to give yourself and extra boost when jumping. If you don't have enough energy and 
+            there are no more bugs, you'll have to return to the bottom of the level and walk up to the bug recharge station (bottom-right).
+          </p>
+          <p>Good luck!</p>
+        </div>
+      </div> 
+    </div> 
   </div>
   <div id='story' style='display: none;'>
-    <h1>Feathers Not Found</h1>
-    <p>You're a duck. Yep, a duck. Problem is, your feathers didn't come in right and you can't fly.</p>
-    <p>To catch up with your family, all of whom have just migrated, you have to collect feathers so you can finally fly.</p>
-    <p>Eat bugs to give you the energy to lay eggs for a nice boost. Avoid falling acorns and rocks. And most of all, collect those feathers!</p>
-    <button class='eightbit-btn' onclick='window.toggleStoryScreen()'>Play</button>
+    <div class='line-1'></div>
+    <div class='line-2'></div>
+    <div class='line-3'></div>
+    <div class='line-4'></div>
+    <div class='line-5'></div>
+    <div class='line-6'></div>
+    <div class='line-7'></div>
+    <div class='abs'>
+      <h1>Feathers Not Found</h1>
+      <p>You're a duck. Yep, a duck. Problem is, your feathers didn't come in right and you can't fly.</p>
+      <p>To catch up with your family, all of whom have just migrated, you have to collect feathers so you can finally fly.</p>
+      <p>Eat bugs to give you the energy to lay eggs for a nice boost. Avoid falling acorns and rocks. And most of all, collect those feathers!</p>
+      <button class='eightbit-btn' onclick='window.toggleStoryScreen()'>Play</button>
+    </div>    
   </div>
   <div id='win' style='display: none;'>
     <h1>Congratulations!</h1>

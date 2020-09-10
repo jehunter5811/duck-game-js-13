@@ -162,8 +162,6 @@ const loadLevel = (level) => {
   game.style.height = gameVariables.GAME_HEIGHT;
   game.style.width = gameVariables.GAME_WIDTH;
 
-  //  Draw Background  
-  //Fetch all backgrounds
   const backgrounds = document.getElementsByClassName('level-bgs');
   if(backgrounds.length) {
     for(let i=0;i<backgrounds.length;i++) {
@@ -232,7 +230,7 @@ const loadLevel = (level) => {
         } else if(row[i] === 4) {
           if(level === 2) {
             platform.setAttribute("class", "collider platform birds");
-            platform.style.backgroundImage = 'url(bird.png)';
+            platform.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJcAAAAlCAMAAAB4Q4s1AAAAP1BMVEUAAADYzsArKyu1q6BjY2Ogl40ZGRn/kQ3/79zGAACgAAD/Pj5/AAC8XgD/zJkCAgJKLxSbSgD/XH+CenM/IQBy7tf3AAAAAXRSTlMAQObYZgAAAYpJREFUWMPtk+1ugzAMAB0bCDA+Rrv3f9bZJloWhWZhXYV/7KqqaqSTD6eF39IoqAAKzQ5cjSN+CdwlH/odbEDfuggMQXuXtSwO0y5zWRwmXS/JanYwwCe40wSKdtgXvAT5KwW0ywX4/LJ9xbTYlUZds68IJV109e8L3phh0Bmxi2qM+n1Fox4WxnEMGwtdVGMo2lU542zXxIBAoYtqjOquJRonWIbpg51x4FX32DDOvTcRTDkw0DXMY8Mv+YyioVney9WP0zgOQ8+HjrMwo1fg0ECHWDS8X1JDKc8Q5O4nlkhmtG3rckR4ZKBzBUNIjENSQ5lv8wxKx5A7BBJjPmtst22LBu4UDX0YKE/xmQMnjfn2NSOG5UZpyhGenjTmLXl2VBKhjUbGurYP8E8a3icGKplxkpnf/u+M9X5HJTMuDNOuFrGXLltha0vcxWFgK6wjF7sy47qud+nCHjtrXU67OmtdWOy6htiFHRhj7+r+u+q7LF6jdFlcl+kug1nS1dnsAotZgAA/ZX0CNBwU72akJJEAAAAASUVORK5CYII=)';
             platform.style.height = '37px';
             platform.style.width = '50px';
           } else {
@@ -252,9 +250,9 @@ const loadLevel = (level) => {
           }
           //  Now create the collectible
           const coll = document.createElement('div');
-          coll.style.backgroundImage = 'url(sprites.png)';
-          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 11}px`;
-          const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          coll.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVIAAAAgCAMAAAB3lgCjAAAAWlBMVEUAAAD87iHduZL/kQ28XgDbdyZrLBVZIhH/eQC8YyD55M/iYQA/IQCHOB+oeBj5tyP/2Lv/XH/////dxh2tjgv/9ZT/n1fMqhtI9A+K/19E0w8gdwAfaAD/tXizfGotAAAAAXRSTlMAQObYZgAAAo5JREFUaN7t2Ot2qjAQhuGZPanarQV3wUMP+/5vsylUJjB8QmpBtLxd9kcCq/I0hKU0N3dpXAQn4Pjcd0g3m82IpCu6lzxcF6kdn0lhIqKkjQklNeNDkK5Wd2T6GZxA43gP+VWkgk3BBLbGpN8VvUVTEWrJ/XOOGUzA8VoRpE8/RfonjAYNX5YAUu8DSKVmxsw6XivYZbtIF5j0eZqkgkmdFBK972Ou01Wi5JywCeyy2lPQYmFlxZPKJEmFc0jKebvdV81Bsxr1b5iC/w4mXWgRpO9vu7d3AKpF7ejIAJFyDkgZkhpUZiVtyDk/acbBtgxJl8v+pBkzZ9ci5UY6butD6vqS6rYs8GLUE5DKs1jSlJIyShukf33XImVQ60nVgmZhEY4jFW9ylnSpAVJrutu9JC+7nYpi0tpTMm67HIcUnOP8pFSZtwJJVTOKlI7MCfOxAVqRavh52718r0naGT74MYz63vgpF6Scpn1I1RSTDnTj41klrfoh0of9/qGqjXTrSW185MS/zG2PH1Dsgo8i/Um1AUjxI2180jQrVmmWRpCGmT32GqS4y0g95P4M6Xq9Xa+tKGXZa/KaZdS88c+RYlNMGnYJKaaOz3WRVuleikm1wyE5HEjDpA6uOPzckrZzboWUyIBCUlw8qeZ8HARI85m0m1TjLtI8zye0Sou4lkF9VNABSM1bkK8wkZxizRVNgLQMXE2Vgpq2ZMOkMU98SHrmnAmS6o1lGogUhUlj9jEZkRQ3dVKKIJVwAZcDNnLlGXL/pFpNKOr46ZBG9H9qpM6/pPx9+kLoxkhjigO1VEImaHo6Wkntt3Fl5Uw4d0Oo45CS8z9SHRzAcFvBzC0uUzKgF5PidWrDbqOIfgA2Hh7wc3gqYwAAAABJRU5ErkJggg==)';
+          const x = `${gameVariables.SPRITE_WIDTH * 11}px`;
+          const y = `${gameVariables.SPRITE_HEIGHT}px`;
           coll.style.backgroundPosition = `${x} ${y}`;
           coll.style.width = `${gameVariables.SPRITE_WIDTH}px`;
           coll.style.height = '33px';
@@ -277,9 +275,9 @@ const loadLevel = (level) => {
           const feather = document.createElement('div');
           feather.setAttribute('class', 'feather');
           feather.style.position = 'absolute';
-          feather.style.backgroundImage = 'url(sprites.png)';
-          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 12}px`;
-          const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          feather.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVIAAAAgCAMAAAB3lgCjAAAAWlBMVEUAAAD87iHduZL/kQ28XgDbdyZrLBVZIhH/eQC8YyD55M/iYQA/IQCHOB+oeBj5tyP/2Lv/XH/////dxh2tjgv/9ZT/n1fMqhtI9A+K/19E0w8gdwAfaAD/tXizfGotAAAAAXRSTlMAQObYZgAAAo5JREFUaN7t2Ot2qjAQhuGZPanarQV3wUMP+/5vsylUJjB8QmpBtLxd9kcCq/I0hKU0N3dpXAQn4Pjcd0g3m82IpCu6lzxcF6kdn0lhIqKkjQklNeNDkK5Wd2T6GZxA43gP+VWkgk3BBLbGpN8VvUVTEWrJ/XOOGUzA8VoRpE8/RfonjAYNX5YAUu8DSKVmxsw6XivYZbtIF5j0eZqkgkmdFBK972Ou01Wi5JywCeyy2lPQYmFlxZPKJEmFc0jKebvdV81Bsxr1b5iC/w4mXWgRpO9vu7d3AKpF7ejIAJFyDkgZkhpUZiVtyDk/acbBtgxJl8v+pBkzZ9ci5UY6butD6vqS6rYs8GLUE5DKs1jSlJIyShukf33XImVQ60nVgmZhEY4jFW9ylnSpAVJrutu9JC+7nYpi0tpTMm67HIcUnOP8pFSZtwJJVTOKlI7MCfOxAVqRavh52718r0naGT74MYz63vgpF6Scpn1I1RSTDnTj41klrfoh0of9/qGqjXTrSW185MS/zG2PH1Dsgo8i/Um1AUjxI2180jQrVmmWRpCGmT32GqS4y0g95P4M6Xq9Xa+tKGXZa/KaZdS88c+RYlNMGnYJKaaOz3WRVuleikm1wyE5HEjDpA6uOPzckrZzboWUyIBCUlw8qeZ8HARI85m0m1TjLtI8zye0Sou4lkF9VNABSM1bkK8wkZxizRVNgLQMXE2Vgpq2ZMOkMU98SHrmnAmS6o1lGogUhUlj9jEZkRQ3dVKKIJVwAZcDNnLlGXL/pFpNKOr46ZBG9H9qpM6/pPx9+kLoxkhjigO1VEImaHo6Wkntt3Fl5Uw4d0Oo45CS8z9SHRzAcFvBzC0uUzKgF5PidWrDbqOIfgA2Hh7wc3gqYwAAAABJRU5ErkJggg==)';
+          const x = `${gameVariables.SPRITE_WIDTH * 12}px`;
+          const y = `${gameVariables.SPRITE_HEIGHT}px`;
           feather.style.backgroundPosition = `${x} ${y}`;
           feather.style.top = `${parseInt(platform.style.top.split('px')[0] - 27, 10)}px`;
           feather.style.left = `${(i * columnWidth) + (columnWidth/2) - 10}px`;
@@ -292,10 +290,10 @@ const loadLevel = (level) => {
           owl.style.width = '62px';
           owl.style.height = '54px';
           owl.style.position = 'absolute';
-          owl.style.backgroundImage = 'url(owl.png)';
+          owl.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAA2BAMAAAD38+CHAAAAMFBMVEUAAADBYBD/tXj/2LviYQD87iH/eQCeThiZRwrWkWNgRTOlTw//kQ0AAAC8XgDguaCrh8xTAAAAAXRSTlMAQObYZgAAAaZJREFUSMft1D9Lw1AUBfCUgktFe6uDf6bcgINTmyfuhdcW3BwenQQHyeBc6dwtq2MmEZw61Q/j6HdwdfO+PutLz+AjYKBID02g/d3DbRJIVEqDjvI8J2r7nyqxcz8QYnTK85n3EKOrHs3k5Lwyk5j9ELXDjNnRaUxKmC+Gt5VZ/MFcU4+MmYiHGX1kjOnHA2PGzoOM/m76NLh58x5mcmk714ff3iCX1Riwz/5TIVlYN9bdv2sVks+PnyngUtI0ZV5ETbk3Y/0ysvemG7WYkyTxQ8BlSNjVR9PJ1VxPp9rVOS2NAeN6qWda6/v5ndbDTOqwHBjXS/0yy7Lz+ZmcldRhOTCuX0SNA8V8Mu9wouQ5tGA5MK6XOtk8k8TWYTkwrqfTV/KRL7Ic6j5Yb3JRPJb8uCi4+2sd17PUeZlY6izLse7Z1vHql65UunS4cskaRxjVbSzZDbSbCgfWGCzs4Xpn5QyOvK3/fZ0tgyPXWGdh72FGZ3Dkbb2GOnVWDI68gfXVuzQmohBvZJ06TDYV2Q/ElRjdJcC11CV77ghwXfVdewT4/9S/AJfi1TC022oIAAAAAElFTkSuQmCC)';
           owl.setAttribute('id', 'owl');
-          const owlX = `${62 * gameVariables.SCALE * 2}px`;
-          const owlY = `${54 * gameVariables.SCALE}px`;
+          const owlX = `${62 * 2}px`;
+          const owlY = `${54}px`;
           owl.style.backgroundPosition = `${owlX} ${owlY}`;     
           owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
           owl.style.left = `${(i * columnWidth) + (columnWidth/2) - 20}px`;
@@ -335,14 +333,14 @@ const loadLevel = (level) => {
 
   gameVariables.player = document.createElement("div");
   gameVariables.player.style.height = `${
-    gameVariables.SPRITE_HEIGHT * gameVariables.SCALE
+    gameVariables.SPRITE_HEIGHT
   }px`;
   gameVariables.player.style.width = `${
-    gameVariables.SPRITE_WIDTH * gameVariables.SCALE
+    gameVariables.SPRITE_WIDTH
   }px`;
   gameVariables.player.style.backgroundImage = `url(${gameVariables.img.src})`;
-  gameVariables.player.style.backgroundPosition = `0px ${
-    gameVariables.SPRITE_HEIGHT * gameVariables.SCALE
+  gameVariables.player.style.backgroundPosition = `${8*gameVariables.SPRITE_WIDTH}px ${
+    gameVariables.SPRITE_HEIGHT
   }px `;
   gameVariables.player.style.position = "absolute";
 

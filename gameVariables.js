@@ -1,6 +1,6 @@
 let gameVariables = {
   GAME_HEIGHT: 3000, 
-  GAME_WIDTH: 600, 
+  GAME_WIDTH: 450, 
   FPS: 15, 
   game: undefined, 
   currentLevel: 0, 
@@ -15,7 +15,6 @@ let gameVariables = {
   SPRITE_WIDTH: 26, 
   BIRD_WIDTH: 50,
   BIRD_HEIGHT: 38,
-  SCALE: 1, 
   keys: [], 
   playerVelX: 0, 
   playerVelY: 0, 
