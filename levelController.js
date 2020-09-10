@@ -147,11 +147,13 @@ const loadLevel = (level) => {
   game.style.width = gameVariables.GAME_WIDTH;
 
   //  Draw Background  
-  const prevBG = document.getElementById(`level-bg-${level - 1}`)
-
-  if(prevBG) {
-    prevBG.style.display = 'none';
-  }
+  //Fetch all backgrounds
+  const backgrounds = document.getElementsByClassName('level-bgs');
+  if(backgrounds.length) {
+    for(let i=0;i<backgrounds.length;i++) {
+      backgrounds[i].style.display = 'none';
+    }
+  }  
 
   const currentBG = document.getElementById(`level-bg-${level}`)
 
