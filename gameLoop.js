@@ -8,7 +8,7 @@ const dropItem = (itemType) => {
     item.style.height = "33px";
     
     item.style.backgroundImage = `url(sprites.png)`;
-    const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 14}px`;
+    const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 13}px`;
     const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
     item.style.backgroundPosition = `${x} ${y}`;
     item.setAttribute("class", "dropped-item spin");
@@ -157,7 +157,7 @@ const handleNextLevel = (current) => {
     level++;
     localStorage.setItem('level', JSON.stringify(level));
   
-    setTimeout(() => loadLevel(level), 1500);
+    setTimeout(() => loadLevel(level),1500);
   }  
 };
 
@@ -274,6 +274,10 @@ const gameLoop = async () => {
     }
 
     if (featherTouching.length > 0) {
+      const owlX = `${62 * gameVariables.SCALE * 2}px`;
+      const owlY = `${54 * gameVariables.SCALE}px`;
+      const owl = document.getElementById('owl');
+      owl.style.backgroundPosition = `${owlX} ${owlY}`;  
       const currentLevel = parseInt(localStorage.getItem("level"), 10);
       handleNextLevel(currentLevel);
     }

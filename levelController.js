@@ -146,23 +146,23 @@ const loadLevel = (level) => {
   game.style.height = gameVariables.GAME_HEIGHT;
   game.style.width = gameVariables.GAME_WIDTH;
 
-  // //  Draw Background  
-  // const prevBG = document.getElementById(`level-bg-${level - 1}`)
+  //  Draw Background  
+  const prevBG = document.getElementById(`level-bg-${level - 1}`)
 
-  // if(prevBG) {
-  //   prevBG.style.display = 'none';
-  // }
+  if(prevBG) {
+    prevBG.style.display = 'none';
+  }
 
-  // const currentBG = document.getElementById(`level-bg-${level}`)
+  const currentBG = document.getElementById(`level-bg-${level}`)
 
-  // if(currentBG) {
-  //   currentBG.style.display = 'block';  
-  //   currentBG.style.position = 'absolute';
-  //   currentBG.style.zIndex = 980;
-  //   currentBG.style.bottom = '255px';
-  //   currentBG.style.height = '100%';
-  //   currentBG.style.width = '100%';
-  // }
+  if(currentBG) {
+    currentBG.style.display = 'block';  
+    currentBG.style.position = 'absolute';
+    currentBG.style.zIndex = 980;
+    currentBG.style.bottom = '255px';
+    currentBG.style.height = '100%';
+    currentBG.style.width = '100%';
+  }
 
   //  Draw the map
   const thisLevel = levels[level];
@@ -185,10 +185,23 @@ const loadLevel = (level) => {
         if (row[i] === 2) {
           
             platform.style.height = "10px";
-            platform.style.background = "#000";
+            if(level === 0) {
+              platform.style.background = "#4C352C";
+              platform.style.borderTop = 'solid 1px #B77B5E';
+              platform.style.borderBottom = 'solid 1px #3F2A23';
+            } else if(level===1) {
+              platform.style.background = "#9E0000";
+              platform.style.borderTop = 'solid 1px #FFB0B0';
+              platform.style.borderBottom = 'solid 1px #700815';
+            } else {
+              platform.style.background = '#000';
+            }         
             platform.setAttribute("class", "collider platform");
                 
         } else if (row[i] === 1) {
+          if(level === 0) {
+            platform.style.background = '#B24800';
+          }
           platform.style.height = `${rowHeight}px`;
           platform.setAttribute("class", "collider platform");
           if(level === 2) {
@@ -202,36 +215,52 @@ const loadLevel = (level) => {
           if(level === 2) {
             platform.setAttribute("class", "collider platform birds");
             platform.style.backgroundImage = 'url(bird.png)';
-            platform.style.height = '38px';
-            platform.style.width = '50.33px';
+            platform.style.height = '37px';
+            platform.style.width = '50px';
           } else {
             platform.style.height = "10px";
-            platform.style.background = "#000";
+            if(level === 0) {
+              platform.style.background = "#4C352C";
+              platform.style.borderTop = 'solid 1px #B77B5E';
+              platform.style.borderBottom = 'solid 1px #3F2A23';
+            } else if(level===1){
+              platform.style.background = "#9E0000";
+              platform.style.borderTop = 'solid 1px #FFB0B0';
+              platform.style.borderBottom = 'solid 1px #700815';
+            } else {
+              platform.style.background = '#000';
+            } 
             platform.setAttribute("class", "collider platform");
           }
           //  Now create the collectible
           const coll = document.createElement('div');
           coll.style.backgroundImage = 'url(sprites.png)';
-          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 12}px`;
+          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 11}px`;
           const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
           coll.style.backgroundPosition = `${x} ${y}`;
           coll.style.width = `${gameVariables.SPRITE_WIDTH}px`;
           coll.style.height = '33px';
           coll.style.position = 'absolute';
-          coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 33}px`;
+          coll.style.top = `${(thisLevel.indexOf(row) * rowHeight) - 20}px`;
           coll.style.left = `${(i * columnWidth) + (columnWidth/2)}px`;
           coll.setAttribute('class', 'small-bug');
           coll.style.zIndex = 1024;
           game.appendChild(coll);
         } else if(row[i] === 5) {
           platform.style.height = "10px";
-          platform.style.background = "#000";
+          if(level === 0) {
+            platform.style.background = "#4C352C";
+            platform.style.borderTop = 'solid 1px #B77B5E';
+            platform.style.borderBottom = 'solid 1px #3F2A23';
+          } else {
+            platform.style.background = '#000';
+          } 
           platform.setAttribute("class", "collider platform");
           const feather = document.createElement('div');
           feather.setAttribute('class', 'feather');
           feather.style.position = 'absolute';
           feather.style.backgroundImage = 'url(sprites.png)';
-          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 13}px`;
+          const x = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 12}px`;
           const y = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
           feather.style.backgroundPosition = `${x} ${y}`;
           feather.style.top = `${parseInt(platform.style.top.split('px')[0] - 27, 10)}px`;
@@ -242,15 +271,16 @@ const loadLevel = (level) => {
           game.appendChild(feather);
           //  Attach the owl          
           const owl = document.createElement('div');
-          owl.style.width = '26px';
-          owl.style.height = '33px';
+          owl.style.width = '62px';
+          owl.style.height = '54px';
           owl.style.position = 'absolute';
-          owl.style.backgroundImage = 'url(sprites.png)';
-          const owlX = `${gameVariables.SPRITE_WIDTH * gameVariables.SCALE * 11}px`;
-          const owlY = `${gameVariables.SPRITE_HEIGHT * gameVariables.SCALE}px`;
+          owl.style.backgroundImage = 'url(owl.png)';
+          owl.setAttribute('id', 'owl');
+          const owlX = `${62 * gameVariables.SCALE * 2}px`;
+          const owlY = `${54 * gameVariables.SCALE}px`;
           owl.style.backgroundPosition = `${owlX} ${owlY}`;     
           owl.style.top = `${parseInt(platform.style.top.split('px')[0] - 27 - 30, 10)}px`;
-          owl.style.left = `${(i * columnWidth) + (columnWidth/2) - 10}px`;
+          owl.style.left = `${(i * columnWidth) + (columnWidth/2) - 20}px`;
           owl.style.zIndex = 999;          
           game.appendChild(owl);  
         } else if(row[i] === 6) {
