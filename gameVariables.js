@@ -45,7 +45,10 @@ let gameVariables = {
   dropCount: 0, 
   maxDropCount: 100, 
   droppedItems: [], 
-  flapCount: 0
+  flapCount: 0, 
+  musicPlaying: false,
+  pauseMusic: false, 
+  myAudioNode: undefined
 }
 
 window.gameVariables = gameVariables;

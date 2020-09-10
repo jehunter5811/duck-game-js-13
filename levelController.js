@@ -138,8 +138,24 @@ const loadLevel = (level) => {
   pauseButton.setAttribute('class', 'eightbit-btn')
   pauseButton.innerText = 'Levels';
   pauseButton.onclick = () => selectLevel();
+
+  const musicToggle = document.createElement('button');
+  musicToggle.innerText = gameVariables.musicPlaying && !gameVariables.pauseMusic ? "🔇" : "🔈";
+  musicToggle.setAttribute('class', 'eightbit-btn')
+  musicToggle.onclick = () => {
+    if(gameVariables.pauseMusic) {
+      gameVariables.pauseMusic = false;
+      handlePlayMusic();
+      musicToggle.innerText = '🔈'
+    } else {
+      gameVariables.pauseMusic = true;
+      gameVariables.myAudioNode.stop();
+      musicToggle.innerText = '🔇'
+    }
+  }
   navButtons.appendChild(refresh);
   navButtons.appendChild(pauseButton);
+  navButtons.appendChild(musicToggle);
   world.appendChild(navButtons);
 
   let game = document.getElementById("game");
