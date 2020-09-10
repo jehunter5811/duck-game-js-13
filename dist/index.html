@@ -19,16 +19,651 @@
   <meta name="theme-color" content="#db4938" />
   <title>Duck Game</title>
   <style>
-body,html{margin:0;overflow-x:hidden;-ms-overflow-style:none;scrollbar-width:none;touch-action:manipulation;-webkit-user-select:none}body::-webkit-scrollbar{display:none}#world{width:600px;height:3000px;background:#add8e6;margin:auto;overflow-y:hidden;overflow-x:hidden}#controls{position:fixed;z-index:2000;bottom:0;left:0;width:100vw;color:#fff;font-size:24px;text-align:center}#left-jump{position:absolute;bottom:175px;height:70px;width:25vw;left:0;background:pink}#right-jump{position:absolute;bottom:175px;height:70px;width:25vw;right:0;background:teal}#up{position:absolute;bottom:175px;height:70px;width:50vw;left:25%;background:red}#right{position:absolute;bottom:0;height:170px;width:40vw;right:0;background:green}#left{position:absolute;bottom:0;height:170px;width:40vw;left:0;background:brown}#down{position:absolute;bottom:90px;height:80px;width:20vw;left:40%;background:#000}.feather{width:5px;height:27px;background-image:url(feather.png);box-shadow:-5px 5px 10px 3px rgba(0,0,0,.15),inset 5px 5px 0 #f7f7f7;animation:pulse-white 2s infinite}.container{display:flex;justify-content:center;height:100%;width:100%;position:absolute}.single-tree{background:#5d3010;height:100%;width:13vw;position:absolute;margin:auto;z-index:999;left:45%}.single-tree .trunk{width:25%;position:absolute}.single-tree .upper.trunk{height:30%;top:0}.single-tree .lower.trunk{height:70%;bottom:0}.single-tree .right.trunk{right:0}.single-tree .left.trunk{left:0}.single-tree .upper.left.trunk{border-top-right-radius:100%}.single-tree .upper.right.trunk{border-top-left-radius:100%}.single-tree .lower.left.trunk{border-bottom-right-radius:100%}.single-tree .lower.right.trunk{border-bottom-left-radius:100%}.shake{animation:shake .5s;animation-iteration-count:infinite}.spin{animation-name:spin;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:linear}.svg-scalable--center{display:block;position:absolute;bottom:0;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);width:100%;height:auto}.wrap-tree{position:absolute;bottom:0;left:0;right:0;width:100%;margin:0 auto;height:100%;background-color:#f9eff6;z-index:1;overflow:hidden}.tree{display:inline-block;position:absolute;width:80px;padding-bottom:30px;font-size:0;-webkit-transform-origin:0 bottom 0;transform-origin:0 bottom 0;z-index:99}.tree:nth-of-type(1){left:80px;bottom:0;-webkit-animation:growup 3.3s 0s linear;animation:growup 3.3s 0s linear;z-index:10}.tree:nth-of-type(1) .tree__stamb{position:absolute}.tree:nth-of-type(1) .tree__stamb::before{border-left:8px solid transparent;border-bottom:140px solid #8e763b}.tree:nth-of-type(1) .tree__stamb::after{border-right:8px solid transparent;border-bottom:140px solid #6a582c}.tree:nth-of-type(1) .tree__branch--1{height:37px}.tree:nth-of-type(1) .tree__branch--1::before{border-left:36px solid transparent;border-bottom:54px solid #3b8e42}.tree:nth-of-type(1) .tree__branch--1::after{border-right:36px solid transparent;border-bottom:54px solid #2c6a31}.tree:nth-of-type(1) .tree__branch--2{height:37px}.tree:nth-of-type(1) .tree__branch--2::before{border-left:48px solid transparent;border-bottom:72px solid #3b8e42}.tree:nth-of-type(1) .tree__branch--2::after{border-right:48px solid transparent;border-bottom:72px solid #2c6a31}.tree:nth-of-type(1) .tree__branch--3{height:37px}.tree:nth-of-type(1) .tree__branch--3::before{border-left:60px solid transparent;border-bottom:90px solid #3b8e42}.tree:nth-of-type(1) .tree__branch--3::after{border-right:60px solid transparent;border-bottom:90px solid #2c6a31}.tree:nth-of-type(1) .tree__branch--4{height:37px}.tree:nth-of-type(1) .tree__branch--4::before{border-left:72px solid transparent;border-bottom:108px solid #3b8e42}.tree:nth-of-type(1) .tree__branch--4::after{border-right:72px solid transparent;border-bottom:108px solid #2c6a31}.tree:nth-of-type(2){left:227px;bottom:0;-webkit-animation:growup 3s 0s linear;animation:growup 3s 0s linear;z-index:10}.tree:nth-of-type(2) .tree__stamb{position:absolute}.tree:nth-of-type(2) .tree__stamb::before{border-left:8px solid transparent;border-bottom:140px solid #8e763b}.tree:nth-of-type(2) .tree__stamb::after{border-right:8px solid transparent;border-bottom:140px solid #6a582c}.tree:nth-of-type(2) .tree__branch--1{height:33px}.tree:nth-of-type(2) .tree__branch--1::before{border-left:36px solid transparent;border-bottom:48px solid #3b8e42}.tree:nth-of-type(2) .tree__branch--1::after{border-right:36px solid transparent;border-bottom:48px solid #2c6a31}.tree:nth-of-type(2) .tree__branch--2{height:33px}.tree:nth-of-type(2) .tree__branch--2::before{border-left:48px solid transparent;border-bottom:64px solid #3b8e42}.tree:nth-of-type(2) .tree__branch--2::after{border-right:48px solid transparent;border-bottom:64px solid #2c6a31}.tree:nth-of-type(2) .tree__branch--3{height:33px}.tree:nth-of-type(2) .tree__branch--3::before{border-left:60px solid transparent;border-bottom:80px solid #3b8e42}.tree:nth-of-type(2) .tree__branch--3::after{border-right:60px solid transparent;border-bottom:80px solid #2c6a31}.tree:nth-of-type(2) .tree__branch--4{height:33px}.tree:nth-of-type(2) .tree__branch--4::before{border-left:72px solid transparent;border-bottom:96px solid #3b8e42}.tree:nth-of-type(2) .tree__branch--4::after{border-right:72px solid transparent;border-bottom:96px solid #2c6a31}.tree__branch{display:inline-block;position:relative;width:100%;height:50px;z-index:1}.tree__branch::after,.tree__branch::before{content:'';display:block;position:absolute;bottom:0}.tree__branch::before{right:50%}.tree__branch::after{left:50%}.tree__stamb{position:absolute;bottom:0;width:100%;z-index:2}.tree__stamb::after,.tree__stamb::before{content:'';position:absolute;display:block;width:2px;bottom:0!important}.tree__stamb::before{right:50%}.tree__stamb::after{left:50%}.flex-container{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;padding:0;margin:0;list-style:none;flex-flow:row wrap;-webkit-flex-flow:row wrap;justify-content:space-around}.mountain,.mountain-three,.mountain-two{position:absolute;bottom:0;left:25px;border-left:350px solid transparent;border-right:350px solid transparent;border-bottom:1500px solid #bba478;z-index:1}.mountain-two{left:80px;bottom:-20px;opacity:.3;z-index:0}.mountain-three{left:-60px;bottom:-10px;opacity:.5;z-index:0}.mountain-top{position:absolute;right:-65px;border-left:25px solid transparent;border-right:25px solid transparent;border-bottom:77px solid #ceeaf6;z-index:2}.mountain-cap-1,.mountain-cap-2,.mountain-cap-3{position:absolute;top:70px;border-left:15px solid transparent;border-right:15px solid transparent;border-top:25px solid #ceeaf6}.mountain-cap-1{left:-55px}.mountain-cap-2{left:-25px}.mountain-cap-3{left:5px}.cloud,.cloud:after,.cloud:before{position:absolute;width:70px;height:30px;background:#fff;z-index:1000;-webkit-border-radius:100px/50px;border-radius:100px/50px}.cloud{-webkit-animation:cloud 50s infinite linear;animation:cloud 50s infinite linear}.cloud-1{bottom:500px;left:50px}.cloud-2{bottom:300px;left:100px}.cloud-3{bottom:700px}.cloud-4{bottom:900px;left:-100px}@-webkit-keyframes cloud{0%{left:-100px}100%{left:1000px}}@keyframes cloud{0%{left:-100px}100%{left:1000px}}.cloud:before{content:'';left:50px}.cloud:after{content:'';left:25px;top:-10px}.pajaro{background:#000;border-radius:50% 50% 20% 20%;color:#fff;line-height:20px;letter-spacing:2px;font-size:.8em;text-align:center;margin-top:-20px;margin-left:-10px;width:15px;height:15px;animation:planeo .8s linear infinite;z-index:999}.pajaro:after,.pajaro:before{content:"";position:absolute;top:50%;left:50%}.pajaro:after{border-radius:100% 100% 0 0;box-shadow:inset 0 5px 0 #000;width:100px;height:100px;margin-top:-7px;margin-left:-50px;transform-origin:100% 0;animation:alas 3s linear infinite}.pajaro:before{background:#ffc37f;border-radius:100% 0 20% 0;margin-top:3px;margin-left:-4px;width:6px;height:6px;transform:rotateZ(45deg)}@keyframes alas{50%{transform:rotateX(-1440deg)}}@keyframes planeo{40%{transform:rotateZ(2deg) translateX(2px) translateY(10px) translateZ(0);line-height:16px;font-size:.6em}80%{transform:rotateZ(-2deg) translateX(5px) translateY(8px) translateZ(0)}}@-webkit-keyframes growup{0%{bottom:-100px;-webkit-transform:scale(.3);transform:scale(.3)}80%{-webkit-transform:scale(1);transform:scale(1)}85%{-webkit-transform:rotate(3deg);transform:rotate(3deg)}90%{-webkit-transform:rotate(-5deg);transform:rotate(-5deg)}95%{-webkit-transform:rotate(3deg);transform:rotate(3deg)}100%{-webkit-transform:rotate(0);transform:rotate(0)}}@keyframes growup{0%{bottom:-100px;-webkit-transform:scale(.3);transform:scale(.3)}80%{-webkit-transform:scale(1);transform:scale(1)}85%{-webkit-transform:rotate(3deg);transform:rotate(3deg)}90%{-webkit-transform:rotate(-5deg);transform:rotate(-5deg)}95%{-webkit-transform:rotate(3deg);transform:rotate(3deg)}100%{-webkit-transform:rotate(0);transform:rotate(0)}}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}@keyframes pulse-white{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{transform:scale(1);box-shadow:0 0 0 10px rgba(255,255,255,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,255,255,0)}}@keyframes shake{0%{transform:translate(1px,1px) rotate(0)}10%{transform:translate(-1px,-2px) rotate(-1deg)}20%{transform:translate(-3px,0) rotate(1deg)}30%{transform:translate(3px,2px) rotate(0)}40%{transform:translate(1px,-1px) rotate(1deg)}50%{transform:translate(-1px,2px) rotate(-1deg)}60%{transform:translate(-3px,1px) rotate(0)}70%{transform:translate(3px,1px) rotate(-1deg)}80%{transform:translate(-1px,-1px) rotate(1deg)}90%{transform:translate(1px,2px) rotate(0)}100%{transform:translate(1px,-2px) rotate(-1deg)}}
+    body,
+    html {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+      touch-action: manipulation;
+      -webkit-user-select: none;
+    }
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    #warp {
+      display: flex;
+      align-items: flex-start;
+    }
+    #world {
+      width: 600px;
+      height: 3000px;
+      background: lightblue;
+      margin: auto;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
+    #controls {
+      position: fixed;
+      z-index: 2000;
+      bottom: 0px;
+      left: 0px;
+      width: 100vw;
+      color: #fff;
+      font-size: 24px;
+      text-align: center;
+    }
+    #controls > * {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;  
+      border: 1px solid #fff;    
+    }
+    #left-jump {
+      position: absolute;
+      bottom: 175px;
+      height: 70px;
+      width: 25vw;
+      color: #BA671C;
+      left: 0px;
+      background: #F9C023;
+      margin: 3px;
+    }
+    #right-jump {
+      position: absolute;
+      bottom: 175px;
+      height: 70px;
+      width: 25vw;
+      color: #BA671C;
+      right: 0;
+      background: #F9C023;
+      margin: 3px;
+    }
+    #up {            
+      position: absolute;
+      color: #BA671C;
+      bottom: 175px;
+      height: 70px;
+      width: 50vw;
+      left: 25%;
+      background: #FCEE21;
+      margin: 3px;
+    }
+    #right {
+      position: absolute;
+      bottom: 0px;
+      height: 170px;
+      width: 40vw;
+      color: #FFFFFF;
+      right: 0;
+      background: #FF910D;
+      margin: 3px;
+    }
+    #left {
+      position: absolute;
+      bottom: 0px;
+      height: 170px;
+      width: 40vw;
+      color: #FFFFFF;
+      left: 0px;
+      background: #FF910D;
+      margin: 3px;
+    }
+    #down {
+      position: absolute;
+      bottom: 90px;
+      height: 80px;
+      width: 20vw;
+      left: 40%;
+      background: #DDB992;
+      margin: 3px;
+    }
+    .feather {
+      box-shadow: -5px 5px 10px 3px rgba(0, 0, 0, 0.15), inset 5px 5px 0 #f7f7f7;
+      animation: pulse-white 2s infinite;
+    }
+    .container{
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+    /* TREE CSS */
+    .close-tree {
+      height: 100%;
+      width: 10vw;
+      position: absolute;
+      background: #89512B;
+    }
+    .close-tree.left-tree {
+      left: 0px;
+    }
+    .close-tree.right-tree {
+      right: 0px;
+    }
+
+    .distant-tree {
+      height: 100%;
+      width: 7.5vw;
+      position: absolute;
+      background: #A05F32;
+    }
+    .distant-tree.left-distant {
+      left: 60px;
+    }
+    .distant-tree.right-distant {
+      right: 60px;
+    }
+    .single-tree{
+      background: #6D503A;
+      height: 100%;
+      width: 20vw;
+      position: absolute;
+      margin: auto;
+      z-index: 999;
+      left: 35%;
+      border-left: 10px solid #7C5B45;
+      border-right: 30px solid #604533;
+    }
+    .shake {
+      /* Start the shake animation and make the animation last for 0.5 seconds */
+      animation: shake 0.5s;
+
+      /* When the animation is finished, start again */
+      animation-iteration-count: infinite;
+    }
+    .spin {
+      animation-name: spin;
+      animation-duration: 2000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear; 
+    }
+    .svg-scalable--center {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+      width: 100%;
+      height: auto;
+    }
+
+    .flex-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.mtn-ridge {
+  background: #FF3939;
+}
+
+#mtn-1 {
+  position: absolute;
+  height: 150px;
+  width: 80vw;
+  bottom: 0;
+  right: 0;
+  background: #D30202;
+}
+
+#mtn-2 {
+  position: absolute;
+  height: 500px;
+  width: 65vw;
+  bottom: 150px;
+  right: 0;
+  background: #D30202;
+}
+
+#mtn-3 {
+  position: absolute;
+  height: 300px;
+  width: 55vw;
+  bottom: 650px;
+  right: 0;
+  background: #D30202;
+}
+
+#mtn-4 {
+  position: absolute;
+  height: 400px;
+  width: 45vw;
+  bottom: 950px;
+  right: 0;
+  background: #D30202;
+}
+
+.ridge-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 55px;
+  width: 50%;
+}
+
+.cloud, .cloud:before, .cloud:after {
+  position: absolute;
+  width: 70px;
+	height: 30px;
+	background: #fff;
+  z-index: 1000;
+	-webkit-border-radius: 100px / 50px;
+	border-radius: 100px / 50px;
+}
+
+.cloud { 
+  -webkit-animation: cloud 50s infinite linear;
+          animation: cloud 50s infinite linear;
+}
+
+.cloud-1 {
+  bottom: 500px;
+  left: 50px;
+}
+
+.cloud-2 {
+  bottom: 300px;
+  left: 100px;
+}
+.cloud-3 {
+  bottom: 700px;
+}
+.cloud-4 {
+  bottom: 900px;
+  left: -100px;
+}
+@-webkit-keyframes cloud {
+    0%   { left: -100px; }
+    100% { left: 1000px; } 
+}
+@keyframes cloud {
+   
+    0%   { left: -100px; }
+    100% { left: 1000px; } 
+}
+.cloud:before {
+  content: '';
+  left: 50px;
+}
+.cloud:after {
+  content: '';
+  left: 25px;
+  top: -10px;
+}
+
+.flipped {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+.rock {
+  box-shadow: 5px 3px 0 0 #9e9e9e, 6px 3px 0 0 #9e9e9e, 7px 3px 0 0 #9e9e9e, 5px 4px 0 0 #9e9e9e, 6px 4px 0 0 #303f46, 7px 4px 0 0 #9e9e9e, 8px 4px 0 0 #9e9e9e, 9px 4px 0 0 #9e9e9e, 10px 4px 0 0 #9e9e9e, 5px 5px 0 0 #9e9e9e, 6px 5px 0 0 #9e9e9e, 7px 5px 0 0 #9e9e9e, 8px 5px 0 0 #9e9e9e, 9px 5px 0 0 #9e9e9e, 10px 5px 0 0 #9e9e9e, 11px 5px 0 0 #9e9e9e, 12px 5px 0 0 #9e9e9e, 5px 6px 0 0 #9e9e9e, 6px 6px 0 0 #9e9e9e, 7px 6px 0 0 #9e9e9e, 8px 6px 0 0 #9e9e9e, 9px 6px 0 0 #9e9e9e, 10px 6px 0 0 #9e9e9e, 11px 6px 0 0 #9e9e9e, 12px 6px 0 0 #9e9e9e, 4px 7px 0 0 #9e9e9e, 5px 7px 0 0 #9e9e9e, 6px 7px 0 0 #9e9e9e, 7px 7px 0 0 #9e9e9e, 8px 7px 0 0 #9e9e9e, 9px 7px 0 0 #9e9e9e, 10px 7px 0 0 #303f46, 11px 7px 0 0 #9e9e9e, 12px 7px 0 0 #9e9e9e, 4px 8px 0 0 #9e9e9e, 5px 8px 0 0 #9e9e9e, 6px 8px 0 0 #9e9e9e, 7px 8px 0 0 #9e9e9e, 8px 8px 0 0 #9e9e9e, 9px 8px 0 0 #303f46, 10px 8px 0 0 #9e9e9e, 11px 8px 0 0 #9e9e9e, 12px 8px 0 0 #9e9e9e, 3px 9px 0 0 #9e9e9e, 4px 9px 0 0 #9e9e9e, 5px 9px 0 0 #9e9e9e, 6px 9px 0 0 #9e9e9e, 7px 9px 0 0 #9e9e9e, 8px 9px 0 0 #9e9e9e, 9px 9px 0 0 #9e9e9e, 10px 9px 0 0 #303f46, 11px 9px 0 0 #9e9e9e, 12px 9px 0 0 #9e9e9e, 3px 10px 0 0 #9e9e9e, 4px 10px 0 0 #303f46, 5px 10px 0 0 #9e9e9e, 6px 10px 0 0 #9e9e9e, 7px 10px 0 0 #9e9e9e, 8px 10px 0 0 #9e9e9e, 9px 10px 0 0 #9e9e9e, 10px 10px 0 0 #9e9e9e, 11px 10px 0 0 #9e9e9e, 12px 10px 0 0 #9e9e9e, 3px 11px 0 0 #9e9e9e, 4px 11px 0 0 #9e9e9e, 5px 11px 0 0 #303f46, 6px 11px 0 0 #9e9e9e, 7px 11px 0 0 #9e9e9e, 8px 11px 0 0 #9e9e9e, 9px 11px 0 0 #9e9e9e, 10px 11px 0 0 #9e9e9e, 11px 11px 0 0 #9e9e9e, 12px 11px 0 0 #9e9e9e, 4px 12px 0 0 #9e9e9e, 5px 12px 0 0 #9e9e9e, 6px 12px 0 0 #9e9e9e, 7px 12px 0 0 #9e9e9e, 8px 12px 0 0 #9e9e9e, 9px 12px 0 0 #9e9e9e, 10px 12px 0 0 #303f46, 11px 12px 0 0 #303f46, 12px 12px 0 0 #9e9e9e, 6px 13px 0 0 #9e9e9e, 7px 13px 0 0 #9e9e9e, 8px 13px 0 0 #9e9e9e, 9px 13px 0 0 #9e9e9e, 10px 13px 0 0 #9e9e9e, 11px 13px 0 0 #9e9e9e, 9px 14px 0 0 #9e9e9e, 10px 14px 0 0 #9e9e9e;
+  height: 1px;
+  width: 1px;
+}
+
+@keyframes alas {
+  50%{
+    transform:rotateX(-1440deg);
+  }
+}
+
+/*------------------------------------------------------ bird animation
+*/
+
+@keyframes planeo {
+  40%{
+    transform:rotateZ(2deg) translateX(2px) translateY(10px) translateZ(0);
+    line-height:16px;
+    font-size:0.6em;
+  }
+  80%{
+    transform:rotateZ(-2deg) translateX(5px) translateY(8px) translateZ(0);
+  }
+}
+
+
+    /**
+    *animate
+    */
+    @-webkit-keyframes growup {
+      0% {
+        bottom: -100px;
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+      }
+      80% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+      }
+      85% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      90% {
+        -webkit-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+      }
+      95% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+    }
+    @keyframes growup {
+      0% {
+        bottom: -100px;
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+      }
+      80% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+      }
+      85% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      90% {
+        -webkit-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+      }
+      95% {
+        -webkit-transform: rotate(3deg);
+                transform: rotate(3deg);
+      }
+      100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+    }
+
+    @keyframes spin {
+      from {
+          transform:rotate(0deg);
+      }
+      to {
+          transform:rotate(360deg);
+      }
+    }
+    @keyframes pulse-white {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+
+    #story, #pause-screen {
+      max-width: 85%;
+      margin: auto;
+      margin-top: 60px;
+    }
+    .eightbit-btn {
+  background: #023978;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: inset -4px -4px 0px 0px #020878;
+  margin: 5px;
+}
+.eightbit-btn:hover, .eightbit-btn:focus {
+  background: #76c442;
+  box-shadow: inset -6px -6px 0px 0px #4AA52E;
+}
+.eightbit-btn:active {
+  box-shadow: inset 4px 4px 0px 0px #4AA52E;
+}
+.eightbit-btn:before, .eightbit-btn:after, .egg-timer:before, .egg-timer:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+}
+.eightbit-btn:before, .egg-timer:before {
+  top: -6px;
+  left: 0;
+  border-top: 6px black solid;
+  border-bottom: 6px black solid;
+}
+.eightbit-btn:after, .egg-timer:after {
+  left: -6px;
+  top: 0;
+  border-left: 6px black solid;
+  border-right: 6px black solid;
+}
+
+.egg-timer {
+  margin-top: 5px;
+}
+
+#line-1 {
+  background: #9046E3;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-2 {
+  background: #8635E0;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-3 {
+  background: #781EDC;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-4 {
+  background: #6905D8;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-5 {
+  background: #6000C2;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-6 {
+  background: #5700AA;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+#line-7 {
+  background: #46008A;
+  height: calc(100vh/7);
+  width: 100vw;
+}
+    #home {
+      height: 100vh;
+      width: 100vw;
+      margin: 0;      
+    }
+
+    #duck {
+      background: url('sprites.png');
+      background-position: 26px 32px;
+      position: absolute;
+      z-index: 1024;
+      width: 26px;
+      height: 32px;
+      top: 300px;
+      transform: scale(2);
+      left: 50%;
+    }
+
+    #egg {
+      background: url('sprites.png');
+      background-position: 260px 32px;
+      position: absolute;
+      z-index: 1024;
+      width: 26px;
+      height: 32px;
+      top: 400px;
+      transform: scale(2);
+      left: 60%;
+    }
+    #title-and-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      z-index: 1024;
+      width: 85%;
+      margin: auto;
+      top: 200px;
+    }
+    .startbtn {
+      margin: 10px;
+    }
+    #level-bg-0 {
+      background: #BA6D38;
+    }
+
+    #level-bg-1 {
+      background: linear-gradient(
+      to bottom, 
+      #841A2A, 
+      #911A28, 
+      #9B1923
+    );
+    }
   </style>
 </head>
 <body>
- <div id="world"><div style="display: none" id="controls"><div id="up">Up</div><div id="down">Lay Egg</div><div id="left">Left</div><div id="left-jump">< Jump</div><div id="right">Right</div><div id="right-jump">Jump ></div></div><div style='display: none;' id='level-bg-0'><div class="single-tree"><div class="trunk upper left"></div><div class="trunk upper right"></div><div class="trunk lower left"></div><div class="trunk lower right"></div></div> <svg style="display: none"> <symbol id="clouds-back" viewBox="-360.318 -89.013 720.637 178.025"> <path style="fill:#EDD2B6;" d="M-116.231-54.054c0-19.309-16.434-34.959-36.707-34.959h-170.675v0.044 c-20.425,0.916-36.706,17.76-36.706,38.41c0,21.238,17.217,38.455,38.456,38.455c7.508,0,14.511-2.162,20.431-5.882 c2.832,32.403,30.018,57.828,63.158,57.828c33.516,0,60.941-26.007,63.241-58.938h22.096 C-132.665-19.096-116.231-34.748-116.231-54.054z M184.409,21.342c0-13.913,11.844-25.193,26.454-25.193h123.002v0.032 c14.72,0.659,26.453,12.799,26.453,27.681c0,15.307-12.407,27.714-27.713,27.714c-5.411,0-10.459-1.557-14.726-4.24 c-2.04,23.353-21.632,41.676-45.517,41.676c-24.155,0-43.919-18.744-45.576-42.477h-15.924 C196.253,46.536,184.409,35.257,184.409,21.342z"/> </symbol> <symbol id="clouds-front" viewBox="-194.985 -131.474 389.969 262.948"> <path style="fill:#EDD2B6;" d="M194.984-110.297c0,11.661-9.453,21.113-21.114,21.113v0.014h-6.325 c0.29,2.146,0.451,4.332,0.451,6.557c0,26.984-21.875,48.858-48.859,48.858c-26.985,0-48.86-21.875-48.86-48.858 c0-1.565,0.081-3.111,0.227-4.638c-4.287,12.737-16.316,21.915-30.498,21.915c-14.8,0-27.259-9.996-31.013-23.601 c-4.331,3.928-10.079,6.324-16.388,6.324c-13.475,0-24.398-10.924-24.398-24.399s10.924-24.399,24.398-24.399H116.66 c0.82-0.04,1.646-0.062,2.477-0.062s1.655,0.022,2.476,0.062h52.258l0,0C185.531-131.412,194.984-121.959,194.984-110.297z M-181.384,68.57L-181.384,68.57h33.66c0.529-0.026,1.061-0.041,1.595-0.041s1.067,0.015,1.595,0.041h79.907 c8.68,0,15.717,7.036,15.717,15.715c0,8.68-7.037,15.717-15.717,15.717c-4.063,0-7.766-1.542-10.557-4.073 c-2.417,8.764-10.441,15.202-19.975,15.202c-9.136,0-16.883-5.912-19.645-14.117c0.093,0.984,0.145,1.979,0.145,2.988 c0,17.381-14.09,31.471-31.471,31.471s-31.472-14.09-31.472-31.471c0-1.433,0.104-2.842,0.29-4.224h-4.073V95.77 c-7.512,0-13.601-6.088-13.601-13.6S-188.896,68.57-181.384,68.57z"/> </symbol> <symbol id="mounts" viewBox="-268.295 -157.145 536.59 314.289"> <path style="fill:#833137;" d="M-28.28-157.145h-120.223h-119.792l119.792,257.61l0.214,0.461L-28.28-157.145z M122.144,157.144 l-0.26-0.561L-24.004-157.145h145.888h146.411L122.144,157.144z"/> <path style="fill:#9F4544;" d="M-28.28-157.145h-120.223v257.61l0.214,0.461L-28.28-157.145z M122.144,157.144l-0.26-0.561 v-313.728h146.411L122.144,157.144z"/> <path style="fill:#9A5049;" d="M-99.106-4.837l-27.856,13.098l-21.325-25.494l-0.215,0.215l-25.418,25.279l-24.408-14.945 l49.826,107.15l0.214,0.461L-99.106-4.837z M122.144,157.144l-0.26-0.561L61.203,26.091l29.725,18.201l30.956-30.787l0.262-0.26 l25.97,31.046l33.925-15.951L122.144,157.144z"/> <path style="fill:#AF6F56;" d="M-99.106-4.837l-27.856,13.098l-21.325-25.494l-0.215,0.215v117.484l0.214,0.461L-99.106-4.837z M122.144,157.144l-0.26-0.561V13.505l0.262-0.26l25.97,31.046l33.925-15.951L122.144,157.144z"/> </symbol> <symbol id="small-hills" viewBox="-280.679 -48.945 561.357 97.89"> <path style="fill:#230000;" d="M-117.896-48.945h-81.392h-81.391C-261.541-19.616-246.262,3.768-245.71,4.5 c10.59,14.089,27.441,23.203,46.422,23.203c18.981,0,35.833-9.114,46.423-23.203C-152.313,3.768-137.034-19.616-117.896-48.945z M245.71,4.5c-10.59,14.089-27.441,23.203-46.423,23.203S163.455,18.589,152.864,4.5c-0.551-0.732-15.832-24.116-34.969-53.445 h81.392h81.392C261.542-19.616,246.261,3.768,245.71,4.5z M37.205,25.743C26.614,39.831,9.764,48.945-9.218,48.945 S-45.05,39.831-55.64,25.743c-0.68-0.904-23.747-36.232-48.826-74.688h95.248h95.249C60.949-10.489,37.885,24.839,37.205,25.743z" /> <path style="fill:#3F0B14;" d="M-199.288-48.945v76.648c18.981,0,35.833-9.114,46.423-23.203 c0.552-0.732,15.831-24.116,34.969-53.445H-199.288z M280.679-48.945C261.542-19.616,246.261,3.768,245.71,4.5 c-10.59,14.089-27.441,23.203-46.423,23.203v-76.648H280.679z M86.031-48.945C60.949-10.489,37.885,24.839,37.205,25.743 C26.614,39.831,9.764,48.945-9.218,48.945v-97.891H86.031z"/> </symbol> <symbol id="sun" viewBox="-228.044 -190.563 456.088 381.126"> <path style="fill:#E1B284;" d="M-163.23-37.481c0,90.15,73.081,163.23,163.23,163.23c90.15,0,163.23-73.081,163.23-163.23 c0-70.185-44.301-130.021-106.464-153.082h112.258c36.675,40.47,59.02,94.165,59.02,153.081 c0,125.947-102.097,228.045-228.043,228.045c-125.945,0-228.045-102.098-228.045-228.045c0-58.916,22.346-112.611,59.021-153.081 h112.258C-118.929-167.502-163.23-107.666-163.23-37.481z"/> <path style="fill:#DAA071;" d="M163.23-37.481c0,90.15-73.08,163.23-163.23,163.23c-90.149,0-163.23-73.081-163.23-163.23 c0-70.185,44.301-130.021,106.464-153.082H56.767C118.93-167.502,163.23-107.666,163.23-37.481z M0-132.868 c-52.68,0-95.386,42.708-95.386,95.387c0,52.681,42.706,95.386,95.386,95.386c52.68,0,95.385-42.705,95.385-95.386 C95.385-90.16,52.68-132.868,0-132.868z"/> <path style="fill:#CD7746;" d="M0,57.904c-52.68,0-95.386-42.705-95.386-95.386c0-52.679,42.706-95.387,95.386-95.387 c52.68,0,95.385,42.708,95.385,95.387C95.385,15.199,52.68,57.904,0,57.904z"/> </symbol> <symbol id="trees" viewBox="-11.267 -16.899 22.532 33.798"> <polygon style="fill:#772A29;" points="11.266,-9.993 6.415,-2.135 9.388,-2.135 4.894,5.148 7.251,5.148 0,16.898 -7.252,5.148 -4.895,5.148 -9.388,-2.135 -6.415,-2.135 -11.267,-9.993 -2.168,-9.993 -2.168,-16.899 2.167,-16.899 2.167,-9.993 	"/> <polygon style="fill:#BA6C3E;" points="6.415,-2.135 9.388,-2.135 4.894,5.148 7.251,5.148 0,16.898 0,-9.993 11.266,-9.993 	"/> </symbol> </svg><div class="wrap-tree"><div class="tree"><div class="tree__stamb"></div><div class="tree__branch tree__branch--1"></div><div class="tree__branch tree__branch--2"></div><div class="tree__branch tree__branch--3"></div><div class="tree__branch tree__branch--4"></div></div><div class="tree"><div class="tree__stamb"></div><div class="tree__branch tree__branch--1"></div><div class="tree__branch tree__branch--2"></div><div class="tree__branch tree__branch--3"></div><div class="tree__branch tree__branch--4"></div></div><div class="background"> <svg class="svg-scalable svg-scalable--center" version="1.1" id="background-svg-druart.2018" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="800px" height="600px" viewBox="0 0 800 600" style="enable-background:new 0 0 800 600;" xml:space="preserve"> <use xlink:href="#sun" width="456.088" height="381.126" x="-228.044" y="-190.563" transform="matrix(1.2764 0 0 -1.2764 408.9678 355.8848)" style="overflow:visible;"/> <use xlink:href="#clouds-back" width="720.637" height="178.025" x="-360.318" y="-89.013" transform="matrix(1 0 0 -1 404.79 209.6367)" style="overflow:visible;"/> <use xlink:href="#mounts" width="536.59" height="314.289" x="-268.295" y="-157.145" transform="matrix(1.2764 0 0 -1.2764 401.3838 352.0635)" style="overflow:visible;"/> <use xlink:href="#small-hills" width="561.357" height="97.89" x="-280.679" y="-48.945" transform="matrix(1.2764 0 0 -1.2764 393.7275 490.1719)" style="overflow:visible;"/> <line style="fill:none;stroke:#230000;stroke-width:60;stroke-linecap:round;stroke-miterlimit:10;" x1="31.874" y1="568.662" x2="767.897" y2="568.662"/> <use xlink:href="#clouds-front" width="389.969" height="262.948" x="-194.985" y="-131.474" transform="matrix(1.2764 0 0 -1.2764 520.9424 219.7905)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.2764 0 0 -1.2764 640.5947 529.7734)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.448 0 0 -2.448 269.5283 517.6592)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.2962 0 0 -2.2962 426.2119 520.3477)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.8297 0 0 -1.8297 506.4404 520.4082)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(2.7513 0 0 -2.7513 45.2017 525.3652)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.8297 0 0 -1.8297 180.0029 520.4102)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 329.7656 529.7734)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 549.9863 529.7734)" style="overflow:visible;"/> <use xlink:href="#trees" width="22.532" height="33.798" x="-11.267" y="-16.899" transform="matrix(1.1788 0 0 -1.1788 690.7686 534.0117)" style="overflow:visible;"/> </svg></div></div></div><div id='level-bg-1' style='display: none;'><div class="mountain"><div class="mountain-top"><div class="mountain-cap-1"></div><div class="mountain-cap-2"></div><div class="mountain-cap-3"></div></div></div><div class="mountain-two"><div class="mountain-top"><div class="mountain-cap-1"></div><div class="mountain-cap-2"></div><div class="mountain-cap-3"></div></div></div><div class="mountain-three"><div class="mountain-top"><div class="mountain-cap-1"></div><div class="mountain-cap-2"></div><div class="mountain-cap-3"></div></div></div><div class="cloud cloud-1"></div><div class="cloud cloud-2"></div></div><div id='bg-level-2'><div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="cloud cloud-3"></div><div class="cloud cloud-4"></div></div><div id="game"></div></div>
+  <div id='home'>
+    <div id='line-1'></div>
+    <div id='line-2'></div>
+    <div id='line-3'></div>
+    <div id='line-4'></div>
+    <div id='line-5'></div>
+    <div id='line-6'></div>
+    <div id='line-7'></div>
+    <div id='title-and-buttons'>
+      <div>
+        <h3 style='margin-right: 20px'>Feathers Not Found</h3>
+      </div>  
+      <div id='duck'></div> 
+      <div id='egg'></div> 
+      <div>
+        <button class='eightbit-btn' onclick='window.toggleStoryScreen()' class='startbtn'>Story</button>
+        <button class='eightbit-btn' onclick='window.continueGame()' class='startbtn' id='continue' style='display: none;'>Continue</button>
+        <button class='eightbit-btn' onclick='window.continueGame()' class='startbtn' id='start' style='display: none;'>Start Game</button>
+        <button class='eightbit-btn' class='startbtn' onclick='window.selectLevel()'>Select Level</button>
+      </div>  
+    </div>  
+  </div>
+  <div id='pause-screen' style='display: none;'>
+    <h1>Feathers Not Found</h1>
+    <div id='warp'>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(-1)'>Level 1</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(0)'>Level 2</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(1)'>Level 3</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(2)'>Level 4</button>
+      <button class='eightbit-btn' onclick='window.handleNextLevel(3)'>Level 5</button>
+    </div>    
+  </div>
+  <div id='story' style='display: none;'>
+    <h1>Feathers Not Found</h1>
+    <p>You're a duck. Yep, a duck. Problem is, your feathers didn't come in right and you can't fly.</p>
+    <p>To catch up with your family, all of whom have just migrated, you have to collect feathers so you can finally fly.</p>
+    <p>Eat bugs to give you the energy to lay eggs for a nice boost. Avoid falling acorns and rocks. And most of all, collect those feathers!</p>
+    <button class='eightbit-btn' onclick='window.toggleStoryScreen()'>Play</button>
+  </div>
+  <div id='win' style='display: none;'>
+    <h1>Congratulations!</h1>
+    <p>You completed the game, gathering all the feathers you need to learn to fly. Now you can join your family.</p>
+    <button class='eightbit-btn' onclick='window.loadCredits()'>Credits</button>
+    <button class='eightbit-btn' onclick='window.selectLevel()'>Play Again</button>
+  </div>
+  <div id="world" style='display: none'>
+    <div style="display: none" id="controls">
+      <div id="up">Jump</div>
+      <div id="down">Egg</div>
+      <div id="left">Left</div>
+      <div id="left-jump">Left Jump</div>
+      <div id="right">Right</div>
+      <div id="right-jump">Right Jump</div>
+    </div>    
+    <div style='display: none;' class='level-bgs' id='level-bg-0'>
+      <div class="single-tree"></div>
+      <div class='close-tree left-tree'></div>
+      <div class='close-tree right-tree'></div>
+      <div class='distant-tree left-distant'></div>
+      <div class='distant-tree right-distant'></div>
+    </div>
+    <div id='level-bg-1' class='level-bgs' style='display: none;'>
+      <div id='mtn-1'><div class='mtn-ridge ridge-1'></div></div>
+      <div id='mtn-2'><div class='mtn-ridge ridge-1'></div></div>
+      <div id='mtn-3'><div class='mtn-ridge ridge-1'></div></div>
+      <div id='mtn-4'><div class='mtn-ridge ridge-1'></div></div>
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+    </div>
+    <div id="game">      
+    </div>
+  </div>
   <script>
-    let gameVariables={GAME_HEIGHT:3e3,GAME_WIDTH:600,FPS:15,game:void 0,currentLevel:0,PLAYER_SPEED:3,FRICTION:.8,GRAVITY:.4,JUMP_POWER:2.5,GROUNDED:!0,JUMPING:!1,player:void 0,SPRITE_HEIGHT:25,SPRITE_WIDTH:25,SCALE:1,keys:[],playerVelX:0,playerVelY:0,eggVelY:0,itemVelY:0,levels:[],platforms:[],eggs:[],MAX_EGG_TIMER:50,eggTimer:0,pause:!1,cycleLoop:[10,11,12,13,14,15],eggLoop:[9,8,7,6,5,4],jumpLoop:[4,3,2,1],eggLoopIndex:0,currentLoopIndex:0,jumpLoopIndex:0,facingRight:!0,jumpingOff:!1,img:new Image,frame:0,layingEgg:!1,eggTimerBar:void 0,droppingItems:!1,dropCount:0,maxDropCount:100,droppedItems:[],flapCount:0};window.gameVariables=gameVariables;
-    const levels=[[[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,2,2,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,2,0,0,0,0,0,0,1],[1,0,0,0,0,0,2,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,5,2,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,2,2,0,0,0,1],[1,0,0,0,4,4,0,0,0,0,0,1],[1,0,0,0,0,0,4,0,0,0,0,1],[1,0,0,2,4,4,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,2,0,0,0,0,0,1],[1,0,0,0,0,0,2,0,0,0,0,1],[1,0,0,0,4,4,0,0,0,0,0,1],[1,0,0,0,0,0,4,4,4,4,0,1],[1,0,0,0,0,2,0,0,0,0,0,1],[1,0,0,0,0,0,2,0,0,0,0,1],[1,0,0,0,2,2,0,0,0,0,0,1],[1,0,2,2,2,2,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,4,4,4,2,0,0,0,0,0,1],[1,0,0,0,0,0,4,4,0,0,0,1],[1,0,0,4,4,4,0,0,0,0,0,1],[1,0,0,0,0,2,0,0,0,0,0,1],[2,2,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,2,2,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,2,0,0,0,0,0,0,1],[1,0,0,0,0,0,2,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,5,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,4,4,1],[1,0,0,0,0,0,0,0,0,0,4,1],[1,0,0,0,0,0,0,0,4,0,4,1],[1,0,0,0,0,0,0,0,4,0,2,1],[1,0,0,0,0,0,0,0,0,4,4,1],[1,0,0,0,0,0,0,0,2,0,0,1],[1,0,0,0,0,0,0,0,4,4,4,1],[1,0,0,0,0,0,0,4,4,0,0,1],[1,0,0,0,0,0,0,0,0,2,2,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,4,0,0,4,1],[1,0,0,0,0,4,0,2,2,0,0,1],[1,0,0,0,0,0,0,2,4,0,0,1],[1,0,0,0,0,0,0,4,2,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,4,4,0,0,0,0,1],[1,0,4,4,4,0,0,0,0,0,0,1],[2,2,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,5,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,4,0,0,2,0],[0,0,0,0,0,4,0,0,0,0,4,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,4,0,0,0,4,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,4,0,0,0,2,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,4,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,4,0,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]]];window.levels=levels;
-    const isMobile=()=>!!(navigator.userAgent.match(/Android/i)||navigator.userAgent.match(/BlackBerry/i)||navigator.userAgent.match(/iPhone|iPod/i)||navigator.userAgent.match(/Opera Mini/i)||navigator.userAgent.match(/IEMobile/i)||navigator.userAgent.match(/WPDesktop/i)),handleReload=()=>{const e=parseInt(localStorage.getItem("level"),10);handleNextLevel(e-1)},loadLevel=e=>{const t=document.getElementById("world");if(isMobile()){gameVariables.GAME_WIDTH=window.innerWidth,t.style.width=`${window.innerWidth}px`;const e=document.getElementById("controls");e.style.display="block";const a=document.getElementById("up"),l=document.getElementById("down"),s=document.getElementById("left"),i=document.getElementById("right"),n=document.getElementById("left-jump"),r=document.getElementById("right-jump");e.addEventListener("touchstart",e=>{e.preventDefault()},!1),a.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0}),l.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[40]=!0}),i.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[39]=!0}),s.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[37]=!0}),n.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0,gameVariables.keys[37]=!0}),r.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0,gameVariables.keys[39]=!0}),document.addEventListener("pointerup",e=>{e.preventDefault(),gameVariables.keys[39]=!1,gameVariables.keys[38]=!1,gameVariables.keys[37]=!1,gameVariables.keys[40]=!1})}t.style.margin="0px",t.style.padding="0px";const a=document.createElement("div");a.style.height="75px",a.style.width=gameVariables.MAX_WIDTH,a.style.margin="auto",a.style.position="fixed",a.style.top=0,a.style.display="flex",a.style.alignItems="center",a.style.zIndex=1024,a.style.justifyContent="space-between";const l=document.createElement("button");l.innerText="Reload",l.onclick=(()=>handleReload());const s=document.createElement("button");s.innerText="Play Game (**Plays Music**)",s.onclick=(()=>handlePlayMusic()),a.appendChild(l),a.appendChild(s),t.appendChild(a);let i=document.getElementById("game");i.style.height=gameVariables.GAME_HEIGHT,i.style.width=gameVariables.GAME_WIDTH;const n=document.getElementById(`level-bg-${e-1}`);n&&(n.style.display="none");const r=document.getElementById(`level-bg-${e}`);r&&(r.style.display="block",r.style.position="absolute",r.style.zIndex=980,r.style.bottom="255px",r.style.height="100%",r.style.width="100%");const o=levels[e],d=gameVariables.GAME_WIDTH/o[0].length,g=gameVariables.GAME_HEIGHT/o.length;for(const t of o)for(let a=0;a<t.length;a++)if(0!==t[a]){let l;if((l=2===e?document.createElement("div"):document.createElement("p")).style.width=`${d}px`,l.style.position="absolute",l.style.top=`${o.indexOf(t)*g}px`,l.style.left=`${a*d}px`,l.style.margin="0px",2===t[a])2===e?(l.setAttribute("class","collider platform pajaro"),l.innerText="··"):(l.style.height="10px",l.style.background="#000",l.setAttribute("class","collider platform"));else if(1===t[a])l.style.height=`${g}px`,l.setAttribute("class","collider platform"),2===e&&(l.style.background="brown");else if(3===t[a])l.setAttribute("class","embankment"),l.style.background="none",l.style.height=`${g}px`;else if(4===t[a]){2===e?(l.setAttribute("class","collider platform pajaro"),l.innerText="··"):(l.style.height="10px",l.style.background="#000",l.setAttribute("class","collider platform"));const s=document.createElement("div");s.style.backgroundImage="url(bug.png)",s.style.width="11px",s.style.height="12px",s.style.position="absolute",s.style.top=`${o.indexOf(t)*g-10}px`,s.style.left=`${a*d+d/2}px`,s.setAttribute("class","small-bug"),s.style.zIndex=1024,i.appendChild(s)}else if(5===t[a]){l.style.height="10px",l.style.background="#000",l.setAttribute("class","collider platform");const t=document.createElement("div");if(t.setAttribute("class","feather"),t.style.position="absolute",t.style.top=`${parseInt(l.style.top.split("px")[0]-27,10)}px`,t.style.left=`${a*d+d/2}px`,t.style.height="27px",t.style.width="5px",t.style.zIndex=1024,t.style.backgroundImage="url(feather.png)",i.appendChild(t),0===e){const e=document.createElement("div");e.style.width="62px",e.style.height="54px",e.style.position="absolute",e.style.top=`${parseInt(l.style.top.split("px")[0]-27-30,10)}px`,e.style.left=`${a*d+d/2}px`,e.style.zIndex=999,e.style.backgroundImage="url(owl.png)",i.appendChild(e)}}l.style.zIndex=1024,i.appendChild(l)}const m=document.createElement("div");m.style.position="fixed",m.style.zIndex="2000",m.style.top="50px",m.style.width=`${gameVariables.GAME_WIDTH/2-10}px`,m.style.height="20px",m.style.border="1px solid #282828",m.setAttribute("id","timer"),gameVariables.eggTimerBar=document.createElement("div"),gameVariables.eggTimerBar.style.margin="0px",gameVariables.eggTimerBar.style.height="100%",gameVariables.eggTimerBar.style.width="0%",gameVariables.eggTimerBar.style.background="black",gameVariables.eggTimerBar.style.opacity="0.5",m.appendChild(gameVariables.eggTimerBar),gameVariables.player=document.createElement("div"),gameVariables.player.style.height=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`,gameVariables.player.style.width=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE}px`,gameVariables.player.style.backgroundImage=`url(${gameVariables.img.src})`,gameVariables.player.style.backgroundPosition=`0px ${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px `,gameVariables.player.style.position="absolute",gameVariables.player.style.bottom="300px",gameVariables.player.style.left="150px",gameVariables.player.style.zIndex="1024",gameVariables.player.setAttribute("id","player"),(i=document.getElementById("world")).style.position="relative",i.appendChild(gameVariables.player),i.appendChild(m),gameVariables.pause=!1,gameVariables.game=i,requestAnimationFrame(gameLoop)};window.loadLevel=loadLevel;
-    const thisLevel=parseInt(localStorage.getItem("level"),10),dropItem=e=>{const a=document.createElement("div");a.style.width="15px",a.style.height="19px",a.style.position="absolute",a.style.zIndex="2000",a.style.left=`${Math.floor(Math.random()*gameVariables.GAME_WIDTH)+1}px`,a.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0],10)+400}px`,a.style.backgroundImage="url(acorn.png)",a.style.backgroundSize="cover",a.setAttribute("class","dropped-item spin"),gameVariables.game.appendChild(a)},detectOverlap=(()=>{const e=e=>{let a=e.getBoundingClientRect();return[[a.left,a.right],[a.top,a.bottom]]},a=(e,a)=>{let l,r;return e[0]<a[0]?(l=e,r=a):(l=a,r=e),l[1]>r[0]||l[0]===r[0]};return(l,r)=>{let i=e(l),s=e(r);return a(i[0],s[0])&&a(i[1],s[1])}})(),drawFrame=(e,a)=>{const l=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*e}px`,r=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE*a}px`;gameVariables.player&&(gameVariables.player.style.backgroundPosition=`${l} ${r}`)},jump=async e=>{if("right"===e)for(fr of gameVariables.jumpLoop)drawFrame(fr,0),await timeoutPromise(100);else for(fr of gameVariables.jumpLoop)drawFrame(fr,1),await timeoutPromise(100)},layEgg=async()=>{if(gameVariables.eggTimer===gameVariables.MAX_EGG_TIMER){gameVariables.eggTimer=0,gameVariables.eggTimerBar.style.width="0%",gameVariables.layingEgg=!0;const e=gameVariables.facingRight?0:1;for(fr of gameVariables.eggLoop)drawFrame(fr,e),await timeoutPromise(100);gameVariables.layingEgg=!1,gameVariables.eggLoopIndex=0;const a=document.createElement("div");a.style.height=`${gameVariables.SPRITE_WIDTH}px`,a.style.width=`${gameVariables.SPRITE_HEIGHT}px`,a.style.background="url(sprites.png)";const l=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*16}px`,r=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`;a.style.backgroundPosition=`${l} ${r}`,a.style.position="absolute",a.style.left=gameVariables.player.style.left,a.style.bottom=gameVariables.player.style.bottom,a.style.zIndex=1024,a.setAttribute("id","egg-1"),gameVariables.eggs.push(a),gameVariables.game.appendChild(a),gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*(gameVariables.JUMP_POWER+.5)}},timeoutPromise=e=>new Promise((a,l)=>{setTimeout(()=>{a()},e)}),handleNextLevel=e=>{const a=document.getElementById("game");let l=e;for(gameVariables.pause=!0;a.firstChild;)a.removeChild(a.firstChild);gameVariables.player=void 0;const r=document.getElementById("player");r&&r.remove(),gameVariables.eggs,length>0&&gameVariables.eggs[0].remove(),l++,localStorage.setItem("level",JSON.stringify(l)),setTimeout(()=>loadLevel(l),1500)},gameLoop=async()=>{if(!gameVariables.pause){if(gameVariables.droppingItems){const e=document.getElementsByClassName("dropped-item");e&&0!==e.length||(dropItem(),gameVariables.dropCount=0)}const a=gameVariables.keys[38]||gameVariables.keys[32]||gameVariables.keys[87],l=gameVariables.keys[39]||gameVariables.keys[68],r=gameVariables.keys[37]||gameVariables.keys[65],i=gameVariables.keys[40]||gameVariables.keys[83];gameVariables.playerVelX*=gameVariables.FRICTION,gameVariables.jumpingOff||gameVariables.layingEgg?gameVariables.playerVelY>0&&gameVariables.playerVelY--:gameVariables.playerVelY+=gameVariables.GRAVITY;let s=[];const g=document.getElementsByClassName("platform"),m=document.getElementsByClassName("embankment"),t=document.getElementsByClassName("feather"),V=document.getElementsByClassName("small-bug"),b=t[0];let o=[];const p=gameVariables.player.getBoundingClientRect();b&&detectOverlap(gameVariables.player,b)&&o.push(b);for(var e=0;e<g.length;e++){const a=g[e],l=a.getBoundingClientRect();detectOverlap(gameVariables.player,a)&&(p.bottom>l.top+parseInt(a.style.height.split("px")[0])||(gameVariables.jumpingOff=!1,droppingItems=!1,s.push(a.id),p.bottom>l.top&&"1"!==a.id&&!gameVariables.jumpingOff&&(gameVariables.player.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0])+(p.bottom-l.top)}px`,gameVariables.playerVelY=0)))}let n=[];for(e=0;e<m.length;e++){const a=m[e];detectOverlap(gameVariables.player,a)&&n.push(a)}if(n.length>0?(gameVariables.droppingItems=!0,gameVariables.jumpingOff=!0):(gameVariables.jumpingOff=!1,gameVariables.droppingItems=!1),o.length>0){const e=parseInt(localStorage.getItem("level"),10);handleNextLevel(e)}for(e=0;e<V.length;e++){const a=V[e];detectOverlap(gameVariables.player,a)&&(gameVariables.eggTimer<gameVariables.MAX_EGG_TIMER&&(gameVariables.eggTimer=gameVariables.eggTimer+10,gameVariables.eggTimerBar.style.width=`${gameVariables.eggTimer/gameVariables.MAX_EGG_TIMER*100}%`),V[e].remove())}const y=document.getElementsByClassName("dropped-item");if(y&&y.length>0)for(const e of y){if(detectOverlap(gameVariables.player,e)){const a=gameVariables.facingRight?0:1;drawFrame(9,a),navigator.vibrate=navigator.vibrate||navigator.webkitVibrate||navigator.mozVibrate||navigator.msVibrate,navigator.vibrate&&navigator.vibrate(1e3),world.classList.add("shake"),await timeoutPromise(100),drawFrame(15,a),world.classList.remove("shake"),e.remove()}e.style.bottom=`${parseInt(e.style.bottom.split("px")[0],10)-gameVariables.itemVelY}px`,parseInt(e.style.bottom.split("px")[0],10)<-window.innerHeight&&(e.remove(),gameVariables.itemVelY=0),gameVariables.itemVelY<10&&(gameVariables.itemVelY+=gameVariables.GRAVITY)}if(gameVariables.eggs.forEach(e=>{e.style.bottom=`${parseInt(e.style.bottom.split("px")[0],10)-gameVariables.eggVelY}px`,parseInt(e.style.bottom.split("px")[0],10)<-window.innerHeight&&(gameVariables.eggs=[],gameVariables.eggVelY=0,e.remove()),gameVariables.eggVelY+=gameVariables.GRAVITY}),s.length&&(gameVariables.GROUNDED=!0,gameVariables.JUMPING=!1),gameVariables.GROUNDED&&!gameVariables.jumpingOff?gameVariables.playerVelY=0:gameVariables.jumpingOff&&(gameVariables.playerVelY*=gameVariables.FRICTION),i&&(gameVariables.jumpingOff?gameVariables.jumpingOff&&(gameVariables.playerVelY++,gameVariables.facingRight&&gameVariables.playerVelX<gameVariables.PLAYER_SPEED?gameVariables.playerVelX++:!gameVariables.facingRight&&gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&gameVariables.playerVelX--):layEgg()),a&&l)gameVariables.facingRight=!0,gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=thisLevel>1?-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER*2:-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.playerVelX<gameVariables.PLAYER_SPEED&&gameVariables.playerVelX++,gameVariables.layingEgg||gameVariables.JUMPING||(gameVariables.JUMPING=!0,jump("right"));else if(a&&r)gameVariables.facingRight=!1,gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=thisLevel>1?-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER*2:-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&gameVariables.playerVelX--,gameVariables.layingEgg||gameVariables.JUMPING||jump("left");else if(a){if(gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=thisLevel>1?-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER*2:-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),!gameVariables.layingEgg&&!gameVariables.JUMPING){gameVariables.JUMPING=!0;const e=gameVariables.facingRight?"right":"left";jump(e)}}else if(l)gameVariables.facingRight=!0,gameVariables.playerVelX<gameVariables.PLAYER_SPEED&&(gameVariables.playerVelX++,gameVariables.jumpingOff&&gameVariables.playerVelY--),gameVariables.layingEgg||gameVariables.JUMPING&&!gameVariables.jumpingOff||drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex],0);else if(r)gameVariables.facingRight=!1,gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&(gameVariables.playerVelX--,gameVariables.jumpingOff&&gameVariables.playerVelY--),gameVariables.layingEgg||gameVariables.JUMPING&&!gameVariables.jumpingOff||drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex],1);else{const e=gameVariables.facingRight?0:1;gameVariables.layingEgg||gameVariables.JUMPING||drawFrame(15,e)}(l||r)&&(gameVariables.frame++,gameVariables.frame>=gameVariables.FPS&&(gameVariables.frame=0,gameVariables.currentLoopIndex++)),gameVariables.currentLoopIndex>=gameVariables.cycleLoop.length&&(gameVariables.currentLoopIndex=0),gameVariables.player.style.left=`${parseInt(gameVariables.player.style.left.split("px")[0],10)+gameVariables.playerVelX}px`,gameVariables.player.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0],10)-gameVariables.playerVelY}px`,2===gameVariables.flapCount&&gameVariables.GROUNDED&&(gameVariables.flapCount=0),gameVariables.GROUNDED=!1,gameVariables.player&&window.scrollTo(0,gameVariables.player.offsetTop-200),parseInt(gameVariables.player.style.left.split("px")[0],10)>gameVariables.GAME_WIDTH&&(gameVariables.player.style.left="0px"),parseInt(gameVariables.player.style.left.split("px")[0],10)<-10&&(gameVariables.player.style.left=`${gameVariables.GAME_WIDTH}px`),requestAnimationFrame(gameLoop)}};window.gameLoop=gameLoop,window.handleNextLevel=handleNextLevel;
-    window.onload=(()=>{let e=localStorage.getItem("level");e?e=parseInt(e,10):(localStorage.setItem("level",JSON.stringify(0)),e=0),gameVariables.img.src="sprites.png",gameVariables.img.onload=(()=>{console.log("Sprite sheet loaded"),document.body.addEventListener("keydown",function(e){e.target.click(),gameVariables.keys[e.keyCode]=!0}),document.body.addEventListener("keyup",function(e){gameVariables.keys[e.keyCode]=!1}),document.addEventListener("gesturestart",function(e){e.preventDefault()}),document.addEventListener("gesturechange",function(e){e.preventDefault()}),document.addEventListener("gestureend",function(e){e.preventDefault()}),loadLevel(e)})});
+    let gameVariables={GAME_HEIGHT:3e3,GAME_WIDTH:600,FPS:15,game:void 0,currentLevel:0,PLAYER_SPEED:3,FRICTION:.8,GRAVITY:.4,JUMP_POWER:2.5,GROUNDED:!0,JUMPING:!1,player:void 0,SPRITE_HEIGHT:32,SPRITE_WIDTH:26,BIRD_WIDTH:50,BIRD_HEIGHT:38,SCALE:1,keys:[],playerVelX:0,playerVelY:0,eggVelY:0,itemVelY:0,levels:[],platforms:[],eggs:[],MAX_EGG_TIMER:50,eggTimer:0,pause:!0,cycleLoop:[8,7,8,9],birdLoop:[1,2,3],eggLoop:[2,3,4,5,6],jumpLoop:[4,3,2,1],eggLoopIndex:0,currentLoopIndex:0,currentBirdIndex:0,jumpLoopIndex:0,facingRight:!0,jumpingOff:!1,img:new Image,frame:0,layingEgg:!1,eggTimerBar:void 0,droppingItems:!1,dropCount:0,maxDropCount:100,droppedItems:[],flapCount:0,musicPlaying:!1,pauseMusic:!1,myAudioNode:void 0};window.gameVariables=gameVariables;
   </script>
+  <script>
+    const levels=[[[1,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,5,2,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,2,0,0,0,0],[0,0,0,0,4,4,0,0,0,0,0,0],[0,0,0,0,0,0,4,0,0,0,0,0],[0,0,0,2,4,4,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,4,4,0,0,0,0,0,0],[0,0,0,0,0,0,4,4,4,4,0,0],[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,2,2,0,0,0,0,0,0],[0,0,2,2,2,2,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,4,4,4,2,0,0,0,0,0,0],[0,0,0,0,0,0,4,4,0,0,0,0],[0,0,0,4,4,4,0,0,0,0,6,0],[1,1,0,0,0,2,0,0,0,0,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,5,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,4,4,0],[0,0,0,0,0,0,0,0,0,0,4,0],[0,0,0,0,0,0,0,0,4,0,4,0],[0,0,0,0,0,0,0,0,4,0,2,0],[0,0,0,0,0,0,0,0,0,4,4,0],[0,0,0,0,0,0,0,0,2,0,0,0],[0,0,0,0,0,0,0,0,4,4,4,0],[0,0,0,0,0,0,0,4,4,0,0,0],[0,0,0,0,0,0,0,0,0,2,2,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,4,0,0,4,0],[0,0,0,0,0,4,0,2,2,0,0,0],[0,0,0,0,0,0,0,2,4,0,0,0],[0,0,0,0,0,0,0,4,2,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,4,4,0,0,0,0,0],[0,0,0,4,4,4,0,0,0,0,6,0],[2,2,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,5,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,4,0,0,0,0],[0,0,0,0,0,0,0,0,0,4,0,0],[0,0,0,0,0,0,0,4,0,0,2,0],[0,0,0,0,0,4,0,2,0,2,4,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,4,0,2,0,4,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,0],[0,0,0,0,0,0,0,2,2,2,0,0],[0,0,0,0,0,0,2,2,0,0,0,0],[0,0,0,0,0,4,0,2,2,2,0,0],[0,0,0,0,0,0,0,0,2,0,0,0],[0,0,0,0,0,0,0,4,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,2,2,0,0,0,0,0,0,0],[0,0,4,0,0,0,0,0,0,0,6,0],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,5,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,2,2,0,0,0],[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,4,4,0,0,0,0,0],[0,0,0,0,0,0,0,4,0,0,2,0],[0,0,0,0,0,4,0,0,0,2,4,0],[0,0,0,0,0,0,0,4,0,0,0,0],[0,0,0,2,2,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,4,0,0,0,0,0,0,0,0],[0,4,0,4,4,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,4,0,0],[0,2,2,2,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,4,4,0,0,0,0,0,0,0],[0,0,0,0,0,0,4,0,0,0,0,0],[0,0,0,0,2,4,4,0,0,0,0,0],[0,0,2,0,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]],[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,2,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,5,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,0,0,2,0,0,0,0],[0,0,0,0,0,0,0,2,0,0,2,0],[0,0,0,0,0,2,0,2,0,2,2,0],[0,0,0,0,2,0,0,0,0,0,2,0],[0,0,0,0,0,0,0,0,0,0,2,0],[0,0,0,0,0,0,0,0,0,0,4,0],[0,0,0,4,0,0,0,0,0,0,2,0],[0,0,0,0,0,0,0,0,0,2,0,0],[0,0,0,0,0,0,2,2,0,0,0,0],[0,0,0,0,0,4,0,2,2,2,0,0],[0,0,4,0,0,0,0,0,2,0,0,0],[0,0,0,0,0,0,0,4,0,0,0,0],[0,0,0,0,0,2,2,0,0,0,0,0],[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,2,0,0,0,0,0,0,6,0],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1]]];window.levels=levels;
+  </script>
+  <script>
+    const isMobile=()=>!!(navigator.userAgent.match(/Android/i)||navigator.userAgent.match(/BlackBerry/i)||navigator.userAgent.match(/iPhone|iPod/i)||navigator.userAgent.match(/Opera Mini/i)||navigator.userAgent.match(/IEMobile/i)||navigator.userAgent.match(/WPDesktop/i)),handleReload=()=>{const e=parseInt(localStorage.getItem("level"),10);handleNextLevel(e-1)},continueGame=()=>{document.getElementById("home").style.display="none",document.getElementById("world").style.display="block",gameVariables.pause=!1,requestAnimationFrame(window.gameLoop)};window.continueGame=continueGame;const selectLevel=()=>{const e=document.getElementById("win");e&&(e.style.display="none"),document.getElementById("home").style.display="none",document.getElementById("world").style.display="none",document.getElementById("pause-screen").style.display="block"};window.selectLevel=selectLevel;const toggleStoryScreen=()=>{const e=document.getElementById("story"),t=document.getElementById("home");e&&"none"!==e.style.display?(e.style.display="none",t.style.display="block"):(t.style.display="none",e.style.display="block")};window.toggleStoryScreen=toggleStoryScreen;const loadLevel=e=>{const t=document.getElementById("world");if(isMobile()){gameVariables.GAME_WIDTH=window.innerWidth,t.style.width=`${window.innerWidth}px`;const e=document.getElementById("controls");e.style.display="block";const l=document.getElementById("up"),a=document.getElementById("down"),s=document.getElementById("left"),i=document.getElementById("right"),n=document.getElementById("left-jump"),o=document.getElementById("right-jump");e.addEventListener("touchstart",e=>{e.preventDefault()},!1),l.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0}),a.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[40]=!0}),i.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[39]=!0}),s.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[37]=!0}),n.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0,gameVariables.keys[37]=!0}),o.addEventListener("pointerdown",e=>{e.preventDefault(),gameVariables.keys[38]=!0,gameVariables.keys[39]=!0}),document.addEventListener("pointerup",e=>{e.preventDefault(),gameVariables.keys[39]=!1,gameVariables.keys[38]=!1,gameVariables.keys[37]=!1,gameVariables.keys[40]=!1})}t.style.margin="0px",t.style.padding="0px";const l=document.createElement("div");l.style.height="75px",l.style.width=gameVariables.MAX_WIDTH,l.style.margin="auto",l.style.position="fixed",l.style.top="10px",l.style.display="flex",l.style.alignItems="center",l.style.zIndex=1024,l.style.justifyContent="space-between";const a=document.createElement("button");a.setAttribute("class","eightbit-btn"),a.innerText="Reload",a.onclick=(()=>handleReload());const s=document.createElement("button");s.setAttribute("class","eightbit-btn"),s.innerText="Levels",s.onclick=(()=>selectLevel());const i=document.createElement("button");i.innerText=gameVariables.musicPlaying&&!gameVariables.pauseMusic?"🔇":"🔈",i.setAttribute("class","eightbit-btn"),i.onclick=(()=>{gameVariables.pauseMusic?(gameVariables.pauseMusic=!1,handlePlayMusic(),i.innerText="🔈"):(gameVariables.pauseMusic=!0,gameVariables.myAudioNode.stop(),i.innerText="🔇")}),l.appendChild(a),l.appendChild(s),l.appendChild(i),t.appendChild(l);let n=document.getElementById("game");n.style.height=gameVariables.GAME_HEIGHT,n.style.width=gameVariables.GAME_WIDTH;const o=document.getElementsByClassName("level-bgs");if(o.length)for(let e=0;e<o.length;e++)o[e].style.display="none";const r=document.getElementById(`level-bg-${e}`);r&&(r.style.display="block",r.style.position="absolute",r.style.zIndex=980,r.style.bottom="255px",r.style.height="100%",r.style.width="100%");const d=levels[e],g=gameVariables.GAME_WIDTH/d[0].length,m=gameVariables.GAME_HEIGHT/d.length;for(const t of d)for(let l=0;l<t.length;l++)if(0!==t[l]){let a;if((a=2===e?document.createElement("div"):document.createElement("p")).style.width=`${g}px`,a.style.position="absolute",a.style.top=`${d.indexOf(t)*m}px`,a.style.left=`${l*g}px`,a.style.margin="0px",2===t[l])a.style.height="10px",0===e?(a.style.background="#4C352C",a.style.borderTop="solid 1px #B77B5E",a.style.borderBottom="solid 1px #3F2A23"):1===e?(a.style.background="#9E0000",a.style.borderTop="solid 1px #FFB0B0",a.style.borderBottom="solid 1px #700815"):a.style.background="#000",a.setAttribute("class","collider platform");else if(1===t[l])0===e&&(a.style.background="#B24800"),a.style.height=`${m}px`,a.setAttribute("class","collider platform"),2===e&&(a.style.background="brown");else if(3===t[l])a.setAttribute("class","embankment"),a.style.background="none",a.style.height=`${m}px`;else if(4===t[l]){2===e?(a.setAttribute("class","collider platform birds"),a.style.backgroundImage="url(bird.png)",a.style.height="37px",a.style.width="50px"):(a.style.height="10px",0===e?(a.style.background="#4C352C",a.style.borderTop="solid 1px #B77B5E",a.style.borderBottom="solid 1px #3F2A23"):1===e?(a.style.background="#9E0000",a.style.borderTop="solid 1px #FFB0B0",a.style.borderBottom="solid 1px #700815"):a.style.background="#000",a.setAttribute("class","collider platform"));const s=document.createElement("div");s.style.backgroundImage="url(sprites.png)";const i=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*11}px`,o=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`;s.style.backgroundPosition=`${i} ${o}`,s.style.width=`${gameVariables.SPRITE_WIDTH}px`,s.style.height="33px",s.style.position="absolute",s.style.top=`${d.indexOf(t)*m-20}px`,s.style.left=`${l*g+g/2}px`,s.setAttribute("class","small-bug"),s.style.zIndex=1024,n.appendChild(s)}else if(5===t[l]){a.style.height="10px",0===e?(a.style.background="#4C352C",a.style.borderTop="solid 1px #B77B5E",a.style.borderBottom="solid 1px #3F2A23"):a.style.background="#000",a.setAttribute("class","collider platform");const t=document.createElement("div");t.setAttribute("class","feather"),t.style.position="absolute",t.style.backgroundImage="url(sprites.png)";const s=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*12}px`,i=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`;t.style.backgroundPosition=`${s} ${i}`,t.style.top=`${parseInt(a.style.top.split("px")[0]-27,10)}px`,t.style.left=`${l*g+g/2-10}px`,t.style.height="33px",t.style.width="26px",t.style.zIndex=1024,n.appendChild(t);const o=document.createElement("div");o.style.width="62px",o.style.height="54px",o.style.position="absolute",o.style.backgroundImage="url(owl.png)",o.setAttribute("id","owl");const r=`${62*gameVariables.SCALE*2}px`,d=`${54*gameVariables.SCALE}px`;o.style.backgroundPosition=`${r} ${d}`,o.style.top=`${parseInt(a.style.top.split("px")[0]-27-30,10)}px`,o.style.left=`${l*g+g/2-20}px`,o.style.zIndex=999,n.appendChild(o)}else 6===t[l]&&(a.style.height=`${m}px`,a.style.width="40px",a.style.background="brown",a.style.border="1px solid black",a.setAttribute("class","collider platform refill"));a.style.zIndex=1024,n.appendChild(a)}const y=document.createElement("div");y.style.position="fixed",y.style.zIndex="2000",y.style.top="65px",y.style.width=`${gameVariables.GAME_WIDTH/2-10}px`,y.style.height="20px",y.style.border="1px solid #282828",y.setAttribute("id","timer"),y.setAttribute("class","egg-timer"),gameVariables.eggTimerBar=document.createElement("div"),gameVariables.eggTimerBar.style.margin="0px",gameVariables.eggTimerBar.style.height="100%",gameVariables.eggTimerBar.style.width="0%",gameVariables.eggTimerBar.style.background="black",gameVariables.eggTimerBar.style.opacity="0.5",y.appendChild(gameVariables.eggTimerBar),gameVariables.player=document.createElement("div"),gameVariables.player.style.height=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`,gameVariables.player.style.width=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE}px`,gameVariables.player.style.backgroundImage=`url(${gameVariables.img.src})`,gameVariables.player.style.backgroundPosition=`0px ${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px `,gameVariables.player.style.position="absolute",gameVariables.player.style.bottom="300px",gameVariables.player.style.left="150px",gameVariables.player.style.zIndex="1024",gameVariables.player.setAttribute("id","player"),(n=document.getElementById("world")).style.position="relative",n.appendChild(gameVariables.player),n.appendChild(y),gameVariables.pause=!1,gameVariables.game=n,requestAnimationFrame(gameLoop)};window.loadLevel=loadLevel;
+  </script>
+  <script>
+    let flaps=0;const dropItem=e=>{const a=document.createElement("div");if("rock"===e)a.setAttribute("class","rock dropped-item spin");else{a.style.width="26px",a.style.height="33px",a.style.backgroundImage="url(sprites.png)";const e=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*13}px`,l=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`;a.style.backgroundPosition=`${e} ${l}`,a.setAttribute("class","dropped-item spin")}a.style.position="absolute",a.style.zIndex="2000",a.style.left=`${Math.floor(Math.random()*gameVariables.GAME_WIDTH)+1}px`,a.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0],10)+400}px`,gameVariables.game.appendChild(a)},detectOverlap=(()=>{const e=e=>{let a=e.getBoundingClientRect();return[[a.left,a.right],[a.top,a.bottom]]},a=(e,a)=>{let l,r;return e[0]<a[0]?(l=e,r=a):(l=a,r=e),l[1]>r[0]||l[0]===r[0]};return(l,r)=>{let s=e(l),i=e(r);return a(s[0],i[0])&&a(s[1],i[1])}})(),drawFrame=(e,a)=>{const l=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*e}px`,r=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE*a}px`;gameVariables.player&&(gameVariables.player.style.backgroundPosition=`${l} ${r}`),gameVariables.facingRight?gameVariables.player.classList.add("flipped"):gameVariables.player.classList.remove("flipped")},drawBird=(e,a)=>{if(flaps>=10){const l=`${gameVariables.BIRD_WIDTH*gameVariables.SCALE*e}px`,r=`${gameVariables.BIRD_HEIGHT*gameVariables.SCALE*a}px`,s=document.getElementsByClassName("birds");for(let e=0;e<s.length;e++)s[e].style.backgroundPosition=`${l} ${r}`}},jump=async e=>{drawFrame(1,1)},layEgg=async()=>{if(gameVariables.eggTimer===gameVariables.MAX_EGG_TIMER){for(fr of(gameVariables.eggTimer=0,gameVariables.eggTimerBar.style.width="0%",gameVariables.layingEgg=!0,gameVariables.eggLoop))drawFrame(fr,1),await timeoutPromise(100);gameVariables.layingEgg=!1,gameVariables.eggLoopIndex=0;const e=document.createElement("div");e.style.height=`${gameVariables.SPRITE_HEIGHT}px`,e.style.width=`${gameVariables.SPRITE_WIDTH}px`,e.style.background="url(sprites.png)";const a=`${gameVariables.SPRITE_WIDTH*gameVariables.SCALE*10}px`,l=`${gameVariables.SPRITE_HEIGHT*gameVariables.SCALE}px`;e.style.backgroundPosition=`${a} ${l}`,e.style.position="absolute",e.style.left=gameVariables.player.style.left,e.style.bottom=gameVariables.player.style.bottom,e.style.zIndex=1024,e.setAttribute("id","egg-1"),gameVariables.eggs.push(e),gameVariables.game.appendChild(e),gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*(gameVariables.JUMP_POWER+.5)}},timeoutPromise=e=>new Promise((a,l)=>{setTimeout(()=>{a()},e)}),handleNextLevel=e=>{if(4===e){document.getElementById("world").style.display="none",document.getElementById("win").style.display="block"}else{gameVariables.eggTimer=0;const a=document.getElementById("pause-screen");a&&(a.style.display="none"),document.getElementById("world").style.display="block";const l=document.getElementById("game");let r=e;for(gameVariables.pause=!0;l.firstChild;)l.removeChild(l.firstChild);for(let e=0;e<gameVariables.eggs.length;e++)gameVariables.eggs[e].remove();gameVariables.player=void 0;const s=document.getElementById("player");s&&s.remove(),gameVariables.eggs,length>0&&gameVariables.eggs[0].remove(),r++,localStorage.setItem("level",JSON.stringify(r)),setTimeout(()=>loadLevel(r),1500)}},handlePlayMusic=()=>{let e=(...e)=>{let a=s.createBufferSource(),l=s.createBuffer(e.length,e[0].length,r);return e.map((e,a)=>l.getChannelData(a).set(e)),a.buffer=l,a.connect(s.destination),a.start(),a},a=(e=1,a=.05,s=220,i=0,g=0,t=.1,m=0,b=1,V=0,n=0,o=0,p=0,y=0,d=0,c=0,E=0,f=0,u=1,I=0,h=r,P=99+i*h,R=g*h,x=t*h,M=I*h,D=f*h,L=2*Math.PI,O=(e=>0<e?1:-1),T=P+M+R+x+D,G=(V*=500*L/h**2),N=(s*=(1+2*a*Math.random()-a)*L/h),v=O(c)*L/4,w=0,A=0,Y=0,C=0,_=0,S=0,B=1,$=[])=>{for(;Y<T;$[Y++]=S)++_>100*E&&(_=0,S=w*s*Math.sin(A*c*L/h-v),S=O(S=m?1<m?2<m?3<m?Math.sin((S%L)**3):Math.max(Math.min(Math.tan(S),1),-1):1-(2*S/L%2+2)%2:1-4*Math.abs(Math.round(S/L)-S/L):Math.sin(S))*Math.abs(S)**b*e*l*(Y<P?Y/P:Y<P+M?1-(Y-P)/M*(1-u):Y<P+M+R?u:Y<T-D?(T-Y-D)/x*u:0),S=D?S/2+(D>Y?0:(Y<T-D?1:(Y-T)/D)*$[Y-D|0]/2):S),w+=1-d+1e9*(Math.sin(Y)+1)%2*d,A+=1-d+1e9*(Math.sin(Y)**2+1)%2*d,s+=V+=500*n*L/h**3,B&&++B>p*h&&(s+=o*L/h,N+=o*L/h,B=0),y&&++C>y*h&&(s=N,V=G,C=1,B=B||1);return $},l=.1,r=44100,s=new(top.AudioContext||webkitAudioContext),i=((e,l,s,i=125)=>{let g,t,m,b,V,n,o,p,y,d,c,E,f,u,I,h,P=[],R=[],x=[],M=0,D=1,L={},O=r/i*60>>2;for(;D;M++)P=[D=p=c=f=0],s.map((r,i)=>{for(o=l[r][M]||[0,0,0],D|=!!l[r][M],I=f+(l[r][0].length-2-!p)*O,t=2,b=f;t<o.length+(i==s.length-1);p=++t){for(V=o[t],y=d!=(o[0]||0)|V|0,m=0;m<O&&p;m++>O-99&&y?E+=(E<1)/99:0)n=(1-E)*P[u++]/2||0,R[b]=(R[b]||0)+n*h-n,x[b]=(x[b++]||0)+n*h+n;V&&(E=V%1,h=o[1]||0,(V|=0)&&(P=L[[d=o[u=0]||0,V]]=L[[d,V]]||((g=[...e[d]])[2]*=2**((V-12)/12),a(...g))))}f=I});return[R,x]})([[1.8,0,72,,,.2,,4,-2,6,50,.15,,6],[,0,655,,,.09,3,1.65,,,,,.02,3.8,-.1,,.2],[1.2,0,23,,,.2,3,4,,,3,.9,.05],[1.5,0,740,,,.15,2,.2,-.1,-.15,9,.02,,.1,.12,,.06]],[[[3,-1,13,13,13,8,13,,,,,,,,,,,,11,11,11,6,11,,,,,,,,,,,,10,10,10,6,10,,,,,,,,,6,8,10,8,8,8,5,13,,8,8,8,5,13,,,,,,],[,1,25,,25,,,,,,,,,,,,,25,25,,25,,,,,,,25,,,25,,25,25,25,,25,,,,,,,,,,,25,25,25,25,,25,,,,,,,,,,,,,,],[2,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,,13,,25,,13,13,25,13,,13,25,13,13,13,,,13,,25,,13,13,25,13,,13,25,13,13,13,25,,13,,25,,13,13,25,13,,13,25,13,13,13,25,,]],[[3,-1,13,13,13,8,13,,,,,,,,,,,,11,11,11,6,11,,,,,,,,,,,,10,10,10,6,10,,,,,,,,,6,8,10,8,8,8,5,13,,8,8,8,5,13,8,8,8,5,13],[2,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,27,11,,23,,11,11,23,11,,11,23,11,11,11,23,22,18,,30,,18,18,30,18,,18,30,18,18,18,30,22,13,,25,,13,13,25,13,,13,25,13,13,13,25,,],[,1,25,,25,,,,,,,,,,,,,25,25,,25,,,,,,,,,,,,,,25,,25,,,,,,,,,,,25,25,25,25,,25,,,,,,,,,,,,,,],[1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,13,13,13,13,13,13,13,13]],[[3,-1,13,13,13,8,13,,13,15,17,17,15,13,20,20,18,17,18,,,,17,,15,,,,17,,18,,22,22,22,,18,,,,25,25,25,,22,,,18,20,22,20,,,,,,,,,,,,,,,,],[2,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,27,11,,23,,11,11,23,11,,11,23,11,11,11,23,22,18,,30,,18,18,30,18,,18,30,18,18,18,30,22,13,,25,,13,13,25,13,,13,25,13,13,13,25,,],[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13]],[[3,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,,11,,23,,11,11,23,11,,11,23,11,11,11,23,,10,,22,,10,10,22,10,,10,22,10,10,6,8,10,20,25,20,20,25,20,,20,25,20,20,20,25,,20,,],[2,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,,13,,25,,13,13,25,13,,13,25,13,13,13,25,,13,,25,,13,13,25,13,,13,25,13,13,13,25,,13,,25,,13,13,25,13,,13,25,13,13,13,25,,],[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13]],[[3,-1,13,,,,,,8,,17,15,13,,17,15,13,,15,,,,10,13,15,10,13,15,10,13,15,10,13,15,12,,,,,,8,15,,,,,17,15,13,8,13,,,,,,10,8,,20,20,20,20,20,20,20],[2,-1,13,,25,,13,13,25,13,,13,25,13,13,13,25,,15,,27,,15,15,27,15,,15,27,15,15,15,27,32,20,,32,,20,20,32,20,,20,32,20,20,20,32,,13,,25,,13,13,25,20,,20,32,20,20,20,32,,],[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13]],[[3,-1,13,,,,,,8,,17,,,,18,17,15,,18,,,,13,,,,10,,,,6,,,,8,12,15,12,20,,8,12,15,12,20,,22,20,15,,13,,,,,,10,,8,,,,,8,20,8],[2,-1,13,,25,25,13,,25,25,13,,25,25,13,,25,25,15,,27,27,15,,27,27,15,,27,27,15,,27,27,20,,32,32,20,,32,32,20,,32,32,20,,32,32,13,,25,25,13,,25,25,20,,32,32,20,,32,34],[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13]],[[3,-1,13,,,,,,8,,17,,,,18,17,15,,18,,,,13,,,,10,,,,6,,,,8,12,15,12,20,,8,12,15,12,20,,22,20,15,,13,,,,,,10,,8,,,,,8,20,8],[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13]],[[,1,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,,,25,25,,25,25,,,,,,25,,,,25,,,25,,,,25,25,25,25,25],[1,1,,,,,13,,,,,,,,13,,,,,,,,13,,,,,,,,13,,13,,,,,,13,,,,,,,,13,,,,,,,,13,13,,13,,13,13,13,13,13,13,13]]],[0,1,2,2,3,3,2,2,4,4,5,6,6,7,2,2,3],);gameVariables.myAudioNode=e(...i)};window.handlePlayMusic=handlePlayMusic;const gameLoop=async()=>{gameVariables.musicPlaying||gameVariables.pauseMusic||(handlePlayMusic(),gameVariables.musicPlaying=!0);const e=document.getElementById("home"),a=document.getElementById("world");if(!gameVariables.pause&&"none"===e.style.display&&"none"!==a.style.display){if(flaps<10?flaps++:flaps=0,gameVariables.droppingItems){const e=document.getElementsByClassName("dropped-item");e&&0!==e.length||(dropItem("acorn"),gameVariables.dropCount=0)}document.getElementsByClassName("birds")&&(drawBird(gameVariables.birdLoop[gameVariables.currentBirdIndex],0),gameVariables.currentBirdIndex<2?gameVariables.currentBirdIndex++:gameVariables.currentBirdIndex=0);const e=gameVariables.keys[38]||gameVariables.keys[32]||gameVariables.keys[87],r=gameVariables.keys[39]||gameVariables.keys[68],s=gameVariables.keys[37]||gameVariables.keys[65],i=gameVariables.keys[40]||gameVariables.keys[83];gameVariables.playerVelX*=gameVariables.FRICTION,gameVariables.jumpingOff||gameVariables.layingEgg?gameVariables.playerVelY>0&&gameVariables.playerVelY--:gameVariables.playerVelY+=gameVariables.GRAVITY;let g=[];const t=document.getElementsByClassName("platform"),m=document.getElementsByClassName("embankment"),b=document.getElementsByClassName("feather"),V=document.getElementsByClassName("small-bug"),n=document.getElementsByClassName("refill")[0],o=b[0];let p=[];const y=gameVariables.player.getBoundingClientRect();
+    if(o&&detectOverlap(gameVariables.player,o)&&p.push(o),n&&detectOverlap(gameVariables.player,n))for(let e=0;e<V.length;e++)"none"===V[e].style.display&&(V[e].style.display="inline");for(var l=0;l<t.length;l++){const e=t[l],a=e.getBoundingClientRect();detectOverlap(gameVariables.player,e)&&(y.bottom>a.top+parseInt(e.style.height.split("px")[0])||(gameVariables.jumpingOff=!1,droppingItems=!1,g.push(e.id),y.bottom>a.top&&"1"!==e.id&&!gameVariables.jumpingOff&&(gameVariables.player.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0])+(y.bottom-a.top)}px`,gameVariables.playerVelY=0)))}let d=[];for(l=0;l<m.length;l++){const e=m[l];detectOverlap(gameVariables.player,e)&&d.push(e)}if(d.length>0?(gameVariables.droppingItems=!0,gameVariables.jumpingOff=!0):(gameVariables.jumpingOff=!1,gameVariables.droppingItems=!1),p.length>0){const e=`${62*gameVariables.SCALE*2}px`,a=`${54*gameVariables.SCALE}px`;document.getElementById("owl").style.backgroundPosition=`${e} ${a}`;const l=parseInt(localStorage.getItem("level"),10);handleNextLevel(l)}for(l=0;l<V.length;l++){const e=V[l];detectOverlap(gameVariables.player,e)&&(gameVariables.eggTimer<gameVariables.MAX_EGG_TIMER&&(gameVariables.eggTimer=gameVariables.eggTimer+10,gameVariables.eggTimerBar.style.width=`${gameVariables.eggTimer/gameVariables.MAX_EGG_TIMER*100}%`),V[l].style.display="none")}const c=document.getElementsByClassName("dropped-item");if(c&&c.length>0)for(const e of c){detectOverlap(gameVariables.player,e)&&(drawFrame(3,1),gameVariables.eggTimer=0,navigator.vibrate=navigator.vibrate||navigator.webkitVibrate||navigator.mozVibrate||navigator.msVibrate,navigator.vibrate&&navigator.vibrate(1e3),a.classList.add("shake"),await timeoutPromise(100),drawFrame(8,1),a.classList.remove("shake"),e.remove()),e.style.bottom=`${parseInt(e.style.bottom.split("px")[0],10)-gameVariables.itemVelY}px`,parseInt(e.style.bottom.split("px")[0],10)<-window.innerHeight&&(e.remove(),gameVariables.itemVelY=0),gameVariables.itemVelY<10&&(gameVariables.itemVelY+=gameVariables.GRAVITY)}if(gameVariables.eggs.forEach(e=>{e.style.bottom=`${parseInt(e.style.bottom.split("px")[0],10)-gameVariables.eggVelY}px`,parseInt(e.style.bottom.split("px")[0],10)<-window.innerHeight&&(gameVariables.eggs=[],gameVariables.eggVelY=0,e.remove()),gameVariables.eggVelY+=gameVariables.GRAVITY}),g.length&&(gameVariables.GROUNDED=!0,gameVariables.JUMPING=!1),gameVariables.GROUNDED&&!gameVariables.jumpingOff?gameVariables.playerVelY=0:gameVariables.jumpingOff&&(gameVariables.playerVelY*=gameVariables.FRICTION),i&&(gameVariables.jumpingOff?gameVariables.jumpingOff&&(gameVariables.playerVelY++,gameVariables.facingRight&&gameVariables.playerVelX<gameVariables.PLAYER_SPEED?gameVariables.playerVelX++:!gameVariables.facingRight&&gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&gameVariables.playerVelX--):layEgg()),e&&r)gameVariables.facingRight=!0,gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.playerVelX<gameVariables.PLAYER_SPEED&&gameVariables.playerVelX++,gameVariables.layingEgg||gameVariables.JUMPING||(gameVariables.JUMPING=!0,jump());else if(e&&s)gameVariables.facingRight=!1,gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&gameVariables.playerVelX--,gameVariables.layingEgg||gameVariables.JUMPING||jump();else if(e){if(gameVariables.JUMPING||!gameVariables.GROUNDED||gameVariables.jumpingOff||(gameVariables.GROUNDED=!1,gameVariables.playerVelY=-gameVariables.PLAYER_SPEED*gameVariables.JUMP_POWER),!gameVariables.layingEgg&&!gameVariables.JUMPING){gameVariables.JUMPING=!0;gameVariables.facingRight;jump()}}else r?(gameVariables.facingRight=!0,gameVariables.playerVelX<gameVariables.PLAYER_SPEED&&(gameVariables.playerVelX++,gameVariables.jumpingOff&&gameVariables.playerVelY--),gameVariables.layingEgg||gameVariables.JUMPING&&!gameVariables.jumpingOff||drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex],0)):s?(gameVariables.facingRight=!1,gameVariables.playerVelX>-gameVariables.PLAYER_SPEED&&(gameVariables.playerVelX--,gameVariables.jumpingOff&&gameVariables.playerVelY--),gameVariables.layingEgg||gameVariables.JUMPING&&!gameVariables.jumpingOff||drawFrame(gameVariables.cycleLoop[gameVariables.currentLoopIndex],1)):gameVariables.layingEgg||gameVariables.JUMPING||drawFrame(8,1);(r||s)&&(gameVariables.frame++,gameVariables.frame>=gameVariables.FPS&&(gameVariables.frame=0,gameVariables.currentLoopIndex++)),gameVariables.currentLoopIndex>=gameVariables.cycleLoop.length&&(gameVariables.currentLoopIndex=0),gameVariables.player.style.left=`${parseInt(gameVariables.player.style.left.split("px")[0],10)+gameVariables.playerVelX}px`,gameVariables.player.style.bottom=`${parseInt(gameVariables.player.style.bottom.split("px")[0],10)-gameVariables.playerVelY}px`,2===gameVariables.flapCount&&gameVariables.GROUNDED&&(gameVariables.flapCount=0),gameVariables.GROUNDED=!1,gameVariables.player&&window.scrollTo(0,gameVariables.player.offsetTop-200),parseInt(gameVariables.player.style.left.split("px")[0],10)>gameVariables.GAME_WIDTH&&(gameVariables.player.style.left="0px"),parseInt(gameVariables.player.style.left.split("px")[0],10)<-10&&(gameVariables.player.style.left=`${gameVariables.GAME_WIDTH}px`),requestAnimationFrame(gameLoop)}};window.gameLoop=gameLoop,window.handleNextLevel=handleNextLevel;
+  </script>
+  <script>
+    window.onload=(()=>{let e=localStorage.getItem("level");e?(document.getElementById("continue").style.display="block",e=parseInt(e,10)):(localStorage.setItem("level",JSON.stringify(0)),e=0,document.getElementById("start").style.display="block"),window.level=e,gameVariables.img.src="sprites.png",gameVariables.img.onload=(()=>{console.log("Sprite sheet loaded"),document.body.addEventListener("keydown",function(e){e.target.click(),gameVariables.keys[e.keyCode]=!0}),document.body.addEventListener("keyup",function(e){gameVariables.keys[e.keyCode]=!1}),document.addEventListener("gesturestart",function(e){e.preventDefault()}),document.addEventListener("gesturechange",function(e){e.preventDefault()}),document.addEventListener("gestureend",function(e){e.preventDefault()}),loadLevel(e)})});
+  </script>
+  <script src='main.js'></script>
 </body>
