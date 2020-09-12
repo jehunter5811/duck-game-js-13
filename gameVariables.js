@@ -47,7 +47,8 @@ let gameVariables = {
   flapCount: 0, 
   musicPlaying: false,
   pauseMusic: false, 
-  myAudioNode: undefined
+  myAudioNode: undefined,
+  flaps: 0
 }
 
 window.gameVariables = gameVariables;

@@ -1,4 +1,3 @@
-let flaps = 0;
 const dropItem = (itemType) => {
   const item = document.createElement("div");
   if(itemType === 'rock') {
@@ -66,7 +65,7 @@ const drawFrame = (frameX, frameY) => {
 };
 
 const drawBird = (frameX, frameY) => {
-  if(flaps >= 10) {
+  if(gameVariables.flaps >= 10) {
     const x = `${gameVariables.BIRD_WIDTH * frameX}px`;
     const y = `${gameVariables.BIRD_HEIGHT * frameY}px`;
     const birds = document.getElementsByClassName('birds');
@@ -190,10 +189,10 @@ const gameLoop = async () => {
   const homeScreen = document.getElementById('home');
   const world = document.getElementById('world');
   if (!gameVariables.pause && homeScreen.style.display === 'none' && world.style.display !== 'none') {
-    if(flaps < 10) {
-      flaps++
+    if(gameVariables.flaps < 10) {
+      gameVariables.flaps++
     } else {
-      flaps = 0;
+      gameVariables.flaps = 0;
     }
     if (gameVariables.droppingItems) {
       const droppedItems = document.getElementsByClassName("dropped-item");

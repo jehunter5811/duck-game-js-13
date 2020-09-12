@@ -1,11 +1,9 @@
 const isMobile = () => {
   if (
     navigator.userAgent.match(/Android/i) ||
-    navigator.userAgent.match(/BlackBerry/i) ||
     navigator.userAgent.match(/iPhone|iPod/i) ||
     navigator.userAgent.match(/Opera Mini/i) ||
-    navigator.userAgent.match(/IEMobile/i) ||
-    navigator.userAgent.match(/WPDesktop/i)
+    navigator.userAgent.match(/IEMobile/i)
   ) {
     return true;
   } else {
@@ -209,6 +207,18 @@ const loadLevel = (level) => {
               platform.style.background = "#9E0000";
               platform.style.borderTop = 'solid 1px #FFB0B0';
               platform.style.borderBottom = 'solid 1px #700815';
+            } else if(level===2) {
+              platform.style.background = "#AA297F";
+              platform.style.borderTop = 'solid 1px #FFA9E5';
+              platform.style.borderBottom = 'solid 1px #3F1B33';
+            } else if(level===3){
+              platform.style.background = "#96520F";
+              platform.style.borderTop = 'solid 1px #FFAE55';
+              platform.style.borderBottom = 'solid 1px #66380E';
+            } else if(level===4) {
+              platform.style.background = "#48FFF6";
+              platform.style.borderTop = 'solid 1px #C0FFFC';
+              platform.style.borderBottom = 'solid 1px #00FFEC';
             } else {
               platform.style.background = '#000';
             }         
@@ -217,18 +227,20 @@ const loadLevel = (level) => {
         } else if (row[i] === 1) {
           if(level === 0) {
             platform.style.background = '#B24800';
+          } else if(level === 2) {
+            platform.style.background = '#5B1A52';
+          } else if(level===4) {
+            platform.style.background = '#cccccc';
           }
           platform.style.height = `${rowHeight}px`;
-          platform.setAttribute("class", "collider platform");
-          if(level === 2) {
-            platform.style.background = 'brown';
-          }
+          platform.setAttribute("class", "collider platform");         
         } else if (row[i] === 3) {
           platform.setAttribute("class", "embankment");
           platform.style.background = "none";
           platform.style.height = `${rowHeight}px`;
         } else if(row[i] === 4) {
           if(level === 2) {
+            
             platform.setAttribute("class", "collider platform birds");
             platform.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJcAAAAlCAMAAAB4Q4s1AAAAP1BMVEUAAADYzsArKyu1q6BjY2Ogl40ZGRn/kQ3/79zGAACgAAD/Pj5/AAC8XgD/zJkCAgJKLxSbSgD/XH+CenM/IQBy7tf3AAAAAXRSTlMAQObYZgAAAYpJREFUWMPtk+1ugzAMAB0bCDA+Rrv3f9bZJloWhWZhXYV/7KqqaqSTD6eF39IoqAAKzQ5cjSN+CdwlH/odbEDfuggMQXuXtSwO0y5zWRwmXS/JanYwwCe40wSKdtgXvAT5KwW0ywX4/LJ9xbTYlUZds68IJV109e8L3phh0Bmxi2qM+n1Fox4WxnEMGwtdVGMo2lU542zXxIBAoYtqjOquJRonWIbpg51x4FX32DDOvTcRTDkw0DXMY8Mv+YyioVney9WP0zgOQ8+HjrMwo1fg0ECHWDS8X1JDKc8Q5O4nlkhmtG3rckR4ZKBzBUNIjENSQ5lv8wxKx5A7BBJjPmtst22LBu4UDX0YKE/xmQMnjfn2NSOG5UZpyhGenjTmLXl2VBKhjUbGurYP8E8a3icGKplxkpnf/u+M9X5HJTMuDNOuFrGXLltha0vcxWFgK6wjF7sy47qud+nCHjtrXU67OmtdWOy6htiFHRhj7+r+u+q7LF6jdFlcl+kug1nS1dnsAotZgAA/ZX0CNBwU72akJJEAAAAASUVORK5CYII=)';
             platform.style.height = '37px';
@@ -243,6 +255,14 @@ const loadLevel = (level) => {
               platform.style.background = "#9E0000";
               platform.style.borderTop = 'solid 1px #FFB0B0';
               platform.style.borderBottom = 'solid 1px #700815';
+            } else if(level===3) {
+              platform.style.background = "#96520F";
+              platform.style.borderTop = 'solid 1px #FFAE55';
+              platform.style.borderBottom = 'solid 1px #66380E';
+            } else if(level===4) {
+              platform.style.background = "#48FFF6";
+              platform.style.borderTop = 'solid 1px #C0FFFC';
+              platform.style.borderBottom = 'solid 1px #00FFEC';
             } else {
               platform.style.background = '#000';
             } 
@@ -268,6 +288,18 @@ const loadLevel = (level) => {
             platform.style.background = "#4C352C";
             platform.style.borderTop = 'solid 1px #B77B5E';
             platform.style.borderBottom = 'solid 1px #3F2A23';
+          } else if(level===2) {
+            platform.style.background = "#AA297F";
+            platform.style.borderTop = 'solid 1px #FFA9E5';
+            platform.style.borderBottom = 'solid 1px #3F1B33';
+          } else if(level===3) {
+            platform.style.background = "#96520F";
+            platform.style.borderTop = 'solid 1px #FFAE55';
+            platform.style.borderBottom = 'solid 1px #66380E';
+          } else if(level===4) {
+            platform.style.background = "#48FFF6";
+            platform.style.borderTop = 'solid 1px #C0FFFC';
+            platform.style.borderBottom = 'solid 1px #00FFEC';
           } else {
             platform.style.background = '#000';
           } 
@@ -300,11 +332,11 @@ const loadLevel = (level) => {
           owl.style.zIndex = 999;          
           game.appendChild(owl);  
         } else if(row[i] === 6) {
-          platform.style.height = `${rowHeight}px`;
+          platform.style.height = `40px`;
           platform.style.width = '40px';
-          platform.style.background = 'brown';
-          platform.style.border = '1px solid black';
-          platform.setAttribute('class','collider platform refill');
+          platform.style.marginTop = '20px'
+          platform.style.backgroundColor = '#e1eb34';
+          platform.setAttribute('class','collider platform refill eightbit-btn');
         }
         platform.style.zIndex = 1024;
         game.appendChild(platform);
@@ -327,8 +359,8 @@ const loadLevel = (level) => {
   gameVariables.eggTimerBar.style.margin = "0px";
   gameVariables.eggTimerBar.style.height = "100%";
   gameVariables.eggTimerBar.style.width = "0%";
-  gameVariables.eggTimerBar.style.background = "black";
-  gameVariables.eggTimerBar.style.opacity = "0.5";
+  gameVariables.eggTimerBar.style.background = "#e1eb34";
+  gameVariables.eggTimerBar.style.opacity = "0.8";
   eggTimerBarContainer.appendChild(gameVariables.eggTimerBar);
 
   gameVariables.player = document.createElement("div");
