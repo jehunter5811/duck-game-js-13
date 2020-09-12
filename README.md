@@ -12,8 +12,8 @@ To run locally:
 
 This game was built by a team of awesome game enthusiasts. 
 
-Justin Hunter - programming 
-Brock - Art
-Ryon - Art 
-Adam - Music/Project Management 
-Reagan - Music
+Justin - programming  
+Brock - Art  
+Ryon - Art   
+Adam - Music/Project Management   
+Reagan - Music  
