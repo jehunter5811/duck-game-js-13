@@ -143,7 +143,6 @@ const handleNextLevel = (current) => {
       gameVariables.eggs[i].remove();
     }
   
-    gameVariables.player = undefined;
     const player = document.getElementById("player");
     if (player) {
       player.remove();
