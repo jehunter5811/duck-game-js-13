@@ -94,7 +94,7 @@ const layEgg = async () => {
     const egg = document.createElement("div");
     egg.style.height = `${gameVariables.SPRITE_HEIGHT}px`;
     egg.style.width = `${gameVariables.SPRITE_WIDTH}px`;
-    egg.style.background = `url(${gameVariable.img.src})`;
+    egg.style.background = `url(${gameVariables.img.src})`;
     const x = `${gameVariables.SPRITE_WIDTH * 10}px`;
     const y = `${gameVariables.SPRITE_HEIGHT}px`;
     egg.style.backgroundPosition = `${x} ${y}`;
